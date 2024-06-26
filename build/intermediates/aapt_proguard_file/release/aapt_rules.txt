@@ -1,0 +1,46 @@
+-keep class android.support.v4.content.FileProvider { <init>(); }
+-keep class com.google.zxing.client.android.CaptureActivity { <init>(); }
+-keep class com.hts.hable_pos.BLTPrint { <init>(); }
+-keep class com.hts.hable_pos.BaseActivity { <init>(); }
+-keep class com.hts.hable_pos.HTMLPrint { <init>(); }
+-keep class com.hts.hable_pos.Startup { <init>(); }
+-keep class com.hts.hable_pos.implementation.ExtendApplication { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.BatchTempActivity { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.ImageDetailsActivity { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.ImageList1Activity { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.ImageList2Activity { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.SampleActivity { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.SampleActivity2 { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.SampleNativeListActivity { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.SampleNativeMapActivity { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.ShowPushPopup { <init>(); }
+-keep class com.hts.hable_pos.samples.activity.StartActivity { <init>(); }
+-keep class m.client.android.library.core.managers.LocalFileContentProvider { <init>(); }
+-keep class m.client.android.library.core.view.MainActivity { <init>(); }
+-keep class m.client.library.addon.media.AudioRecoderActivity { <init>(); }
+-keep class m.client.library.addon.media.MediaPlayActivity { <init>(); }
+-keep class m.client.library.addon.media.crop.CropImageActivity { <init>(); }
+-keep class m.client.library.plugin.viewer.DocViewerActivity { <init>(); }
+-keep class m.client.library.plugin.viewer.MuPDFActivity { <init>(); }
+-keep class com.google.android.maps.MapView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class m.client.android.library.core.view.SquareImageView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class m.client.android.library.core.view.TouchImageView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class m.client.library.addon.media.CustomVideoView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class m.client.library.addon.media.crop.CropImageView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class m.client.library.addon.popup.DatePicker { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class m.client.library.addon.popup.NumberPicker { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class m.client.library.addon.popup.NumberPickerButton { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keep class m.client.library.plugin.qr.view.ClipView { <init>(android.content.Context, android.util.AttributeSet); }
+
+-keepclassmembers class * { *** onClickButtonPaired(android.view.View); }
+
+-keepclassmembers class * { *** onClickButtonSend(android.view.View); }
+

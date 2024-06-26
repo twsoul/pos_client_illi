@@ -1,0 +1,349 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_scanMode = false;
+	var objPartNumSelect;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		objPartNumSelect = new SelectListPopup({ title: "품번선택", id: "popPart", submitCallback: function(code, name){
+			$("#txtPART_NO").val(code);
+			$("#txtPART_NM").val(name);
+			getVENDList();
+		}});
+		objPartNumSelect.init();
+		exShowIndicator("데이터 송수신 중입니다.\n잠시만 기다려 주세요.");
+		setInitFirstSelectBox();
+		setPTypeList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnPartNumSearch").on("click", getPartNoList);
+		
+		$("#selPlant").on("change", setInitLineList);
+		$("#selLine").on("change", setInitLineDTList);
+		$("#btnScan").on("click", getScanData);
+		$("#btnRefresh").on("click", setRefresh);
+		$("#btnSave").on("click", setSave);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	};
+	
+	// 초기값 필요한 SELECT BOX Initialize
+	var setInitFirstSelectBox = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListMultiSelect.do',
+			data: {
+				'QUERYIDS': "GCS.get_plantList;GCS.getCommonCode",
+				"LSC_CD": "WNGB"
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				
+				$("#selPlant").html("");
+				$.each(receivedData.ListData0, function(index,rowData){
+					tag += "<option value='" + rowData.PLANT_CD + "'>" + rowData.PLANT_NM + "</option>";
+				});
+				$("#selPlant").append(tag);
+				
+				tag = "";
+				$("#selDayNight").html("");
+				$.each(receivedData.ListData1, function(index,rowData){
+					tag += "<option value='" + rowData.CD + "'>" + rowData.NM + "</option>";
+				});
+				$("#selDayNight").append(tag);
+				
+				setInitLineList();
+			},
+			error: function(){
+				exHideIndicator();
+			}
+		});
+	};
+	
+	var setPTypeList = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.getCommonCode",
+				"LSC_CD": "PTYPE"
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				
+				$("#selPType").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.CD + "'>" + rowData.NM + "</option>";
+				});
+				$("#selPType").append(tag);
+			}
+		});
+	};
+	
+	var setInitLineList = function() {
+		var spec_cd = $("#selPlant > option:selected").val();
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.getCommonCode",
+				"LSC_CD": "SEQLINE",
+				"SPEC_CD": spec_cd
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				
+				$("#selLine").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.CD + "'>" + rowData.NM + "</option>";
+				});
+				$("#selLine").append(tag);
+				setInitLineDTList();
+			}
+		});
+	};
+	
+	var setInitLineDTList = function() {
+		var spec_cd = $("#selLine > option:selected").val();
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.getCommonCode",
+				"LSC_CD": "SEQDTLINE",
+				"SPEC_CD": spec_cd
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				
+				$("#selLineDetail").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.CD + "'>" + rowData.NM + "</option>";
+				});
+				$("#selLineDetail").append(tag);
+				
+				exHideIndicator();
+			}
+		});
+	};
+	
+	var getPartNoList = function() {
+		var part_no = $("#txtPART_NO").val();
+		
+		if (window.Utils.trim(part_no) == ""){
+			popupManager.alert("한 글자 이상 입력 후 다시시도하세요.", {title:"확인"});
+			return;
+		}
+		
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_partNumber",
+				'PART_NO': part_no
+			},
+			success: function(receivedData, setting) {
+				objPartNumSelect.setDB(receivedData.ListData, "PART_NO", "PART_NM");
+				objPartNumSelect.show();
+			}
+		});
+	};
+	
+	var getVENDList = function() {
+		var part_no = $("#txtPART_NO").val();
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.getVenderListFromPartNo",
+				"PART_NO": part_no
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				$("#selVEND").html("");
+				if (receivedData.ListCount > 0){
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += "<option value='" + rowData.VEND_CD + "'>" + rowData.VEND_NM + "</option>";
+					});
+				} else {
+					tag += "<option value=\"\">품번을 검색하세요.</option>";
+				}
+				
+				$("#selVEND").append(tag);
+			}
+		});
+	};
+	
+	var setPartNo2Info = function() {
+		var part_no = $("#txtPART_NO").val();
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_partInfo",
+				"PART_NO": part_no
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount > 0) {
+					var rowData = receivedData.ListData[0];
+					$("#txtPART_NM").val(rowData.PART_NM);
+					$("#txtVEND_NM").val(rowData.VEND_NM);
+					$("#txtVEND_NM").data("vend_cd", rowData.VEND_CD);
+					getVENDList();
+				}
+			}
+		});
+	};
+	
+	var getScanData = function() {
+		if (wnIf.device == DT_ANDROID) {
+			M.page.activity("SimpleScannerActivity");
+		} else {
+			M.execute("wn2PluginQrScan",{
+				flash : false,
+				fadeToggle : false,
+				orientation : 'PORT',
+				callback: M.response.on( function( result ) {
+					if(result.status === "SUCCESS"){
+						var barcode = result.text;
+						var startIndex = barcode.indexOf(":P");
+						var endIndex = barcode.indexOf(":5Q");
+						var part_no = barcode.substring(startIndex+2, endIndex);
+						
+						$("#txtPART_NO").val(part_no);
+						setPartNo2Info();
+					}else{
+						//console.log(result.status);
+					}
+				}).toString()
+			});
+		}
+	};
+	
+	var setRefresh = function() {
+		screenManager.reload();
+	};
+	
+	var setSave = function() {
+		var plant_cd = $("#selPlant > option:selected").val();			// 공장코드
+		var line_cd = $("#selLine > option:selected").val();			// 라인
+		var line_dt_cd = $("#selLineDetail > option:selected").val();	// 상세라인
+		var work_tp = $("#selDayNight > option:selected").val();		// 주간/야간
+		var work_line = ""; 											// 조립가공
+		
+		var part_no = $("#txtPART_NO").val();							// 품번(18)
+		var part_nm = $("#txtPART_NM").val();							// 품명(50)
+		var vend_cd = $("#selVEND > option:selected").val();			// 업체코드(10)
+		var vend_nm = $("#selVEND > option:selected").text();			// 업체명(50)
+		
+		var pro_cess = $("#selPType > option:selected").val();			// 공정(12)
+		var model = $("#txtModel").val();								// 기종(12)
+		var usage = $("#txtUsage").val();								// U/S(12)
+		var tm_no = $("#txtTM_NO").val();								// TM 번호(12)
+		var over_inv = $("#txtOver_inv").val();							// 과부족(int)
+		var plan_seq = $("#txtPlan_seq").val();							// 계획차수(2)
+		var wh_inv = $("#txtWH_inv").val();								// 창고재고(int)
+		var line_inv = $("#txtLine_inv").val();							// 라인재고(int)
+		var etc = $("#txtETC").val();									// 비고(600)
+		var short_point = $("#txtShort_point").val();					// 결품파악시점(12)
+		var memo = $("#txtMEMO").val();									// 메모(600)
+		var driv_id = userManager.getDRIV_ID();							// 작성자 아이디
+		var driv_nm = userManager.getDRIV_NM();							// 작성자 이름
+		
+		if (!searchValidation(part_no, part_nm, vend_cd, vend_nm)){
+			return;
+		}
+		
+		networkManager.httpSend({
+			path: '/api/GCSInsert.do',
+			data: {
+				'QUERYID': "GCS.set_H_T_UM_037_Insert",
+				"PLANT_CD": plant_cd,
+				"LINE_CD": line_cd,
+				"LINE_DT_CD": line_dt_cd,
+				"WORK_TP": work_tp,
+				"WORK_LINE": work_line,
+				"PART_NO": part_no,
+				"PART_NM": part_nm,
+				"VEND_CD": vend_cd,
+				"VEND_NM": vend_nm,
+				"PRO_CESS": pro_cess,
+				"MODEL": model,
+				"USAGE": usage,
+				"TM_NO": tm_no,
+				"PLAN_SEQ": plan_seq,
+				"OVER_INV": over_inv,
+				"WH_INV": wh_inv,
+				"LINE_INV": line_inv,
+				"ETC": etc,
+				"SHORT_POINT": short_point,
+				"DRIV_ID": driv_id,
+				"DRIV_NM": driv_nm,
+				"MEMO": memo
+			},
+			success: function(receivedData, setting) {
+				popupManager.instance('저장 되었습니다.');
+				screenManager.moveToBack();
+			},
+			error: function(){
+				popupManager.instance('저장에 실패 하였습니다. 잠시 후 다시시도하시기 바랍니다.');
+			}
+		});
+	};
+	
+	var searchValidation = function(part_no, part_nm, vend_cd, vend_nm) {
+		if (window.Utils.trim(part_no) == "" || part_nm == ""){
+			popupManager.alert("품번을 선택하세요", {title: "알림"});
+			return;
+		}
+		if (window.Utils.trim(vend_cd) == "" || vend_nm == ""){
+			popupManager.alert("업체를 선택하세요", {title: "알림"});
+			return;
+		}
+		return true;
+	};
+	
+	var moveToBack = function() {
+		if (m_scanMode == true){
+			m_scanMode = false;
+		}
+		else
+			screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent,
+		setPartNo2Info: setPartNo2Info
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});
+function fnBarcodeCallback(data){
+	var barcode = decodeURIComponent(data.result);
+	var startIndex = barcode.indexOf(":P");
+	var endIndex = barcode.indexOf(":5Q");
+	var part_no = barcode.substring(startIndex+2, endIndex);
+	
+	$("#txtPART_NO").val(part_no);
+	page.setPartNo2Info();
+}

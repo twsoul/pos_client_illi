@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="mp_plugin_qrcode_msg_default_status">Please place the QR CODE in the box</string>
+    <string name="mp_plugin_qrcode_msg_camera_framework_bug">Sorry, the Android camera encountered a problem. You may need to restart the device.</string>
+    <string name="mp_plugin_qrcode_not_supported_flash">This device does not support Flash</string>
+	<string name="mp_plugin_qrcode_button_ok">OK</string>
+    <string name="mp_plugin_qrcode_button_cancel">Cancel</string>
+    <string name="mp_plugin_qrcode_button_on">Flash On</string>
+    <string name="mp_plugin_qrcode_button_off">Flash Off</string>
+
+
+</resources>

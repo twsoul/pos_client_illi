@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>인계불출(조립)</title>
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+    <!-- header -->
+    <header id="header" class="fixed">
+        <div class="container">
+            <div class="head_cont">
+                <div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+                <h2 data-lng="LB.0000001008"></h2><!--인계불출(가공)-->
+            </div>
+        </div>
+    </header>
+
+    <!-- contents -->
+    <div id="contents" class="adjfixed">
+        <main>
+            <section class="non_headCont">
+                <div class="container">
+                    <article class="optionBox addfunc">
+                        <div class="box_inner expand">
+                            <div class="list_area adjForm">
+                                <table class="table_area">
+                                    <thead>
+                                    <tr>
+                                        <th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+                                        <th><span data-lng="LB.0000000154"></span></th><!--원창-->
+                                        <th><span data-lng="LB.0000000155"></span></th><!--현창-->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="deepCell"><p class="FoldselectBox"><select name="selPLANT" id="selPLANT"></select></p></td>
+                                        <td class="deepCell"><p class="FoldselectBox"><select name="selLOCTP" id="selLOCTP"></select></p></td>
+                                        <td class="deepCell"><p class="FoldselectBox"><select name="selLOCTP2" id="selLOCTP2"></select></p></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="opt_input" style="margin-top:2px;"><!--스캔-->
+                                <p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+                            </div>
+                            <div class="opt_input blind"><!--분할식별표 NO-->
+                                <p id="txtBoxNo"></p>
+                            </div>
+                            <div class="list_area adjForm" style="margin-top:2px;">
+                                <table class="table_area">
+                                    <thead>
+                                    <tr>
+                                        <th><span data-lng="LB.0000000216"></span></th><!--BOX-->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td align="center"><span id="inpBoxQty">0</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table_area">
+                                    <thead>
+                                    <tr>
+                                        <th><span data-lng="LB.0000000038"></span></th><!--품번-->
+                                        <th><span data-lng="LB.0000000208"></span></th><!--재고수량-->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td style="text-align:-webkit-center;"><span id="txtPART_CD"></span></td>
+                                        <td style="text-align:-webkit-center;"><span id="txtTOTAL_QTY">0</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="moreArea expand"><p><i></i></p></div>
+                    </article>
+                </div>
+            </section>
+
+            <section>
+                <div class="container">
+                    <article class="tableList">
+                        <div class="list_inner list_ot_025 adjFix" id="list_ot_025">
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- footer -->
+    <footer id="footer">
+        <div class="btn_area fixedArea">
+            <p class="classicalBtn adjColor"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p><!--초기화-->
+            <p class="classicalBtn adjColor"><button type="button" id="btnSave" data-lng="LB.0000000127"></button></p><!--저장-->
+        </div>
+        <ul>
+            <li><button type="button" data-value="../common/main.html"></button></li>
+            <!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+            <li><button type="button" data-value="../common/allmenu.html"></button></li>
+        </ul>
+    </footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="LB.0000000038">품번</span>
+<span class="blind" data-lng="LB.0000000120">부품식별표</span>
+<span class="blind" data-lng="LB.0000000150">스캔수량</span>
+<span class="blind" data-lng="LB.0000000170">예상수량</span>
+<span class="blind" data-lng="LB.0000000190">박스수량</span>
+<span class="blind" data-lng="LB.0000000162">반</span>
+<span class="blind" data-lng="LB.0000000156">불출라인</span>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000117">저장위치를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000244">이미 리스트에 존재하는 BOX NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000245">원창을 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000246">현창을 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000247">분할불출 수량이 스캔수량보다 많습니다</span>
+<span class="blind" data-lng="MSG.0000000248">분할불출은 하나의 분할식별표만 가능합니다</span>
+<span class="blind" data-lng="MSG.0000000249">신규 부품식별표를 스캔하십시오</span>
+<span class="blind" data-lng="MSG.0000000462">타용도 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000463">선택품입니다 그래도 저장하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000270">부품식별표가 존재하지 않거나 사용할 수 없는 부품식별표 입니다</span>
+<span class="blind" data-lng="MSG.0000000277">는 출고된 Box입니다.Box No를 확인 바랍니다</span>
+<span class="blind" data-lng="MSG.0000000297">타 공장 바코드입니다</span>
+<span class="blind" data-lng="MSG.0000000302">타 저장위치 바코드입니다</span>
+<span class="blind" data-lng="MSG.0000000453">입하상태의 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000701">유수명 기간이 만료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000455">사용할 수 없는 부품식별표 입니다</span>
+<span class="blind" data-lng="MSG.0000000137">스캔하신 내역이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000373">저장에 실패하였습니다</span>
+<span class="blind" data-lng="MSG.0000000278">반 정보가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000279">라인 정보가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000504">라인정보를 입력해야 저장이 가능합니다</span>
+<span class="blind" data-lng="MSG.0000000283">불출할 수량이 스캔수량과 같을경우 일반불출을 사용해 주십시오</span>
+<span class="blind" data-lng="MSG.0000000315">보류상태의 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000333">선입선출에 위배 되었습니다 그래도 저장하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000500">이종품이 포함되어 있습니다 저장하시겠습니까?</span>
+</body>
+
+<script type="text/template" id="ListTemplate" class="none">
+    <div class="tableCont" data-boxno="{{BOX_NO}}" data-vendcd="{{VENDOR_CD}}" data-boxbarno="{{BOX_BAR_NO}}" data-preinspdttm="{{PRE_INSP_DTTM}}" data-fifochk="{{FIFO_CHK}}" data-fifoflag="{{FIFO_FLAG}}" data-fifo="N" data-lineexists="{{LINE_EXISTS}}">
+        <div class="multiple_cate">
+            <p class="harf_cell">
+                <span>{{LB0000000038}}</span><span class="PART_NO">{{PART_NO}}</span><!--품번-->
+            </p>
+            <p class="harf_cell">
+                <span>{{LB0000000120}}</span><span class="BOX_NO">{{BOX_NO}}</span><!--부품식별표-->
+            </p>
+            <p class="harf_cell">
+                <span>{{LB0000000150}}</span><span class="SCAN_QTY">{{BAR_QTY}}</span><!--스캔수량-->
+            </p>
+            <p class="harf_cell">
+                <span>{{LB0000000156}}</span><span class="deepCell"><span class="selectBox"><select class="selLINE" onclick="page.selLineTemp(this);" onchange="page.line_change(this);">{{item1}}</select></span></span><!--불출라인-->
+            </p>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/OT_025.js"></script>
+<script type="text/javascript" src="../../js/common/qrManager.js"></script>
+</html>

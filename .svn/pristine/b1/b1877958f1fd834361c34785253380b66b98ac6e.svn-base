@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>메인 메뉴</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="header_logo" style="font-weight:bold;text-shadow:3px 3px 3px #000;"><p style="display:inline-block;font-size:29px;font-style:italic;color:#fff;">H</p><p style="display:inline-block;font-size:22px;text-transform:none;font-style:italic;color:#fff;">·</p><p style="display:inline-block;font-size:22px;text-transform:none;color:#fff;">able</p></span></div>
+				<div class="logout_area"><span class="btn_logout" id="btn_logout"><img src="../../img/ico_logout.png"></span></div>
+				<h2 class="blind">메인 메뉴</h2>
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main id="main" class="main">
+			<section>
+				<div class="container">
+					<div class="Item_belt">
+						<ul class="clearfix">
+							<li data-page="../JJ/sub_main.html" class="S90000665 blind"><p><span class="item_title" data-lng="LB.0000000001"></span></p></li>
+							<li data-page="../PD/sub_main.html" class="S90000974 blind"><p><span class="item_title" data-lng="LB.0000000002"></span></p></li>
+							<li data-page="" class="3 blind"><p><span class="item_title" data-lng="LB.0000000003"></span></p></li>
+							<li data-page="../KD/sub_main.html" class="S90000820 blind"><p><span class="item_title" data-lng="LB.0000000004"></span></p></li>
+							<li data-page="../BJ/sub_main.html" class="S90000819 blind"><p><span class="item_title" data-lng="LB.0000000005"></span></p></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<ul>
+			<li class="on"><button type="button" data-value=""></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="MSG.0000000001">로그아웃하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000005">프로그램을 종료하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000196">데이터 베이스 생성에 실패하였습니다, 프로그램 종료합니다</span>
+<span class="blind" data-lng="MSG.0000000257">로그아웃 되었습니다</span>
+<span class="blind" data-lng="MSG.0000000258">로그아웃 중 에러가 발생했습니다</span>
+</body>
+
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/common/main.js"></script>
+
+</html>

@@ -1,0 +1,345 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.hts.hable_pos"
+4    android:versionCode="1"
+5    android:versionName="1.05" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="19"
+8-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml
+10
+11    <uses-feature
+11-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:38:2-84
+12        android:name="android.hardware.telephony"
+12-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:38:16-57
+13        android:required="false" />
+13-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:38:58-82
+14
+15    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+15-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:39:2-71
+15-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:39:19-69
+16    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+16-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:40:2-80
+16-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:40:19-78
+17    <uses-permission android:name="android.permission.VIBRATE" />
+17-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:41:2-62
+17-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:41:19-60
+18    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+18-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:42:2-76
+18-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:42:19-74
+19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+19-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:43:2-77
+19-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:43:19-75
+20    <uses-permission android:name="android.permission.GET_TASKS" />
+20-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:44:2-64
+20-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:44:19-62
+21    <uses-permission android:name="android.permission.WAKE_LOCK" />
+21-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:45:2-64
+21-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:45:19-62
+22    <uses-permission android:name="android.permission.CALL_PHONE" />
+22-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:46:2-65
+22-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:46:19-63
+23    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+23-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:47:2-71
+23-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:47:19-69
+24    <uses-permission android:name="android.permission.READ_CONTACTS" />
+24-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:48:2-68
+24-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:48:19-66
+25    <uses-permission android:name="android.permission.SEND_SMS" />
+25-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:49:2-63
+25-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:49:19-61
+26    <uses-permission android:name="android.permission.INTERNET" />
+26-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:50:2-63
+26-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:50:19-61
+27    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+27-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:51:2-75
+27-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:51:19-73
+28    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+28-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:52:2-72
+28-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:52:19-70
+29    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+29-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:53:2-72
+29-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:53:19-70
+30    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+30-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:54:2-77
+30-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:54:19-75
+31    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+31-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:55:2-75
+31-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:55:19-73
+32
+33    <uses-feature android:name="android.hardware.camera" />
+33-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:57:2-56
+33-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:57:16-54
+34    <uses-feature android:name="android.hardware.camera.autofocus" />
+34-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:58:2-66
+34-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:58:16-64
+35
+36    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+36-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:59:2-67
+36-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:59:19-65
+37    <uses-permission android:name="android.permission.CAMERA" />
+37-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:60:2-61
+37-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:60:19-59
+38    <uses-permission android:name="android.permission.FLASHLIGHT" />
+38-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:61:2-65
+38-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:61:19-63
+39    <uses-permission android:name="android.permission.BLUETOOTH" />
+39-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:62:2-65
+39-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:62:19-62
+40    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+40-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:63:2-71
+40-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:63:19-68
+41    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_SERVICE" />
+41-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:64:2-80
+41-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:64:19-78
+42    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+42-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:65:2-81
+42-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:65:19-79
+43
+44    <uses-feature
+44-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:67:2-83
+45        android:name="android.hardware.location"
+45-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:67:16-56
+46        android:required="false" />
+46-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:67:57-81
+47    <uses-feature
+47-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:68:2-87
+48        android:name="android.hardware.location.gps"
+48-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:68:16-60
+49        android:required="false" />
+49-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:68:61-85
+50    <uses-feature
+50-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:69:2-91
+51        android:name="android.hardware.location.network"
+51-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:69:16-64
+52        android:required="false" />
+52-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:69:65-89
+53
+54    <!-- GCM & C2DM -->
+55    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+55-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:72:2-70
+55-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:72:19-68
+56
+57    <!-- 안드로이드 9.0 이상 필수 : targetSdkVersion = 28 이상인 경우 -->
+58    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+58-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:75:2-74
+58-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:75:19-71
+59    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+59-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:76:2-78
+59-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:76:19-75
+60
+61    <!-- requestLegacyExternalStorage 관련 오류 발생시, Properties 에서 Android의 project Build Target을  Android 10 으로 지정 하거나, requestLegacyExternalStorage 를 삭제 -->
+62    <!-- android:networkSecurityConfig="@xml/network_security_config" -->
+63    <application
+63-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:4:2-37:16
+64        android:name="com.hts.hable_pos.implementation.ExtendApplication"
+64-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:4:106-171
+65        android:allowBackup="false"
+65-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:4:15-42
+66        android:debuggable="true"
+67        android:icon="@drawable/icon"
+67-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:4:43-72
+68        android:label="@string/app_name"
+68-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:4:73-105
+69        android:requestLegacyExternalStorage="true"
+69-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:4:172-215
+70        android:testOnly="true"
+71        android:usesCleartextTraffic="true" >
+71-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:4:216-251
+72        <uses-library
+72-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:5:3-81
+73            android:name="org.apache.http.legacy"
+73-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:5:17-54
+74            android:required="false" />
+74-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:5:55-79
+75        <!-- 에러 발생시, ${applicationId} 를 packagename 으로 변경 -->
+76        <provider
+76-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:7:3-9:14
+77            android:name="android.support.v4.content.FileProvider"
+77-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:7:13-67
+78            android:authorities="com.hts.hable_pos.fileprovider"
+78-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:7:68-120
+79            android:exported="false"
+79-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:7:121-145
+80            android:grantUriPermissions="true" >
+80-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:7:146-180
+81            <meta-data
+81-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:8:4-103
+82                android:name="android.support.FILE_PROVIDER_PATHS"
+82-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:8:15-65
+83                android:resource="@xml/file_paths" />
+83-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:8:66-100
+84        </provider>
+85
+86        <activity
+86-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:10:3-15:14
+87            android:name="com.hts.hable_pos.Startup"
+87-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:10:13-53
+88            android:theme="@android:style/Theme.Black.NoTitleBar" >
+88-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:10:54-107
+89            <intent-filter>
+89-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:11:4-14:20
+90                <action android:name="android.intent.action.MAIN" />
+90-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:12:5-56
+90-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:12:13-54
+91
+92                <category android:name="android.intent.category.LAUNCHER" />
+92-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:13:5-64
+92-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:13:15-62
+93            </intent-filter>
+94        </activity>
+95        <activity
+95-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:16:3-179
+96            android:name="com.hts.hable_pos.BaseActivity"
+96-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:16:132-177
+97            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+97-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:16:13-81
+98            android:imeOptions="actionSend|flagNoEnterAction" />
+98-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:16:82-131
+99        <activity
+99-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:17:3-152
+100            android:name="com.hts.hable_pos.samples.activity.ImageList1Activity"
+100-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:17:82-150
+101            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+101-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:17:13-81
+102        <activity
+102-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:18:3-152
+103            android:name="com.hts.hable_pos.samples.activity.ImageList2Activity"
+103-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:18:82-150
+104            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+104-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:18:13-81
+105        <activity
+105-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:19:3-154
+106            android:name="com.hts.hable_pos.samples.activity.ImageDetailsActivity"
+106-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:19:82-152
+107            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+107-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:19:13-81
+108        <activity
+108-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:20:3-147
+109            android:name="com.hts.hable_pos.samples.activity.StartActivity"
+109-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:20:82-145
+110            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+110-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:20:13-81
+111        <activity
+111-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:21:3-148
+112            android:name="com.hts.hable_pos.samples.activity.SampleActivity"
+112-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:21:82-146
+113            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+113-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:21:13-81
+114        <activity
+114-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:22:3-149
+115            android:name="com.hts.hable_pos.samples.activity.SampleActivity2"
+115-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:22:82-147
+116            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+116-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:22:13-81
+117        <activity
+117-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:23:3-151
+118            android:name="com.hts.hable_pos.samples.activity.BatchTempActivity"
+118-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:23:82-149
+119            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+119-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:23:13-81
+120        <activity
+120-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:24:3-158
+121            android:name="com.hts.hable_pos.samples.activity.SampleNativeListActivity"
+121-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:24:82-156
+122            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+122-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:24:13-81
+123        <activity
+123-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:25:3-157
+124            android:name="com.hts.hable_pos.samples.activity.SampleNativeMapActivity"
+124-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:25:82-155
+125            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+125-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:25:13-81
+126        <activity
+126-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:26:3-184
+127            android:name="com.hts.hable_pos.BLTPrint"
+127-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:26:13-54
+128            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+128-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:26:55-123
+129            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+129-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:26:124-182
+130        <activity
+130-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:27:3-185
+131            android:name="com.hts.hable_pos.HTMLPrint"
+131-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:27:13-55
+132            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+132-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:27:56-124
+133            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+133-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:27:125-183
+134        <activity
+134-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:28:3-173
+135            android:name="com.hts.hable_pos.samples.activity.ShowPushPopup"
+135-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:28:13-76
+136            android:screenOrientation="portrait"
+136-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:28:77-113
+137            android:windowSoftInputMode="adjustUnspecified|adjustPan" />
+137-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:28:114-171
+138        <activity
+138-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:29:3-196
+139            android:name="m.client.android.library.core.view.MainActivity"
+139-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:29:132-194
+140            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+140-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:29:13-81
+141            android:imeOptions="actionSend|flagNoEnterAction" />
+141-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:29:82-131
+142
+143        <provider
+143-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:30:3-135
+144            android:name="m.client.android.library.core.managers.LocalFileContentProvider"
+144-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:30:55-133
+145            android:authorities="@string/app_package" />
+145-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:30:13-54
+146
+147        <activity
+147-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:31:3-137
+148            android:name="m.client.library.addon.media.AudioRecoderActivity"
+148-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:31:71-135
+149            android:configChanges="locale|keyboardHidden|orientation" />
+149-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:31:13-70
+150        <activity
+150-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:32:3-192
+151            android:name="m.client.library.addon.media.MediaPlayActivity"
+151-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:32:75-136
+152            android:configChanges="keyboardHidden|orientation|screenSize"
+152-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:32:13-74
+153            android:theme="@android:style/Theme.Black.NoTitleBar" />
+153-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:32:137-190
+154        <activity
+154-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:33:3-197
+155            android:name="m.client.library.addon.media.crop.CropImageActivity"
+155-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:33:75-141
+156            android:configChanges="keyboardHidden|orientation|screenSize"
+156-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:33:13-74
+157            android:theme="@android:style/Theme.Black.NoTitleBar" />
+157-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:33:142-195
+158        <activity
+158-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:34:3-316
+159            android:name="com.google.zxing.client.android.CaptureActivity"
+159-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:34:115-177
+160            android:clearTaskOnLaunch="true"
+160-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:34:13-45
+161            android:configChanges="locale|orientation|keyboardHidden|screenSize"
+161-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:34:46-114
+162            android:stateNotNeeded="true"
+162-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:34:178-207
+163            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+163-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:34:208-266
+164            android:windowSoftInputMode="stateAlwaysHidden" />
+164-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:34:267-314
+165        <activity
+165-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:35:3-136
+166            android:name="m.client.library.plugin.viewer.DocViewerActivity"
+166-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:35:71-134
+167            android:configChanges="locale|keyboardHidden|orientation" />
+167-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:35:13-70
+168        <activity
+168-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:36:3-132
+169            android:name="m.client.library.plugin.viewer.MuPDFActivity"
+169-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:36:71-130
+170            android:configChanges="locale|keyboardHidden|orientation" />
+170-->C:\Users\tw\Desktop\PDA_DEV\source\H_able_Client\AndroidManifest.xml:36:13-70
+171    </application>
+172
+173</manifest>

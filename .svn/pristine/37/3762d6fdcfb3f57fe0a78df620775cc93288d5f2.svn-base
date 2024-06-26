@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>설정</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000022"></h2><!--설정-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main id="main">
+			<section class="confing">
+				<div class="container">
+					<article class="optionList">
+						<div>
+							<ul>
+								<li>
+									<span data-lng="LB.0000000022"></span><!--설정-->
+									<ul>
+										<li>
+											<span data-lng="LB.0000000026"></span><!--업무구분-->
+											<p class="deepCell"><span class="selectBox"><select name="selGB" id="selGB" class="option"></select></span></p>
+										</li>
+										<li>
+											<span data-lng="LB.0000000027"></span><!--사업장-->
+											<p class="deepCell"><span class="selectBox"><select name="selSJ" id="selSJ" class="option"></select></span></p>
+										</li>
+										<li>
+											<span data-lng="LB.0000000030"></span><!--플랜트-->
+											<p class="deepCell"><span class="selectBox"><select name="selPLANT" id="selPLANT" class="option"></select></span></p>
+										</li>
+										<li>
+											<span data-lng="LB.0000000028"></span><!--작업장-->
+											<p class="deepCell"><span class="selectBox"><select name="selJJ" id="selJJ" class="option"></select></span></p>
+										</li>
+										<li>
+											<span data-lng="LB.0000000031"></span><!--저장위치-->
+											<p class="deepCell"><span class="selectBox"><select name="selPLOC" id="selPLOC" class="option"></select></span></p>
+										</li>
+									</ul>
+								</li>
+								<li><span data-lng="LB.0000000032"></span><!--언어 설정-->
+									<ul>
+										<li>
+											<span data-lng="LB.0000000033"></span><!--언어-->
+											<p class="deepCell"><span class="selectBox"><select name="selLNG" id="selLNG" class="option"><option value="KO">한국어</option><option value="EN">English</option><option value="ES">Español</option><option value="ZH">中国語</option></select></span></p>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<span data-lng="LB.0000000034"></span><!--예방점검 설정-->
+									<ul>
+										<li>
+											<span data-lng="LB.0000000267"></span><!--과거 미완료된 오더의 조회 허용기간-->
+											<p class="deepCell"><span style="position: relative;display: inline-block;width:10vmin;"><input name="txtTERM" id="txtTERM" type="number" class="option" maxlength="3" onClick="this.select();" onkeypress="if(event.key==='.'){event.preventDefault();}" onkeydown="if(event.keyCode == 13) this.blur();" oninput="window.Utils.maxLengthCheck(this);event.target.value = event.target.value.replace(/[^0-9]*/g,'');" value="" style="padding: 1vmin 0;font-size:2.5rem;background:#fff;border: 1px solid #666;text-align:center;"></span></p>
+										</li>
+										<li>
+											<span data-lng="LB.0000000035"></span><!--바코드스캔 없이 예방점검 설비 선택하는 기능 활성화-->
+											<p class="btn_chk"><span><input type="checkbox" name="chkSCAN" id="chkSCAN" class="option"><label for="chkSCAN"></label></span></p>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<span data-lng="LB.0000000036"></span><!--실행모드-->
+									<ul>
+										<li>
+											<span data-lng="LB.0000000037"></span><!--테스트-->
+											<p class="btn_chk"><span><input type="checkbox" name="chkTEST" id="chkTEST" class="option"><label for="chkTEST"></label></span></p>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer class="blind">
+	</footer>
+</div>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000011">시스템 설정에 필요한 정보를 ERP로 부터 받아오지 못했습니다</span>
+<span class="blind" data-lng="MSG.0000000013">빈 설정값이 존재합니다</span>
+<span class="blind" data-lng="MSG.0000000014">변경된 설정값이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000015">변경된 설정값으로 저장하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000016">저장이 취소 되었습니다</span>
+<span class="blind" data-lng="MSG.0000000017">설정이 저장 되었습니다, Home으로 이동합니다</span>
+<span class="blind" data-lng="MSG.0000000054">저장위치 조회 데이터가 없습니다</span>
+</body>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/BJ/option.js"></script>
+</html>

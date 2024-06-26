@@ -1,0 +1,376 @@
+/*******************************************************************
+*	메인 페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var loadData = [];
+	var delPartData = [];
+	var objPartSelect;
+	var isDelete = false;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		initData();
+		exShowIndicator("설정 확인 중 입니다");
+		
+		$("#btnPartNumSearch").on("click", setinitPartNumber);
+		objPartNumSelect = new SelectListPopup({ title: "품번 검색", id: "popPartNo", goBottom: true, submitCallback: function(code, name){
+			//중복체크
+			var exist = false;
+			$("#selPartList ul li").each(function(){
+				if ($(this).data("code") == code)
+					exist = true;
+			});
+			if (exist){
+				popupManager.instance("이미 등록된 품목 입니다.", {showtime:"SHORT"});
+				return;
+			}
+			setFavoritesPartNumber(code, name, false);
+			setDelPartNum();
+		}});
+		objPartNumSelect.init();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$(".btn_chk").on("click", function(){
+			var mode = false;
+			$(this).toggleClass("checked");
+			if( $(this).hasClass("checked") ){
+				$(this).children().find("input").attr("checked", "checked");
+				mode = true;
+			}else{
+				$(this).children().find("input").removeAttr("checked");
+			}
+			
+			// sub상태 같이 변경
+			if ($(this).children().find("input").data("sub") != undefined){
+				$(this).removeClass("someone");
+				$(this).parent().children().find("li input[type=checkbox]").each(function(){
+					setChecked($(this).attr("name"), mode);
+				});
+			} else {
+				//부모가 있는 자식인지 확인..
+				var obj = $(this).children().find("input");
+				if (obj.attr("name").substr(4,1) != "0"){
+					chkChildrenStat(obj.attr("name").substr(0,4) + "0");
+				}
+			}
+		});
+		$(".pushList").on("click", ".havDep", function(){
+			$(this).toggleClass("expand");
+			$(this).siblings("ul").toggleClass("expand");
+		});
+		
+		$("#btnLogout").on("click", logoutProcess);
+		$("#btnPushTest").on("click", function() {
+			networkManager.httpSend({
+				path: '/api/PushTest.do',
+				data: {
+					'CUID': userManager.getDRIV_ID(),
+					"MSG": "테스트 메시지 입니다."
+				},
+				success: function(receivedData, setting) {
+					popupManager.alert(receivedData.Result, {title:"회신"});
+				}
+			 });
+		});
+	};
+	// 로그아웃 (process)
+	var logoutProcess = function() {
+		popupManager.alert('로그아웃 하시겠습니까?', {
+			title: '로그아웃',
+			buttons: ['예', '아니오']
+		}, function(index) {
+			if (index == 0){
+//		        exWNStopGPSInfo();
+				userManager.removeUserData();
+				sessionOut();
+			}
+		});
+	};
+
+	var sessionOut = function() {
+        networkManager.httpSend({
+            path: '/api/logout.do',
+            data: {},
+            success: function(receivedData, setting) {
+                screenManager.moveToPage('/www/html/H_T_UM_000.html', { animation:"SLIDE_RIGHT", action: 'CLEAR_TOP' });
+                popupManager.instance("로그아웃 되었습니다", {showtime:"SHORT"});
+            },
+            error: function(){
+                popupManager.instance("로그아웃 중 에러가 발생했습니다.", {showtime:"SHORT"});
+            }
+        });
+    };
+	
+	var initData = function() {
+		networkManager.httpSend({
+			path: '/api/MobileSettingList.do',
+			data: {
+				'USER_ID': userManager.getDRIV_ID()
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount0 == 0) {
+					// Default setting...
+					popupManager.instance("저장된 값이 없어 초기값으로 설정됩니다.", {showtime:"SHORT"});
+					$("input[type=checkbox]").each(function(){
+						var name = $(this).attr("name");
+						setChecked(name, true);
+					});
+				} else {
+					$.each(receivedData.ListData0, function(index,rowData){
+						setChecked(rowData.SET_KEY, rowData.SET_VALUE == "0" ? false : true);
+						loadData.push({"KEY": rowData.SET_KEY, "VALUE": (rowData.SET_VALUE == "0" ? false : true)})
+					});
+					chkChildrenStat();
+				}
+				if (receivedData.ListCount1 > 0) {
+					$.each(receivedData.ListData1, function(index,rowData){
+						setFavoritesPartNumber(rowData.PART_NUM, rowData.PART_NAME, true);
+					});
+					setDelPartNum();
+				}
+				setTimeout("exHideIndicator()",1000);
+			},
+			error: function(){
+				setTimeout("exHideIndicator()",1000);
+				popupManager.instance("데이터 조회에 오류가 발생하였습니다. 이전페이지로 이동합니다.", {showtime:"SHORT"});
+				screenManager.moveToBack();
+			}
+		});
+	};
+	
+	var saveData = function() {
+		var isChanged = false;
+		var isChanged2 = false;
+		
+		var saveDatas = [];
+		var insertData = [];
+		var user_id = userManager.getDRIV_ID();
+		// Push On/Off
+		$("input[type=checkbox]").each(function(){
+			var isSubExist = $(this).data("sub");
+			if (isSubExist == undefined){
+				var isChecked = $(this).prop("checked");
+				var id = $(this).attr("name");
+				var rowData = {"USER_ID":user_id, "SET_KEY": id, "SET_VALUE": isChecked ? "1" : "0"};
+				saveDatas.push(rowData);
+				
+				if (loadData.length > 0){
+					var isExist = false;
+					$(loadData).each(function(index,data){
+						if (data.KEY == id){
+							isExist = true;
+							if (data.VALUE != isChecked){
+								isChanged = true;
+							}
+							return false;
+						}
+					});
+					if (!isExist) {
+						isChanged = true;
+					}
+				} else {
+					isChanged = true;
+				}
+			}
+		});
+		
+		// Favorites Part
+		if (isDelete) {
+			isChanged2 = true;
+		}
+		
+		$("#selPartList ul li").each(function(){
+			if ($(this).data("saved") == "NO"){
+				insertData.push({PART_NUM: $(this).data("code"), PART_NAME: $(this).data("name"), USER_ID : user_id});
+				isChanged2 = true;
+			}
+		});
+		
+		if (!isChanged && !isChanged2){
+			popupManager.instance("변경된 설정이 없습니다.", {showtime:"SHORT"});
+			screenManager.moveToBack();
+			return false;
+		}
+		
+		popupManager.alert("변경된 설정값으로 저장하시겠습니까?", {
+			title:'변경내용저장',
+			buttons: ['저장','저장안함']
+		}, function(index){
+			if (index == 0){
+				networkManager.httpSend({
+					path: '/api/MobileSettingIU.do',
+					data: {
+						"list": saveDatas,
+						"list_part_del": delPartData,
+						"list_part": insertData,
+						"user_id": user_id
+					},
+					success: function(receivedData, setting) {
+						popupManager.instance("설정이 저장 되었습니다.", {showtime:"SHORT"});
+						screenManager.moveToBack();
+					},
+					error: function(errorCode, errorMessage, settings) {
+						popupManager.alert('데이터 저장에 오류가 발행하였습니다.', {
+							title: '저장 오류',
+							buttons: ['다시시도', '취소하고뒤로가기']
+						}, function(index) {
+							if (index == 0){
+								saveData();
+							} else {
+								popupManager.instance("저장이 취소 되었습니다.", {showtime:"SHORT"});
+								screenManager.moveToBack();
+							}
+						});
+					}
+				});
+			} else {
+				popupManager.instance("저장이 취소 되었습니다.", {showtime:"SHORT"});
+				screenManager.moveToBack();
+			}
+		});
+		
+		
+	};
+	
+	var setChecked = function(objID, mode) {
+		if (mode){
+			$("#" + objID).prop("checked",true).attr("checked","checked").parent().parent().addClass("checked");
+		} else {
+			$("#" + objID).removeAttr("checked").parent().parent().removeClass("checked");
+		}
+		
+	};
+	
+	var chkChildrenStat = function(objID){
+		if (objID == undefined){
+			$("input[type=checkbox]").each(function(){
+				if ($(this).data("sub") != undefined){
+					var checked = false;
+					var cnt = 0;
+					var tcnt = 0;
+					$(this).parent().parent().parent().children().find("li input[type=checkbox]").each(function(){
+						tcnt += 1;
+						if ($(this).prop("checked") == true){
+							checked = true;
+							cnt += 1;
+						}
+					});
+					setChecked($(this).attr("name"), checked);
+					if (cnt != 0 && tcnt != cnt){
+						$("#" + $(this).attr("name")).parent().parent().addClass("someone");
+					} else {
+						$("#" + $(this).attr("name")).parent().parent().removeClass("someone");
+					}
+				}
+			});
+		} else {
+			var checked = false;
+			var cnt = 0;
+			var tcnt = 0;
+			$("#" + objID).parent().parent().parent().children().find("li input[type=checkbox]").each(function(){
+				tcnt += 1;
+				if ($(this).prop("checked") == true){
+					checked = true;
+					cnt += 1;
+				}
+			});
+			setChecked(objID, checked);
+			if (cnt != 0 && tcnt != cnt){
+				$("#" + objID).parent().parent().addClass("someone");
+			} else {
+				$("#" + objID).parent().parent().removeClass("someone");
+			}
+		}
+	};
+	
+	// 품번 검색 Pop-up Initialize
+	var setinitPartNumber = function(){
+		var part_no = $("#co_part_num").val();
+		
+		if (window.Utils.trim(part_no) == ""){
+			popupManager.alert("한글자 이상의 키워드를 입력하세요.", {title: '알림'});
+			return;
+		}
+		
+		if(dataManager.storage('saveUserDb') == "GCS"){
+			networkManager.httpSend({
+				path: '/api/GCSListSelect.do',
+				data: {
+					'QUERYID': "GCS.get_partNumber",
+					'PART_NO': part_no,
+					'PLANT_CD': "",
+					'VEND_CD': ""
+				},
+				success: function(receivedData, setting) {
+					objPartNumSelect.setDB(receivedData.ListData, "PART_NO", "PART_NM");
+					objPartNumSelect.show();
+				}
+			});
+		}
+		else{
+			networkManager.httpSend({
+				path: '/api/TLSListSelect.do',
+				data: {
+					'QUERYID': "TLS.get_partNumber",
+					'PART_NO': part_no,
+					'PLANT_CD': "",
+					'VEND_CD': ""
+				},
+				success: function(receivedData, setting) {
+					objPartNumSelect.setDB(receivedData.ListData, "PART_NO", "PART_NM");
+					objPartNumSelect.show();
+				}
+			});
+		}
+	};
+	
+	var setFavoritesPartNumber = function(code, name, isSaved){
+		var template = $("#ListTemplate").html();
+		var tag = template.replace(/\{\{NAME\}\}/g, name).replace(/\{\{CODE\}\}/g, code).replace(/\{\{SAVED\}\}/g, isSaved == true ? "YES" : "NO");
+		$("#selPartList ul").append(tag);
+	}
+	
+	var setDelPartNum = function(){
+		$(".btn_del").off("click","**");
+		$(".btn_del").on("click", function(){
+			if ($(this).data("saved") == "YES"){
+				delPartData.push({PART_NUM: $(this).data("num")});
+				popupManager.instance("삭제대기열에 추가되었습니다.", {showtime:"SHORT"});
+				isDelete = true;
+			}
+			
+			$(this).parent().parent().remove();
+		})
+	}
+	
+	var moveToBack = function() {
+		//screenManager.moveToBack();
+		saveData();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

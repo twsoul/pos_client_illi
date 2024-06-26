@@ -1,0 +1,189 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_pack_ordr_no, m_ordr_no;
+	var m_stat_cd = "", m_ordr_no = "", m_stat_vend = "";
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_pack_ordr_no = dataManager.param("PACK_NO");
+		m_ordr_no = dataManager.param("ORDR_NO");
+		getSelectList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnSubmit").on("click", setProcSubmit);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	// 메인 검색
+	var getSelectList = function(){
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_H_D_UM_043_List",
+				"PACK_ORDR_NO": m_pack_ordr_no,
+				"ORDR_NO": m_ordr_no
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0 && pageNo == 1){
+					tag = $("#ListNoDataTemplate").html();
+					$("#frmBarcode").html("");
+					$("#tblList tbody").html(tag);
+				} else if (receivedData.ListCount == 0){
+					pageNo -= 1;
+					popupManager.alert("마지막 페이지 입니다.", {title: '알림'});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						if (index == 0){
+							$("#lblPartCompNM").text(rowData.VEND_NM);
+							$("#lblPlant").text(rowData.PLANT_NM);
+							$("#lblDocNumber").text(rowData.ORDR_NO);
+							$("#lblKindOrder").text(rowData.ORD_KIND);
+							m_stat_cd = rowData.STATUS;
+							m_ordr_no = rowData.ORDR_NO;
+							m_stat_vend = rowData.STAT_VEND;
+						}
+						tag += template.replace(/\{\{ORDR_NO\}\}/, rowData.ORDR_NO)
+								.replace(/\{\{PART_NO\}\}/gi, rowData.PART_NO)
+								.replace(/\{\{PART_NM\}\}/gi, rowData.PART_NM)
+								.replace(/\{\{DELI_EQ\}\}/gi, rowData.DELI_EQ)
+								.replace(/\{\{RCV_QTY\}\}/gi, rowData.RCV_QTY)
+								.replace(/\{\{SEQ\}\}/, index+1)
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+					
+					
+					setBarcode(m_ordr_no);
+					$(".list_t_um28").html(tag);
+				}
+			}
+		 });
+	};
+	
+	// 바코드 출력
+	var setBarcode = function(value) {
+		var btype = "datamatrix";
+		var renderer = "css";
+		var quietZone = false;
+		var settings = {
+				output:renderer,
+				bgColor: "#FFFFFF",
+				color: "#000000",
+				barWidth : "1",
+				barHeight: "60",
+				moduleSize: "3",
+				addQuietZone: "0",
+				showHRI : false
+		};
+		$("#barcodeArea").html("").show().barcode(value, btype, settings);
+	};
+	
+	var setProcSubmit = function() {
+		if (userManager.getVEND_TP() == "C") {
+			popupManager.alert("HTS사용자는 사용할 수 없는 권한입니다.", {title: '알림'});
+		} else {
+			if (userManager.getRD_CD() == "D") {
+				popupManager.alert("납품기사는 사용할 수 없는 권한입니다.", {title: '알림'});
+			} else {
+				if (m_stat_cd == "S") {
+					if (m_stat_vend == "Y") {
+						popupManager.alert("이미 입고승인처리된 납입카드입니다.", {title: '알림'});
+					}
+					if (m_stat_vend == "") {
+						networkManager.httpSend({
+							path: '/api/TLSListSelect.do',
+							data: {
+								'QUERYID': "TLS.set_H_D_UM_042_Update",
+								"PACK_ORDR_NO": m_pack_ordr_no,
+								"ORDR_NO": m_ordr_no,
+								"DRIV_ID": userManager.getDRIV_ID()
+							},
+							success: function(receivedData, setting) {
+//								if (receivedData.ListCount == 0){
+//									popupManager.alert("오류가 발생하였습니다.", {title: '알림'});
+//								} else {
+//									var rowData = receivedData.ListData[0];
+//									if (rowData.V_RETCODE == "0"){
+										popupManager.instance("승인완료하였습니다.", {showtime:"SHORT"});
+										getSelectList();
+//									} else {
+//										popupManager.instance("승인 실패하였습니다.", {showtime: 'SHORT'});
+//									}
+//								}
+							},
+						});
+					}
+				} else if (m_stat_cd == "E") {
+					if (m_stat_vend == "Y") {
+						popupManager.alert("이미 검수적발승인처리된 납입카드입니다.", {title: '알림'});
+					}
+					if (m_stat_vend == "") {
+						networkManager.httpSend({
+							path: '/api/TLSListSelect.do',
+							data: {
+								'QUERYID': "TLS.set_H_D_UM_042_Update",
+								"PACK_ORDR_NO": m_pack_ordr_no,
+								"ORDR_NO": m_ordr_no,
+								"DRIV_ID": userManager.getDRIV_ID(),
+								"DRIV_NM": userManager.getDRIV_NM()
+							},
+							success: function(receivedData, setting) {
+//								if (receivedData.ListCount == 0){
+//									popupManager.alert("오류가 발생하였습니다.", {title: '알림'});
+//								} else {
+//									var rowData = receivedData.ListData[0];
+//									if (rowData.V_RETCODE == "0"){
+										popupManager.instance("승인완료하였습니다.", {showtime:"SHORT"});
+										getSelectList();
+//									} else {
+//										popupManager.instance("승인 실패하였습니다.", {showtime: 'SHORT'});
+//									}
+//								}
+							},
+						});
+					}
+				}
+			}
+		} 
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

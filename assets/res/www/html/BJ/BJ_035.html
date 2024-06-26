@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>기간별 자재실사</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000010"></h2><!--기간별 자재실사-->
+			</div>
+		</div>
+	</header>
+
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox">
+						<div class="box_inner">
+							<div class="opt_input"><!--실사명-->
+								<p class="lineHead" data-lng="LB.0000000063"></p><p class="selectBox"><select name="selZCODE" id="selZCODE"></select></p>
+							</div>
+							<div class="opt_input"><!--플랜트-->
+								<p class="lineHead" data-lng="LB.0000000030"></p><p class="inputBox"><span id="txtWERKS"></span></p>
+							</div>
+							<div class="opt_input"><!--저장위치-->
+								<p class="lineHead" data-lng="LB.0000000031"></p><p class="selectBox"><select name="selPLOC" id="selPLOC"></select></p>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor"><button type="button" id="btnStart" data-lng="LB.0000000065"></button></p><!--시작-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="MSG.0000000064">실사코드 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000011">시스템 설정에 필요한 정보를 ERP로 부터 받아오지 못했습니다</span>
+</body>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/BJ/BJ_035.js"></script>
+<style>
+</style>
+</html>

@@ -1,0 +1,192 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_num;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_num = dataManager.param("NUM");
+		getInfo();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	//CKD는 JCO변경 및 첨부파일항목 제거로 인한 주석처리_1010
+/*	var getInfo = function(){
+		networkManager.httpSend({
+			path: '/api/CKDListSelect.do',
+			data: {
+				'QUERYID': "CKD.get_H_T_UM_103_Info",
+				"NUM": m_num
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount == 0){
+					popupManager.alert("데이터에 오류가 있습니다. 이전페이지로 이동합니다.", {title: '알림'});
+					moveToBack();
+				} else {
+					var d = receivedData.ListData[0];
+					$("#lblTitle").html(d.TITLE);
+					$("#lblContent").html(d.CONTENT.replace(/(?:\r\n|\r|\n)/gi, "<br/>"));
+					
+					// 첨부파일 로직
+					tag = "";
+					if (d.FILE1 != undefined){
+						var data_id = d.FILEID1 == undefined ? "" : d.FILEID1;
+						tag += "<li><span class=\"cutText docView\" id=\"attach01\" data-id=\"" + data_id + "\" data-index=\"1\">" + d.FILE1 + "</span></li>";
+					}
+					if (d.FILE2 != undefined){
+						var data_id = d.FILEID2 == undefined ? "" : d.FILEID2;
+						tag += "<li><span class=\"cutText docView\" id=\"attach02\" data-id=\"" + data_id + "\" data-index=\"2\">" + d.FILE2 + "</span></li>";
+					}
+					if (d.FILE3 != undefined){
+						var data_id = d.FILEID3 == undefined ? "" : d.FILEID3;
+						tag += "<li><span class=\"cutText docView\" id=\"attach03\" data-id=\"" + data_id + "\" data-index=\"3\">" + d.FILE3 + "</span></li>";
+					}
+					if (d.FILE4 != undefined){
+						var data_id = d.FILEID4 == undefined ? "" : d.FILEID4;
+						tag += "<li><span class=\"cutText docView\" id=\"attach04\" data-id=\"" + data_id + "\" data-index=\"4\">" + d.FILE4 + "</span></li>";
+					}
+					$("#attachFiles").html(tag);
+					
+					if (tag != ""){
+						setDocViewEvent();
+					}
+				}
+			}
+		});
+	};*/
+	
+	var getInfo = function(){
+		networkManager.httpSend({
+			path: '/api/noteDetail.do',
+			data: {
+				'langu': '',
+				'tdname': m_num
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.noteDetailReturn == 'E'){
+					popupManager.alert("데이터에 오류가 있습니다. 이전페이지로 이동합니다.", {title: '알림'});
+					moveToBack();
+				} else {
+					$("#lblTitle").html(receivedData.noteDetailInfo.ZTITLE);
+					var tag='';
+					$.each(receivedData.noteDetailText, function(index,rowData){
+						tag += rowData.TDLINE + '</br>'
+					});
+					$("#lblContent").html(tag);
+				}
+			}
+		});
+	};	
+	
+	var setDocViewEvent = function() {
+		$(".docView").on("click", function(){
+			var file_id = $(this).data("id");
+			var file_index = $(this).data("index");
+			var file_name = encodeURI(encodeURI($(this).text()));
+			
+			if (file_id == ""){
+				// upload
+				setDocViewUpload(file_index, file_name);
+			} else {
+				// check
+				getDocViewInfoCheck(file_id, file_index, file_name);
+			}
+		});
+	};
+	
+	var getDocViewInfoCheck = function(file_id, file_index, file_name) {
+		networkManager.httpSend({
+			path: '/api/WSDocInfo.do',
+			data: {
+				"FILE_NAME": file_name,
+				"FILE_ID": file_id,
+				"BOARD_NUM": m_num,
+				"FILE_INDEX": file_index
+			},
+			success: function(receivedData, setting) {
+				var status = receivedData.FILE_STATUS;
+				var index = receivedData.FILE_INDEX;
+				var name = receivedData.FILE_NAME;
+				var id = receivedData.FILE_ID;
+				if (status == "READY"){
+					//M.apps.browser("http://mview.powertech.co.kr:8080/docviewer.melita?client=html5&FILE_ID=" + id ,"UTF-8");
+					$("#ipreview").attr("src", "http://mview.powertech.co.kr:8080/docviewer.melita?client=html5&FILE_ID=" + id);
+					$("#idiv").show();
+				} else if (status == "NOT_READY") {
+					alert("변환중 입니다. 잠시후 다시시도하세요.");
+				} else {
+					setDocViewUpload(index, name);
+				}
+			}
+		});
+	}
+	
+	var setDocViewUpload = function(file_index, file_name) {
+		networkManager.httpSend({
+			path: '/api/WSDocUpload.do',
+			data: {
+				"FILE_NAME": file_name,
+				"BOARD_NUM": m_num,
+				"FILE_INDEX": file_index
+			},
+			success: function(receivedData, setting) {
+				var status = receivedData.FILE_STATUS;
+				var file_id = receivedData.FILE_ID;
+				var file_index = receivedData.FILE_INDEX;
+				var id = receivedData.FILE_ID;
+				
+				if (status == "READY"){
+					$("#attach0" + file_index).data("id", file_id);
+					//M.apps.browser("http://mview.powertech.co.kr:8080/docviewer.melita?client=html5&FILE_ID=" + id ,"UTF-8");
+					//M.apps.browser("http://mview.powertech.co.kr:8080/docviewer.melita?client=html5&FILE_ID=" + id ,"UTF-8");
+					$("#ipreview").attr("src", "http://mview.powertech.co.kr:8080/docviewer.melita?client=html5&FILE_ID=" + id);
+					$("#idiv").show();
+				} else if (status == "NOT_READY") {
+					alert("변환중 입니다. 잠시후 다시시도하세요.");
+				} else {
+					alert("오류가 발생하였습니다. 관리자에게 문의 바랍니다.");
+				}
+			}
+		});
+	}
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

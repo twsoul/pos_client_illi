@@ -1,0 +1,455 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var isFirstRun = true;
+	var objDistSelect, objPartSelect;
+	var objDistSelect2, objPartSelect2;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		$("#date_st").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		$("#date_ed").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		$("#date_st2").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		$("#date_ed2").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		
+		// TODO : DEBUG - START
+		// KD.get_H_T_UM_065_List_01 ==> 개발당시 테이블의 필수 컬럼이 빈값이여서 테스트 불가. 데이터가 나오는 GCS 쿼리로 적용. 쿼리 확인 필요.
+		// KD.get_H_T_UM_065_List_02  ==> 개발당시 테이블의 필수 컬럼이 빈값이여서 테스트 불가. 데이터가 나오는 GCS 쿼리로 적용. 쿼리 확인 필요.
+		// TODO : DEBUG - END
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		setTabNSwipe();
+		
+		// HPT 검수 승인
+		$("#date_st").on("click", function(){
+			window.Utils.getCalendar("date_st", null, "date_ed");
+		});
+		$("#date_ed").on("click", function(){
+			window.Utils.getCalendar("date_ed", "date_st", null);
+		});
+		$("#btnSearchList").on("click", getSearchList);
+		$("#btnViewCard").on("click", moveToViewPage);
+		
+		// 납입카드 조회
+		$("#date_st2").on("click", function(){
+			window.Utils.getCalendar("date_st2", null, "date_ed2");
+		});
+		$("#date_ed2").on("click", function(){
+			window.Utils.getCalendar("date_ed2", "date_st2", null);
+		});
+		$("#btnSearchList2").on("click", getSearchList2);
+		$("#btnViewCard2").on("click", moveToViewPage2);
+		
+		setModeForAccountState();
+		setInitSearchTerm();
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		getSearchList();
+	};
+	
+	// 계정상태에 따른 초기 화면 세팅
+	var setModeForAccountState = function() {
+		if (isFirstRun){
+			var tms_auth = userManager.getTMS_AUTH();
+			var vend_tp = userManager.getVEND_TP();
+			if (vend_tp == "C"){
+				setSelectPop();
+			}
+			$("#distribution").data("code", "SEF9").data("name", "기현").html("기현");
+			$("#distribution2").data("code", "SEF9").data("name", "기현").html("기현");
+			isFirstRun = false;
+		}
+	}
+	
+	var setInitSearchTerm = function() {
+		// 공장, 상태 데이터 조회,  물류사명
+		networkManager.httpSend({
+			path: '/api/GCSListMultiSelect.do',
+			data: {
+				'QUERYIDS': "GCS.get_plantList;GCS.get_statusList;GCS.get_vend_distCompList"
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount0 != 0){
+					$("#selPlant, #selPlant2").html("");
+					$.each(receivedData.ListData0, function(index,rowData){
+						tag += "<option value='" + rowData.PLANT_CD + "'>" + rowData.PLANT_NM + "</option>";
+					});
+					$("#selPlant, #selPlant2").append(tag);
+				}
+				//tag = "";
+				//if (receivedData.ListCount1 != 0){
+				//	$("#selType").html("<option value=\"ALL\">전체</option>");
+				//	//$.each(receivedData.ListData1, function(index,rowData){
+				//	tag += "<option value='" + rowData.MSC_CD + "'>" + rowData.MSC_DESC + "</option>";
+				//	tag += "<option value='" + rowData.MSC_CD + "'>" + rowData.MSC_DESC + "</option>";
+				//	//});
+				//	$("#selType").append(tag);
+				//}
+				if (receivedData.ListCount2 != 0){
+					objDistSelect2.setDB(receivedData.ListData2, "VEND_CD", "VEND_NM");
+				}
+			}
+		 });
+	};
+	
+	// 메인 검색
+	var getSearchList = function(){
+		var distComp, partComp, plant_cd, status, arri_dtst, arri_dtto;
+		var vend_cd, queryid;
+		arri_dtst = window.Utils.replaceAll($("#date_st").val(),".", "");
+		arri_dtto = window.Utils.replaceAll($("#date_ed").val(),".", "");
+		distComp = $("#distribution").data("code") == undefined ? "" : $("#distribution").data("code");
+		plant_cd = $("#selPlant > option:selected").val();
+		status = $("#selType > option:selected").val();
+		
+		if (!searchValidation(distComp)){
+			return;
+		}
+		
+		vend_cd = distComp;
+		queryid = "KD.get_H_T_UM_065_List_01";
+		
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': queryid,
+				"VEND_CD": vend_cd,
+				"FROM": arri_dtst,
+				"TO": arri_dtto,
+				"PLANT_CD": plant_cd,
+				"STATUS": status
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					tag = "";
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						/* KD 포장장 별도 */
+						if (rowData.PLANT_CD == "A1") {
+							PLANT_NM = "사내포장장";
+						} else if (rowData.PLANT_CD == "B1") {
+							PLANT_NM = "서영1공장(아산)";
+						} else if (rowData.PLANT_CD == "B2") {
+							PLANT_NM = "서영2공장(아산)";
+						} else {
+							PLANT_NM = rowData.PLANT_NM;
+						}
+						if (rowData.LOC_CD == "PTA") {
+							LOC_TP = "PTA포장";
+						} else if (rowData.LOC_CD == "PTC") {
+							LOC_TP = "PTC포장";
+						} else if (rowData.LOC_CD == "PTC-W") {
+							LOC_TP = "위아포장";
+						} else if (rowData.LOC_CD == "PTM") {
+							LOC_TP = "PTM포장";
+						} else {
+							LOC_TP = rowData.LOC_TP;
+						}
+						if (rowData.STAT_CD == "1") {
+							STAT = "대기";
+						} else if (rowData.STAT_CD == "4") {
+							STAT = "운송중";
+						} else if (rowData.STAT_CD == "5") {
+							STAT = "입고";
+						} else if (rowData.STAT_CD == "9") {
+							STAT = "취소";
+						} else {
+							STAT = "-";
+						}
+						tag += template.replace(/\{\{PACK_ORDR_NO\}\}/, rowData.PACK_ORDR_NO)
+								.replace(/\{\{PLANT_NM\}\}/, PLANT_NM)
+								.replace(/\{\{LOC_TP\}\}/, rowData.LOC_TP == undefined ? "" : LOC_TP)
+								.replace(/\{\{ORDR_NO\}\}/gi, rowData.ORDR_NO)
+								.replace(/\{\{STAT\}\}/, STAT)
+								.replace(/\{\{STAT_CD\}\}/, rowData.STAT_CD)
+								.replace(/\{\{FIRST_ROW\}\}/, index+1 == receivedData.ListCount ? "orderL" : "")
+								.replace(/\{\{MLink\}\}/, "mLink");
+					});
+				}
+				
+				$("#list_t_um30").html(tag);
+				setListRowEvent();
+				heightCal();
+			}
+		 });
+	};
+	var getSearchList2 = function(){
+		var distComp, partComp, plant_cd, status, arri_dtst, arri_dtto;
+		var vend_cd, queryid;
+		arri_dtst = window.Utils.replaceAll($("#date_st2").val(),".", "");
+		arri_dtto = window.Utils.replaceAll($("#date_ed2").val(),".", "");
+		distComp = $("#distribution2").data("code") == undefined ? "" : $("#distribution2").data("code");
+		plant_cd = $("#selPlant2 > option:selected").val();
+		
+		if (!searchValidation(distComp)){
+			return;
+		}
+		
+		vend_cd = distComp;
+		queryid = "KD.get_H_T_UM_065_List_02";
+		
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': queryid,
+				"VEND_CD": vend_cd,
+				"FROM": arri_dtst,
+				"TO": arri_dtto,
+				"PLANT_CD": plant_cd
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					tag = "";
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						/* KD 포장장 별도 */
+						if (rowData.PLANT_CD == "A1") {
+							PLANT_NM = "사내포장장";
+						} else if (rowData.PLANT_CD == "B1") {
+							PLANT_NM = "서영1공장(아산)";
+						} else if (rowData.PLANT_CD == "B2") {
+							PLANT_NM = "서영2공장(아산)";
+						} else {
+							PLANT_NM = rowData.PLANT_NM;
+						}
+						if (rowData.LOC_CD == "PTA") {
+							LOC_TP = "PTA포장";
+						} else if (rowData.LOC_CD == "PTC") {
+							LOC_TP = "PTC포장";
+						} else if (rowData.LOC_CD == "PTC-W") {
+							LOC_TP = "위아포장";
+						} else if (rowData.LOC_CD == "PTM") {
+							LOC_TP = "PTM포장";
+						} else {
+							LOC_TP = rowData.LOC_TP;
+						}
+						tag += template.replace(/\{\{PACK_ORDR_NO\}\}/, rowData.PACK_ORDR_NO)
+								.replace(/\{\{PLANT_NM\}\}/, PLANT_NM)
+								.replace(/\{\{LOC_TP\}\}/, LOC_TP)
+								.replace(/\{\{ORDR_NO\}\}/gi, rowData.ORDR_NO)
+								.replace(/\{\{STAT\}\}/, rowData.STAT)
+								.replace(/\{\{STAT_CD\}\}/, rowData.STAT_CD)
+								/*.replace(/\{\{FIRST_ROW\}\}/, index+1 == receivedData.ListCount ? "order1" : "")*/
+								.replace(/\{\{MLink\}\}/, "mLink2");
+					});
+				}
+				
+				$("#list_t_um31").html(tag);
+				setListRowEvent2();
+				heightCal();
+			}
+		 });
+	};
+	
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("div").removeClass("on");
+			}
+		})
+	};
+	var setListRowEvent2 = function(){
+		$(".mLink2").off("click","**");
+		$(".mLink2").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("div").removeClass("on");
+			}
+		})
+	};
+	
+	var searchValidation = function(distComp) {
+		if (window.Utils.trim(distComp) == ""){
+			popupManager.alert("물류사명을 선택하세요", {title: '알림'});
+			return;
+		}
+		return true;
+	};
+	
+	var moveToViewPage = function() {
+		var selObj = $(".mLink.on");
+		var pack_order_no = selObj.data("id");
+		var ordr_no = selObj.data("ordrno");
+		if (pack_order_no != undefined){
+			screenManager.moveToPage('/www/html/H_T_UM_066.html', {
+				param: {
+					PACK_NO: M.sec.encrypt(pack_order_no.toString()).result,
+					ORDR_NO: M.sec.encrypt(ordr_no.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("내역을 선택하세요", {title: '알림'});
+		}
+	};
+	var moveToViewPage2 = function() {
+		var selObj = $(".mLink2.on");
+		var pack_order_no = selObj.data("id");
+		var ordr_no = selObj.data("ordrno");
+		if (pack_order_no != undefined){
+			screenManager.moveToPage('/www/html/H_T_UM_068.html', {
+				param: {
+					PACK_NO: M.sec.encrypt(pack_order_no.toString()).result,
+					ORDR_NO: M.sec.encrypt(ordr_no.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("내역을 선택하세요", {title: '알림'});
+		}
+	}
+	
+	var setSelectPop = function() {
+		objDistSelect2 = new SelectListPopup({ title: "물류사명 선택", id: "popDist2", btnObj : $("#distribution2"), submitCallback: function(code, name){
+			$("#distribution2").data("code", code).data("name", name).html(name).addClass("typeValue");
+			$("#co_parts2").removeData("code").removeData("name").val("").removeClass("typeValue");
+			$("#num_vehicle2").removeData("code").removeData("name").html("선택하세요").removeClass("typeValue");
+			$("#carrier2").removeData("code").removeData("name").html("선택하세요").removeClass("typeValue");
+		}});
+		objDistSelect2.init();
+	};
+	
+	var setTabNSwipe = function() {
+		$(".tabmenu > div > h4").on("click", function(){
+			$(this).addClass("on");
+			$(this).siblings("h4").removeClass("on");
+			var p = $(this).index();
+			if( p == 0 ){
+				$(".contents_inner").css("transform", "translateX(0%)");
+				$(".contents_inner").children("section").first().css("height", "auto");
+				$(".contents_inner").children("section").last().css("height", "0");
+				$(".btn_sec1").removeClass("blind");
+				$(".btn_sec2").addClass("blind");
+			}else if ( p == 1){
+				$(".contents_inner").css("transform", "translateX(-50%)");
+				$(".contents_inner").children("section").first().css("height", "0");
+				$(".contents_inner").children("section").last().css("height", "auto");
+				$(".btn_sec2").removeClass("blind");
+				$(".btn_sec1").addClass("blind");
+			};
+		});
+		if($(".tabmenu > div > h4").hasClass("on")){	// 초기화면 리셋
+			var p = $(".tabmenu > div > h4").index();
+			if( p == 0 ){
+				$(".contents_inner").css("transform", "translateX(0%)");
+				$(".contents_inner").children("section").first().css("height", "auto");
+				$(".contents_inner").children("section").last().css("height", "0");
+				$(".btn_sec1").removeClass("blind");
+				$(".btn_sec2").addClass("blind");
+			}else if ( p == 1){
+				$(".contents_inner").css("transform", "translateX(-50%)");
+				$(".contents_inner").children("section").first().css("height", "0");
+				$(".contents_inner").children("section").last().css("height", "auto");
+				$(".btn_sec2").removeClass("blind");
+				$(".btn_sec1").addClass("blind");
+			};
+		}
+
+		// swipe
+		window.addEventListener('touchstart', function(event) {
+			var touch = event.touches[0];
+			touchstartX = touch.clientX;
+			touchstartY = touch.clientY;
+		}, false);
+		 
+		window.addEventListener('touchend', function(event) {
+		if(event.touches.length == 0) {
+			var touch = event.changedTouches[event.changedTouches.length - 1];
+			touchendX = touch.clientX;
+			touchendY = touch.clientY;
+
+			touchoffsetX = touchendX - touchstartX;
+			touchoffsetY = touchendY - touchstartY;
+
+			if(Math.abs(touchoffsetX) >= 20 && Math.abs(touchoffsetY) <= 10) {
+				if(touchoffsetX < 0){
+					$(".contents_inner").css("transform", "translateX(-50%)"),
+					$(".contents_inner").children("section").first().css("height", "0"),
+					$(".contents_inner").children("section").last().css("height", "auto"),
+					$(".tabmenu h4").last().addClass("on"),
+					$(".tabmenu h4").first().removeClass("on"),
+					$(".btn_sec2").removeClass("blind"),
+					$(".btn_sec1").addClass("blind");
+				} else {
+					$(".contents_inner").css("transform", "translateX(0%)"),
+					$(".contents_inner").children("section").first().css("height", "auto"),
+					$(".contents_inner").children("section").last().css("height", "0"),
+					$(".tabmenu h4").first().addClass("on"),
+					$(".tabmenu h4").last().removeClass("on"),
+					$(".btn_sec1").removeClass("blind"),
+					$(".btn_sec2").addClass("blind");
+					}
+				}
+			}
+		}, false);
+	};
+	
+	var heightCal = function() {
+		var device_h = $(window).outerHeight(true);
+		var header_h = $("#header").height();
+		var pageHeader_h = $(".page_header").height();
+		$("section:not(.layerPop)").each(function(index){		// 팝업 소거
+			var optionBox = $("section:not(.layerPop)").eq(index).children().find(".optionBox");
+			var optionBox_h = optionBox.height();
+			var head = $("section:not(.layerPop)").eq(index).children().find(".tableList").children().find(".tableHead");
+			var head_h = head.parent().height();
+			var fixedArea_h = $(".fixedArea").height();
+			
+			if ( index == 0 ){		// 첫번째 탭 영역 판별
+				var calcRollingTable = parseInt( header_h + pageHeader_h + optionBox_h + head_h + fixedArea_h );
+				var rollingTable = $("section:not(.layerPop)").eq(0).children().children(".tableList").find(".rollingPossible");
+				rollingTable.css("height", calcRollingTable);
+			}else if( index == 1 ){	// 두번째 탭 영역 판별
+				var calcRollingTable = parseInt( header_h + pageHeader_h + optionBox_h + head_h + fixedArea_h );
+				var rollingTable = $("section:not(.layerPop)").eq(1).children().children(".tableList").find(".rollingPossible");
+				rollingTable.css("height", calcRollingTable);
+			};
+		});
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

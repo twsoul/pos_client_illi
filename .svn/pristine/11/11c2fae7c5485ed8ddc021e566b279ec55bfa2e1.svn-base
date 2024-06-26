@@ -1,0 +1,124 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+	    if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+            screenManager.moveToPage('../common/login.html', { action: 'CLEAR_TOP' });
+        }
+	    InspectionCodeReq();
+	    PlantReq();
+	    StorageLocationReq();
+	};
+
+	// 이벤트 초기화
+	var setInitEvent = function() {
+	    $("#btnStart").on("click", function() {
+        	screenManager.moveToPage("bj_036.html", {
+        	    param: {
+        	        ZCODE: M.sec.encrypt($("#selZCODE option:selected").val()).result,
+        	        TITLE: M.sec.encrypt($("#selZCODE option:selected").text()).result,
+        	        LGORT: M.sec.encrypt($("#selPLOC option:selected").val()).result,
+        	        LGOBE: M.sec.encrypt($("#selPLOC option:selected").text()).result,
+        	        NAME1: M.sec.encrypt($("#txtWERKS").text()).result
+        	    }
+        	});
+        });
+	};
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+
+	};
+
+	var InspectionCodeReq = function() {
+        networkManager.httpSend({
+            path: 'api/InspectionCodeReq.do',
+            data: {
+            'bukrs': userManager.getCOMP_CD(),
+            'tplnr': optionManager.getTPLNR(),
+            'werks': "1191",
+            'zproc': "DM",
+            'event':'기간별실사 코드관리 전송'
+            },
+            success: function(receivedData, setting) {
+                var tag = "";
+                $.each(receivedData.InspectionCodeReqList, function(index,rowData){
+                    tag += "<option value='" + rowData.ZCODE + "'>" + rowData.TITLE + "</option>";
+                });
+                $("#selZCODE").append(tag);
+            }
+        });
+    };
+
+	var PlantReq = function() {
+        networkManager.httpSend({
+            path: 'api/PlantReq.do',
+            data: {
+            'bukrs': userManager.getCOMP_CD(),
+            'tplnr': optionManager.getTPLNR(),
+            'werks': userManager.getPLANT_CD(),
+            'zproc': optionManager.getZPROC(),
+            'event':'플랜트정보 전송'
+            },
+            success: function(receivedData, setting) {
+                $.each(receivedData.PlantReqList, function(index,rowData){
+                    if(rowData.WERKS==optionManager.getWERKS()){
+                        $("#txtWERKS").text(rowData.NAME1);
+                    }
+                });
+            }
+        });
+    };
+
+    var StorageLocationReq = function() {
+        networkManager.httpSend({
+            path: 'api/StorageLocationReq.do',
+            data: {
+            'bukrs': userManager.getCOMP_CD(),
+            'tplnr': optionManager.getTPLNR(),
+            'werks': optionManager.getWERKS(),
+            'zproc': optionManager.getZPROC(),
+            'event':'저장위치정보 전송'
+            },
+            success: function(receivedData, setting) {
+                var tag = "";
+                $.each(receivedData.StorageLocationReqList, function(index,rowData){
+                    tag += "<option value='" + rowData.LGORT + "'>" + rowData.LGOBE + "</option>";
+                });
+                $("#selPLOC").append(tag);
+                $("#selPLOC").val(optionManager.getLGORT()).prop("selected", true);
+            }
+        });
+    };
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

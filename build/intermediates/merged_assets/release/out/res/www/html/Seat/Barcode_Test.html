@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>3rd Shipping(IL)</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000074" id="test">Pallet List</h2>
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<div id="deliNoTitle"><input type="text" id="deliNoTitletxt" readonly></div>
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+
+<!--							<div class="opt_input" style="margin-top:2px;">&lt;!&ndash;스캔&ndash;&gt;-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+<!--							</div>-->
+							<div class="barcodeMode blind" style="margin-top:2px;">
+								<select id="autoRefeshMode">
+									<option value="auto" selected >auto</option>
+									<option value="NonAuto" >NonAuto</option>
+								</select>
+							</div>
+							<div class="barcodeMode" style="margin-top:2px;" >
+								<select id="barcode_mode">
+									<option value="BCBC" selected >BC-BC Mode</option>
+									<option value="BBCC">BB-CC Mode</option>
+								</select>
+							</div>
+
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+
+			<section>
+				<div class="container">
+					<article class="tableList tapPosible">
+						<!--		헤더			-->
+						<!--			리스트			 -->
+						<div class="palletDiv">
+							<div id="pallet_1">
+								<div class="palletNum"></div>
+								<div class="palletContent_SEAT_002" id="pallet_1_CH"></div>
+								<div class="palletContent_SEAT_002" id="pallet_1_CH_5J"></div>
+								<div class="empty_blank"></div>
+								<div class="palletContent_SEAT_002" id="pallet_1_BH"></div>
+								<div class="palletContent_SEAT_002" id="pallet_1_BH_5J"></div>
+							</div>
+							<div id="pallet_2">
+
+							</div>
+							<div id="pallet_3">
+
+							</div>
+							<div id="pallet_4">
+
+							</div>
+						</div>
+						<div class="list_inner list_SEAT_002 adjFix" id="list_SEAT_002"></div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<!--<div class="btn_area fixedArea">-->
+			<!--<p class="classicalBtn adjColor"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p>--><!--초기화-->
+		<!--</div>-->
+<!--		<ul>-->
+<!--			<li><button type="button" data-value="../common/main.html"></button></li>-->
+<!--			&lt;!&ndash;<li><button type="button" data-value="../common/notification.html"></button></li>&ndash;&gt;-->
+<!--			<li><button type="button" data-value="../common/allmenu.html"></button></li>-->
+<!--		</ul>-->
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000115">타 공장 바코드입니다, 그래도 진행 하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000116">납입문서번호를 먼저 스캔하십시오</span>
+<span class="blind" data-lng="MSG.0000000129">납입카드 번호가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000117">저장위치를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000268">이미 리스트에 존재하는 납입카드 NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000314">올바르지않은 납입문서입니다</span>
+<span class="blind" data-lng="MSG.0000000297">타 공장 바코드입니다</span>
+<span class="blind" data-lng="MSG.0000000356">이미 스캔한 납입문서입니다</span>
+<!--qrManagerLangPack-->
+<span class="blind" data-lng="MSG.0000000226">올바르지 않은 바코드 구성입니다</span>
+<span class="blind" data-lng="MSG.0000000227">바코드에 BOX NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000228">바코드에 PART NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000229">바코드에 BOX 수량이 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000230">바코드에 업체코드가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000231">바코드에 LOT NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000232">바코드에 BOX Sequence가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000233">바코드에 출력유형이 존재하지 않습니다</span>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+
+
+	<div class="tableCont_div_SEAT_002" id="outDiv{{OUT_DIV}}" data-status="{{STATUS}}" data-vendcd="{{VEND_CD}}" data-delibarno="{{DELI_BAR_NO}}" data-ordkind="{{ORD_KIND}}">
+		<div class="multiple_cate pallet_pos_div">
+			<p class="PALLET_POS" >{{PALLET_POS}}</p>
+		</div>
+		<div class="multiple_cate {{MLINK}}" id="outDiv{{CH_OUT_DIV}}">
+			<div class="multiple_cate" >
+				<p class="PALLET_TYPE" >{{CH_PALLET_TYPE}}</p>
+			</div>
+			<div class="multiple_cate">
+				<p class="NUM_5J_002">{{CH_NUM_5J}}</p>
+			</div>
+			<div class="multiple_cate blind">
+				<p class="PALLET_POS" >{{PALLET_POS}}</p>
+			</div>
+			<div class="multiple_cate blind">
+				<p class="SCAN_YN" >{{CH_SCAN_YN}}</p>
+			</div>
+		</div>
+
+		<div class="multiple_cate pallet_pos_div">
+			<p class="emptyBlank" >  </p>
+		</div>
+
+		<div class="multiple_cate {{MLINK}}" id="outDiv{{BH_OUT_DIV}}">
+			<div class="multiple_cate1" >
+				<p class="PALLET_TYPE" >{{BH_PALLET_TYPE}}</p>
+			</div>
+			<div class="multiple_cate">
+				<p class="NUM_5J_002">{{BH_NUM_5J}}</p>
+			</div>
+			<div class="multiple_cate blind">
+				<p class="PALLET_POS" >{{PALLET_POS}}</p>
+			</div>
+			<div class="multiple_cate blind">
+				<p class="SCAN_YN" >{{BH_SCAN_YN}}</p>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/seat/Barcode_Test.js"></script>
+<!--<script type="text/javascript" src="../../js/ui/JJ/IN_010.js"></script>-->
+<!--<script type="text/javascript" src="../../js/common/qrManager.js"></script>-->
+</html>

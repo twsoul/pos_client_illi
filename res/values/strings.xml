@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<resources>
+    <!-- 아래 app_package는 반드시 android package 이름과 동일하게 만들어야 한다(DO NOT DELETE !!!)-->
+	<string name="app_package">com.hts.hable_pos</string>
+	
+	<string name="app_name">H·able POS</string>
+	
+    <string name="hello">Hello World, HybridMobileApp!</string>
+    <string name="nbutton1">통신테스트</string>
+    <string name="nbutton2">네이티브화면</string>
+    <string name="nbutton3">UI웹화면</string>
+    <string name="sTitle1">받은 파라메터 데이터</string>
+    <string name="sTitle2">Network error</string>
+    <string name="tps_report">TPS Report</string>
+    <string name="report_head"><![CDATA[
+        <html style="width:100%;height:100%;">
+            <head>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+                <style>
+                    @font-face {
+                        font-family: "Free3of9";
+                        src: url("http://10.135.198.137:8080/fonts/Free3of9.woff");
+                    }
+                    .Bar128 {
+                        height: 0;
+                        padding-bottom: 4vh;
+                        font-family: "Free3of9";
+                        font-size: 4vh;
+                    }
+                </style>
+            </head>
+        ]]>
+	</string>
+    <string name="report_body1"><![CDATA[
+        <body style="-webkit-text-size-adjust:none; -ms-text-size-adjust:none;">
+            <table style="width:100%;margin-top:1px;text-align:center;border-collapse:collapse;" border="1">
+                <tr>
+                    <td style="width:20%;">
+                        <img src="http://10.135.198.137:8080/images/logo_color.svg" style="width:80%;">
+                    </td>
+                    <td style="width:40%;background-color:rgb(0,45,114);color:white;">
+                        <p style="margin:2vh 0;">
+                            {{MOVETYPE}} 반출증 ({{MOVENM}})
+                        </p>
+                    </td>
+                    <td style="width:20%;">
+                    </td>
+                </tr>
+            <table>
+            <table style="width:100%;text-align:center;border-collapse:collapse;margin-top:1vh;font-size:1vh;vertical-align:middle;border-spacing:0;" border="1">
+                <tr>
+                    <td style="width:15%;">
+                        반출부서
+                    </td>
+                    <td style="width:40%;">
+
+                    </td>
+                    <td style="width:15%;background-color:rgb(0,45,114);color:white;">
+                        반출번호
+                    </td>
+                    <td>
+                        {{N1}}
+                    </td>
+                    <td>
+                        {{N2}}
+                    </td>
+                    <td>
+                        {{N3}}
+                    </td>
+                    <td>
+                        {{N4}}
+                    </td>
+                    <td>
+                        {{N5}}
+                    </td>
+                    <td>
+                        {{N6}}
+                    </td>
+                    <td>
+                        {{N7}}
+                    </td>
+                    <td>
+                        {{N8}}
+                    </td>
+                    <td>
+                        {{N9}}
+                    </td>
+                    <td>
+                        {{N10}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        반출사유
+                    </td>
+                    <td colspan="12">
+                        {{MOVEDESC}}
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%;text-align:center;border-collapse:collapse;font-size:1vh;vertical-align:middle;border-spacing:0;border-top:0;" border="1">
+                <tr>
+                    <td style="width:5%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        No
+                    </td>
+                    <td style="width:20%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        품번
+                    </td>
+                    <td style="width:20%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        품명
+                    </td>
+                    <td style="width:10%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        수량
+                    </td>
+                    <td style="width:10%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        단위
+                    </td>
+                    <td style="width:25%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        반출내용메모
+                    </td>
+                </tr>
+        ]]>
+	</string>
+    <string name="report_body2"><![CDATA[
+        </table>
+		<table style="width:100%;text-align:center;border-collapse:collapse;font-size:1vh;vertical-align:middle;border-spacing:0;border-top:0;" border="1">
+			<tr>
+				<td style="width:10%;border-top:0;">
+					반출처(업체)
+				</td>
+				<td style="width:15%;border-top:0;">
+					{{VENDOR_NM}}
+				</td>
+				<td style="width:15%;border-top:0;">
+					작성자(인계수량확인자)
+				</td>
+				<td style="width:5%;border-top:0;">
+					성명
+				</td>
+				<td style="width:10%;border-top:0;">
+					{{CREATE_NM}}
+				</td>
+				<td style="width:5%;border-top:0;">
+					날인
+				</td>
+				<td style="width:10%;border-top:0;">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					반출차량번호
+				</td>
+				<td>
+
+				</td>
+				<td>
+					반출자(인수수량확인자)
+				</td>
+				<td>
+					성명
+				</td>
+				<td>
+				</td>
+				<td>
+					날인
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					TOTAL
+				</td>
+				<td>
+					{{TOTAL}}
+				</td>
+				<td colspan="5" style="border:none;">
+				</td>
+			</tr>
+		</table>
+		<table style="width:100%;text-align:center;margin-bottom:1px;border-collapse:collapse;font-size:1vh;vertical-align:middle;border-spacing:0;border-top:0;" border="1">
+			<tr>
+				<td style="width:33.333%;height:2vh;border:none;">
+				</td>
+				<td style="width:33.333%;height:2vh;border:none;">
+				</td>
+				<td style="width:33.333%;height:2vh;border:none;">
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+				</td>
+
+			</tr>
+			<tr>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+					{{DT_YEAR}}년 {{DT_MONTH}}월 {{DT_DAY}}일 {{DT_HOUR}}시 {{DT_MINUTE}}분
+				</td>
+				<td rowspan="2" style="border:none;">
+					<p class="Bar128">*{{MOVENO}}*</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+					상기 물품의 반출을 승인함
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;height:3vh;">
+				</td>
+				<td style="border:none;height:3vh;">
+				</td>
+				<td style="border:none;height:3vh;">
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;">
+					{{fmt_time}}
+				</td>
+				<td colspan="2" style="border:none;">
+					※반출규정위반 및 무단반출 적발시 당사 사규 및 관련법규에 의해 제재를 받을수 있습니다.
+				</td>
+			</tr>
+		</table>
+	</table>
+</table>
+</body>
+
+
+</html>
+]]>
+	</string>
+    <string name="report_line"><![CDATA[
+        <table>
+            <tr>
+				<td style="border:none;font-size:0.75rem;color:white;">
+                    line
+				</td>
+			</tr>
+		</table>
+
+    ]]>
+	</string><string name="report_line2"><![CDATA[
+        <table>
+            <tr>
+				<td style="border:none;font-size:0.85rem;color:white;">
+                    line
+				</td>
+			</tr>
+		</table>
+
+    ]]>
+	</string>
+    <string name="report_line3"><![CDATA[
+        <table>
+            <tr>
+				<td style="border:none;font-size:1rem;color:white;">
+                    line
+				</td>
+			</tr>
+		</table>
+
+    ]]>
+	</string>
+
+
+</resources>

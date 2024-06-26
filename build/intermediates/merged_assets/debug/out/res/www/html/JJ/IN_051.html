@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>자재재반업무일지</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000567"></h2><!--자재재반업무일지-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="opt_select clearfix"><!--공장-->
+								<p class="lineHead" data-lng="LB.0000000109"></p><p class="selectBox"><select name="selPLANT" id="selPLANT"></select></p>
+							</div>
+							<div class="opt_select opt_complex clearfix"><!--발생일자-->
+								<p class="lineHead" data-lng="LB.0000000568"></p><p class="adjLayout"><span><input type="text" id="txtISSUE_DT" readonly></span></p>
+							</div>
+							<div class="opt_select opt_select2 doubleDep opt_complex clearfix"><!--발생시간-->
+								<p class="lineHead" data-lng="LB.0000000569"></p><p class="selectBox"><select name="selWORK_TP" id="selWORK_TP"></select></p>
+								<p class="adjLayout" style="width:33%;"><span><input type="text" id="txtISSUE_TM" readonly></span></p>
+							</div>
+							<div class="opt_select opt_select2 doubleDep clearfix"><!--발생라인-->
+								<p class="lineHead" data-lng="LB.0000000570"></p><p class="selectBox"><select name="selLINE_CD" id="selLINE_CD"></select></p>
+								<p class="selectBox" style="width:33%;"><select name="selLINE_DT_CD" id="selLINE_DT_CD"></select></p>
+							</div>
+							<!-- 스캔유무
+							<div class="opt_chk">
+								<p class="lineHead" data-lng="LB.0000000198"></p><p><input type="checkbox" id="btnScan1"><label>스캔</label></p>
+							</div>
+							-->
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000198"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+
+							<div class="opt_nonfunc opt_input clearfix"><!--품번-->
+								<p class="lineHead" data-lng="LB.0000000038"></p><p class="inputBox"><span><input type="text" placeholder="품번을 입력하세요" id="txtPART_NO" onkeypress="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}"><label><i class="material-icons" id="btnPartNumSearch">search</i></label></span></p>
+							</div>
+							<div class="opt_nonfunc clearfix"><!--품명-->
+								<p class="lineHead" data-lng="LB.0000000040"></p><p class="inputBox"><input style="padding-left:0%;" type="text" name="txtPART_NM" id="txtPART_NM" placeholder="품명을 검색하세요." readonly></p>
+							</div>
+							<div class="opt_select clearfix"><!--귀책처-->
+								<p class="lineHead" data-lng="LB.0000000571"></p><p class="selectBox"><select name="selVEND" id="selVEND"><option value="">품번을 검색하세요.</select></p>
+							</div>
+							<div class="opt_input non_head clearfix blind" id="areaVEND_ETC"><!--귀책처-->
+								<p class="lineHead" data-lng="LB.0000000571"></p><p class="inputBox"><input type="text" id="txtVEND" placeholder="KEY IN을 입력하세요." onkeypress="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}"></p>
+							</div>
+							<div class="opt_select clearfix"><!--적발사유-->
+								<p class="lineHead" data-lng="LB.0000000572"></p><p class="selectBox"><select name="selREASON" id="selREASON"></select></p>
+							</div>
+							<div class="opt_input non_head clearfix blind" id="areaREASON_ETC"><!--적발사유-->
+								<p class="lineHead" data-lng="LB.0000000572"></p><p class="inputBox"><input type="text" placeholder="기타내용을 입력하세요." id="txtREASON" onkeypress="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}"></p>
+							</div>
+							<div class="opt_input"><!--적발내용-->
+								<p class="lineHead" data-lng="LB.0000000573"></p><p class="inputBox"><input type="text" placeholder="입력하세요." id="txtREASON_CONT" onkeypress="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}"></p>
+							</div>
+							<div class="opt_date clearfix"><!--개선예정일-->
+								<p class="lineHead" data-lng="LB.0000000574"></p><p><span><input type="text" id="txtREPAIR_BE_DT" readonly></span></p>
+							</div>
+							<div class="opt_date clearfix"><!--개선완료일-->
+								<p class="lineHead" data-lng="LB.0000000575"></p><p><span><input type="text" id="txtREPAIR_COMPLETE_DT" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--HTS담당자-->
+								<p class="lineHead" data-lng="LB.0000000576"></p><p class="inputBox"><input type="text" placeholder="입력하세요" id="txtHPT_EMP" onkeypress="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}"></p>
+							</div>
+							<div class="opt_input"><!--협력사담당자-->
+								<p class="lineHead" data-lng="LB.0000000577"></p><p class="inputBox"><input type="text" placeholder="입력하세요" id="txtVEND_EMP" onkeypress="if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}"></p>
+							</div>
+						</div>
+					</article>
+					<article class="upload_images">
+						<div class="box_belt clearfix">
+							<div class="imageBox" id="imgUploader01">
+							</div>
+							<div class="imageBox" id="imgUploader02">
+							</div>
+							<div class="imageBox" id="imgUploader03">
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor"><button type="button" id="btnSave" data-lng="LB.0000000127"></button></p><!--저장-->
+			<p class="classicalBtn adjColor blind"><button type="button" id="btnDelete" data-lng="LB.0000000533"></button></p><!--삭제-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000117">저장위치를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000270">부품식별표가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000244">이미 리스트에 존재하는 BOX NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000297">타 공장 바코드입니다</span>
+<span class="blind" data-lng="MSG.0000000453">입하상태의 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000455">사용할 수 없는 부품식별표 입니다</span>
+<span class="blind" data-lng="MSG.0000000299">대상 부품식별표와 품번이 다릅니다</span>
+<span class="blind" data-lng="MSG.0000000137">스캔하신 내역이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000300">병합하고자 하는 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000302">타 저장위치 바코드 입니다</span>
+<span class="blind" data-lng="MSG.0000000308">1개 이하의 부품식별표는 신규 부품식별표를 생성 할 수없습니다</span>
+<span class="blind" data-lng="MSG.0000000315">보류상태의 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000303">해당 부품식별표의 수량이 0개 입니다</span>
+<span class="blind" data-lng="MSG.0000000323">신규 부품식별표 생성에 실패 하였습니다</span>
+</body>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/IN_051.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customSelectPopup.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customImageUploader.js"></script>
+</html>

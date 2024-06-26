@@ -1,0 +1,83 @@
+/*******************************************************************
+*	메인 페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+		//$("#txtUserID").text(userManager.getDRIV_NM() + "(" + userManager.getDRIV_ID() + ")");
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		
+		var gate_in = dataManager.storage("GATE_IN");
+		if (gate_in == "TLS") {
+			$(".M_TLS").removeClass("blind");
+		} 
+	};
+	
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$(".clearfix li").on("click", mainMovePage);
+		$(".lt_area").on("click", popGate);
+	};
+	
+	var popGate = function() {
+		M.pop.list({
+		    mode : 'SINGLE',
+		    title : '업무변경',
+		    buttons : ['확인', '취소'],
+		    list : [
+		                { title : 'TLS', value : 'TLS'}
+		               ,{ title : '완성품출하', value : 'COUT'}
+		    ],
+		    selected : 0,
+		    callback: function (buttonIdx, rowInfo, setting){
+		    	if (buttonIdx == "0") {
+//			    	console.log(rowInfo.value);
+		    		if (rowInfo.value == "TLS") {
+			    		dataManager.storage("GATE_IN", "TLS");
+			    		$(".M_TLS").removeClass("blind");
+			    	}
+			    	else {
+			    		dataManager.storage("GATE_IN", "COUT");
+			    		screenManager.moveToPage('/www/html/H_D_UM_044.html');
+			    	}
+		    	}
+		    }
+		}); 
+	}
+	
+	var mainMovePage = function() {
+		var page = $(this).data("page");
+		if (page != "")
+			screenManager.moveToPage(page);
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

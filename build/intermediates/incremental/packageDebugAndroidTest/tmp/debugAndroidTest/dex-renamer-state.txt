@@ -1,0 +1,7 @@
+#Tue Mar 26 13:25:01 KST 2024
+base.0=C\:\\Users\\tw\\Desktop\\PDA_DEV\\source\\H_able_Client\\build\\intermediates\\dex\\debugAndroidTest\\mergeDexDebugAndroidTest\\classes.dex
+path.1=classes2.dex
+renamed.1=classes2.dex
+path.0=classes.dex
+renamed.0=classes.dex
+base.1=C\:\\Users\\tw\\Desktop\\PDA_DEV\\source\\H_able_Client\\build\\intermediates\\dex\\debugAndroidTest\\mergeDexDebugAndroidTest\\classes2.dex

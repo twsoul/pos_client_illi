@@ -1,0 +1,198 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var mapObj;
+	var m_packOrderNO, m_drivNM, m_drivID, m_drivTEL, m_carN, m_gpsLat, m_gpsLong, m_gpsAddr, m_arri_t, m_plant_cd;
+	var m_selVendCD, m_selVendType;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_packOrderNO = dataManager.param('packOrderNO');
+		m_drivNM = dataManager.param('drivNM');
+		m_drivID = dataManager.param("drivID");
+		m_drivTEL = dataManager.param('drivTEL');
+		m_carN = dataManager.param('carN');
+		m_selVendCD = dataManager.param("selVendCD");
+		m_selVendType = dataManager.param("selVendType");
+		m_gpsLat = dataManager.param("gpsLat");
+		m_gpsLong = dataManager.param("gpsLong");
+		m_gpsAddr = dataManager.param("gpsAddr");
+		m_arri_t = dataManager.param("arriT");
+		m_plant_cd = dataManager.param("plantCD");
+		mapDraw();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnFullList").on("click", moveToAllCars);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	};
+	
+	var getSearchList = function() {
+		var linePath = [];
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_H_T_UM_021_List",
+				"PACK_ORDR_NO" : m_packOrderNO
+			},
+			success: function(receivedData, setting) {
+				var bounds = new daum.maps.LatLngBounds();
+				$.each(receivedData.ListData, function(index,rowData){
+					linePath.push(new daum.maps.LatLng(rowData.GPS_LAT, rowData.GPS_LONG));
+					
+					if (rowData.GPS_LAT != m_gpsLat && rowData.GPS_LONG != m_gpsLong){
+						var pos = new daum.maps.LatLng(rowData.GPS_LAT, rowData.GPS_LONG);
+						var markerImage = new daum.maps.MarkerImage("../images/ap_img_loca.png", new daum.maps.Size(46,57));
+						var marker = new daum.maps.Marker({
+							position: pos,
+							image: markerImage
+						});
+						marker.setMap(mapObj);
+						bounds.extend(pos);
+					} else {
+						var markerImage = new daum.maps.MarkerImage("../images/ap_img_tracking.png", new daum.maps.Size(46,57));
+						var marker = new daum.maps.Marker({
+						    position: new daum.maps.LatLng(m_gpsLat, m_gpsLong),
+						    image: markerImage,
+						    clickable: true
+						});
+						marker.setMap(mapObj);
+						
+						var iwContent = $("#infoWindowTemplate").html().replace(/\{\{CAR_N\}\}/gi, m_carN)
+											.replace(/\{\{ARRI_T\}\}/gi, m_arri_t)
+											.replace(/\{\{DRIV_NM\}\}/gi, m_drivNM)
+											.replace(/\{\{DRIV_TEL\}\}/gi, m_drivTEL)
+											.replace(/\{\{DRIV_TEL_L\}\}/gi, window.Utils.setTelClickCall(m_drivTEL))
+											.replace(/\{\{GPS_ADDR\}\}/gi, m_gpsAddr)
+											.replace(/\{\{PACK_ORDR_NO\}\}/, m_packOrderNO);
+						var iwRemoveable = true;
+						
+						var infoWindow = new daum.maps.InfoWindow({
+							content : iwContent,
+							removable : iwRemoveable
+						});
+						daum.maps.event.addListener(marker, "click", function() {
+							infoWindow.open(mapObj, marker);
+						});
+						infoWindow.open(mapObj, marker);
+						
+						var pos = new daum.maps.LatLng(rowData.GPS_LAT, rowData.GPS_LONG);
+						bounds.extend(pos);
+					}
+				});
+				
+				var polyline = new daum.maps.Polyline({
+					path : linePath
+				});
+				
+				polyline.setMap(mapObj);
+				mapObj.setBounds(bounds);
+				mapObj.setCenter(new daum.maps.LatLng(m_gpsLat, m_gpsLong));
+			}
+		 });
+	};
+	
+	var setMoreClickEvent = function(obj){
+		var pack_ordr_no = $(obj).data("no");
+		var car_n = $(obj).data("carn");
+		var driv_nm = $(obj).data("drivnm");
+		var driv_tel = $(obj).data("drivtel");
+		screenManager.moveToPage('./H_T_UM_024.html', {
+			param: {
+				packOrderNO: pack_ordr_no,
+				carN: car_n,
+				drivNM: driv_nm,
+				drivTEL: driv_tel,
+				plantCD: m_plant_cd
+			},
+			action: 'NEW_SCR'
+		});
+	};
+	
+	var mapDraw = function() {
+		var mapContainer = document.getElementById("map");
+		var options = {
+				center: new daum.maps.LatLng(m_gpsLat, m_gpsLong),
+				level:3
+		};
+		mapObj = new daum.maps.Map(mapContainer, options);
+		
+		//DEBUG
+		//mapObj.addControl(new daum.maps.ZoomControl(), daum.maps.ControlPosition.RIGHT);
+		
+		/*var markerImage = new daum.maps.MarkerImage("../images/ap_img_loca.png", new daum.maps.Size(46,57));
+		var marker = new daum.maps.Marker({
+		    position: new daum.maps.LatLng(m_gpsLat, m_gpsLong),
+		    image: markerImage,
+		    clickable: true
+		});
+		marker.setMap(mapObj);
+		
+		var iwContent = $("#infoWindowTemplate").html().replace(/\{\{CAR_N\}\}/gi, m_carN)
+							.replace(/\{\{ARRI_T\}\}/gi, m_arri_t)
+							.replace(/\{\{DRIV_NM\}\}/gi, m_drivNM)
+							.replace(/\{\{DRIV_TEL\}\}/gi, m_drivTEL)
+							.replace(/\{\{DRIV_TEL_L\}\}/gi, window.Utils.setTelClickCall(m_drivTEL))
+							.replace(/\{\{GPS_ADDR\}\}/gi, m_gpsAddr)
+							.replace(/\{\{PACK_ORDR_NO\}\}/, m_packOrderNO);
+		var iwRemoveable = true;
+		
+		var infoWindow = new daum.maps.InfoWindow({
+			content : iwContent,
+			removable : iwRemoveable
+		});
+		daum.maps.event.addListener(marker, "click", function() {
+			infoWindow.open(mapObj, marker);
+		});
+		infoWindow.open(mapObj, marker);*/
+		
+		getSearchList();
+	};
+	
+	var moveToAllCars = function() {
+		screenManager.moveToPage('./H_T_UM_022.html', {
+			param: {
+				selVendCD: m_selVendCD,
+				selVendType: m_selVendType
+			},
+			action: 'NEW_SCR'
+		});
+	}
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent,
+		setMoreClickEvent: setMoreClickEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

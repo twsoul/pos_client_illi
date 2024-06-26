@@ -1,0 +1,2 @@
+com/hts/hable_pos/test/BuildConfig.java
+ com.hts.hable_pos.test.BuildConfig

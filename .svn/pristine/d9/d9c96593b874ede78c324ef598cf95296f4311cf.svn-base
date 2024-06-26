@@ -1,0 +1,81 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_barcode, m_plant_nm, m_loc_nm, m_arri_day, m_arri_time;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_barcode = dataManager.param("BARCODE");
+		m_plant_nm = dataManager.param("PLANT_NM");
+		m_loc_nm = dataManager.param("LOC_NM");
+		m_arri_day = dataManager.param("ARRI_DAY");
+		m_arri_time = dataManager.param("ARRI_TIME");
+		
+		$("#lblPlant").text(m_plant_nm);
+		$("#lblLoc").text(m_loc_nm);
+		$("#lblArri_DT").text(m_arri_day);
+		$("#lblArri_TM").text(m_arri_time);
+		setBarcode(m_barcode);
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	// 바코드 출력
+	var setBarcode = function(value) {
+        var btype = "code128";
+        var renderer = "bmp";
+		var quietZone = false;
+        var settings = {
+          output:renderer,
+		  bgColor: "#FFFFFF",
+          color: "#000000",
+		  barWidth : "7",
+          barHeight: "250",
+          moduleSize: "5",
+          addQuietZone: "0"
+        };
+		$("#barcodeArea").html("").show().barcode(value, btype, settings);
+		var screenWidth = M.page.info("screenWidth");
+		$("#barcodeArea").css("width", screenWidth + "px");
+		$("#barcodeArea object").css("width",screenWidth + "px");
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>알 림</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back blind" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<div class="rt_area"><span class="btn_close" id="btn_close"><img src="../../img/close_nav.png"></span>
+				</div>
+				<h2>알 림</h2>
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section>
+				<div>
+					<article class="tableList">
+						<div class="list_inner list_noti" id="list_noti">
+							<div class="tableCont {{STAT_CD}}" data-id="{{NUM}}">
+								<div class="mergeCell">
+									<p></p>
+								</div>
+								<div class="multiple_cate">
+									<p class="harf_cell">
+										<span>제목</span>
+										<span>날짜</span>
+									</p>
+									<p>상세 내용</p>
+								</div>
+							</div>
+							<div class="tableCont {{STAT_CD}}" data-id="{{NUM}}">
+								<div class="mergeCell">
+									<p></p>
+								</div>
+								<div class="multiple_cate">
+									<p class="harf_cell">
+										<span>제목</span>
+										<span>날짜</span>
+									</p>
+									<p>상세 내용</p>
+								</div>
+							</div><div class="tableCont {{STAT_CD}}" data-id="{{NUM}}">
+							<div class="mergeCell">
+								<p></p>
+							</div>
+							<div class="multiple_cate">
+								<p class="harf_cell">
+									<span>제목</span>
+									<span>날짜</span>
+								</p>
+								<p>상세 내용</p>
+							</div>
+						</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="non_footer">
+	</footer>
+
+</div>
+</body>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/common/notification.js"></script>
+</html>

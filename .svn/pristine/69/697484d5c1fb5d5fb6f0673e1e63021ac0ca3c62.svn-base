@@ -1,0 +1,189 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var pack_no, vend_cd, status;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		pack_no = dataManager.param("PACK_NO");
+		vend_cd = dataManager.param('VEND_CD');
+		status = dataManager.param("STATUS");
+		
+		setInitPlantList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#selPlant").on("change", function(){
+			getSearchList();
+		});
+		$("#btnGoDetail").on("click", moveToDetail);
+		$("#btnInsert").on("click", setInsert);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		getSearchList();
+	}
+	
+	// 공장 SELECT BOX Initialize
+	var setInitPlantList = function(){
+		networkManager.httpSend({
+			path: '/api/CKDListSelect.do',
+			data: {
+				'QUERYID': "CKD.get_plantList"
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				$("#selPlant").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					if(rowData.PLANT_NM == '4공장' || rowData.PLANT_NM == '4공장 KC-KD'){
+					}else{
+						tag += "<option value='" + rowData.PLANT_CD + "'>" + rowData.PLANT_NM + "</option>";
+					}
+				});
+				$("#selPlant").append(tag);
+				getSearchList();
+			}
+		 });
+	};
+	
+	var getSearchList = function() {
+		var plant = $("#selPlant > option:selected").val();
+		networkManager.httpSend({
+			path: '/api/CKDListSelect.do',
+			data: {
+				'QUERYID': "CKD.get_H_T_UM_082_List",
+				"EXC": vend_cd,
+				"PLANT": plant
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					if (userManager.getRD_CD() == "D"){
+						tag = $("#HeadTemplateD").html();
+					} else {
+						tag = $("#HeadTemplate").html();
+					}
+					
+					var template;
+					if (userManager.getRD_CD() == "D") {
+						// 부품사가 보이게...
+						template = $("#ListTemplateD").html();
+					} else {
+						// 부품사가 안보이게..
+						template = $("#ListTemplate").html();
+					}
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += template.replace(/\{\{ID_NO\}\}/gi, rowData.ID_NO)
+								.replace(/\{\{PACK_YN\}\}/, rowData.PACK_YN)
+								.replace(/\{\{PLANT_NM\}\}/, rowData.PLANT_NM)
+								.replace(/\{\{LOC_TP\}\}/, rowData.LOC_TP)
+								.replace(/\{\{VEND_NM\}\}/, rowData.VEND_NM)
+								.replace(/\{\{STAT\}\}/, rowData.STAT)
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+				}
+				
+				$(".list_t_um14").html(tag);
+				setListRowEvent();
+			}
+		 });
+	}
+	
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("div").removeClass("on");
+			}
+		});
+	};
+	
+	var moveToDetail = function() {
+		var id = $(".mLink.on").data("id");
+		if (id != undefined){
+			screenManager.moveToPage('/www/html/H_T_UM_084.html', {
+				param: {
+					ORDR_NO: M.sec.encrypt(id.trim().toString()).result,
+					KIND_PAGE: M.sec.encrypt(M.page.info("filename").toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("납입문서를 선택하세요", {title: '알림'});
+		}
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+	
+	var setInsert = function(){
+		var id = $(".mLink.on").data("id");
+		if (id != undefined){
+			if (userManager.getVEND_TP() == "C"){
+				popupManager.alert("HTS사용자는 사용할 수 없습니다.", {title:'알림'});
+			} else {
+				//if (status != "D"){
+				//	popupManager.alert("운송중인 배차에는 상차저장을 할 수 없습니다.", {title:'알림'});
+				//} else {
+					var packyn = $(".mLink.on").data("packyn");
+					if (packyn == "D") {
+						popupManager.alert("배차가 완료된 납입문서는 확정할 수 없습니다.", {title:'알림'});
+					} else {
+						networkManager.httpSend({
+							path: '/api/CKDListSelect.do',
+							data: {
+								'QUERYID': "CKD.get_H_T_UM_082_Insert",
+								"PACK_NO": pack_no,
+								"USER": userManager.getDRIV_ID(),
+								"ORDR_NO": id.trim()
+							},
+							success: function(receivedData, setting) {
+								getSearchList();
+							},
+							error: function(){
+								popupManager.alert("확정에 실패했습니다.", {title:'알림'});
+							}
+						});
+					}
+				//}
+			}
+		} else {
+			popupManager.alert("납입문서를 선택하세요", {title:'알림'});
+		}
+	}
+	
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

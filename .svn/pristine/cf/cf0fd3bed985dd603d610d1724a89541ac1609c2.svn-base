@@ -1,0 +1,204 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_pack_ordr_no, m_driv_nm, m_driv_tel, m_car_n, m_arri_day, m_arri_time;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_pack_ordr_no = dataManager.param("packOrderNO");
+		m_driv_nm = dataManager.param("driv_nm");
+		m_driv_tel = dataManager.param("driv_tel");
+		if (m_driv_tel == "undefined")
+			m_driv_tel = "";
+		m_car_n = dataManager.param("car_n");
+		m_arri_day = dataManager.param("arri_day");
+		m_arri_time = dataManager.param("arri_time");
+		
+		$("#lblCarNumber").text(m_car_n);
+		$("#lblDriverName").text(m_driv_nm);
+		$("#lblPhoneNumber").html(window.Utils.setTelClickCall(m_driv_tel));
+		
+		// TODO : DEBUG - START
+		// KD.get_H_T_UM_062_Update ==> 윤PM이 작성해준 쿼리르 넣어놨으나 오류가 많아 주석처리. 현재는 임시쿼리이므로 쿼리단 확인 하고 수정 필요.
+		// KD.get_H_T_UM_062_List  ==> 제공받은 쿼리로 작성하였으나 데이터가 없어 확인이 불가능하므로 데이터 확인이 되면 현재 쿼리에서 주석부분을 주석 해제하고 나머지 부분 삭제.
+		// TODO : DEBUG - END
+		
+		getSearchList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnGoCard1").on("click", moveGoCardDeail);
+		$("#btnGoCard2").on("click", moveGoCardView);
+		$("#btnPopClose").on("click", popCardViewClose);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		getSearchList();
+	};
+	
+	// 메인 검색
+	var getSearchList = function(){
+		networkManager.httpSend({
+			path: '/api/GCSListMultiSelect.do',
+			data: {
+				'QUERYIDS': "KD.get_H_T_UM_062_Update;KD.get_H_T_UM_062_List",
+				"PACK_ORDR_NO": m_pack_ordr_no
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount1 == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData1, function(index,rowData){
+						/* KD 포장장 별도 */
+						if (rowData.PLANT_CD == "A1") {
+							PLANT_NM = "사내포장장";
+						} else if (rowData.PLANT_CD == "B1") {
+							PLANT_NM = "서영1공장(아산)";
+						} else if (rowData.PLANT_CD == "B2") {
+							PLANT_NM = "서영2공장(아산)";
+						} else {
+							PLANT_NM = rowData.PLANT_NM;
+						}
+						if (rowData.LOC_CD == "PTA") {
+							LOC_TP = "PTA포장";
+						} else if (rowData.LOC_CD == "PTC") {
+							LOC_TP = "PTC포장";
+						} else if (rowData.LOC_CD == "PTC-W") {
+							LOC_TP = "위아포장";
+						} else if (rowData.LOC_CD == "PTM") {
+							LOC_TP = "PTM포장";
+						} else {
+							LOC_TP = rowData.LOC_TP;
+						}
+						tag += template.replace(/\{\{BARCODE\}\}/, rowData.BARCODE)
+								.replace(/\{\{PLANT_NM\}\}/gi, PLANT_NM)
+								.replace(/\{\{PLANT_CD\}\}/gi, rowData.PLANT_CD)
+								.replace(/\{\{CNT1\}\}/gi, rowData.CNT1)
+								.replace(/\{\{CNT2\}\}/gi, rowData.CNT2)
+								.replace(/\{\{RESULT\}\}/gi, rowData.RESULT)
+								.replace(/\{\{LOC_TP\}\}/gi, LOC_TP)
+								.replace(/\{\{LOC_CD\}\}/gi, rowData.LOC_CD)
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+				}
+				
+				$(".list_t_um26").html(tag);
+				setListRowEvent();
+			}
+		 });
+	};
+	
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("div").removeClass("on");
+			}
+		})
+	};
+	
+	// 카드조회 버튼 이벤트
+	var moveGoCardDeail = function() {
+		var selObj = $(".mLink.on");
+		var plant_cd = selObj.data("plantcd");
+		var loc_cd = selObj.data("loccd");
+		if (plant_cd != undefined){
+			screenManager.moveToPage('/www/html/H_T_UM_063.html', {
+				param: {
+					PACK_NO: M.sec.encrypt(m_pack_ordr_no.toString()).result,
+					PLANT_CD: M.sec.encrypt(plant_cd.toString()).result,
+					LOC_CD: M.sec.encrypt(loc_cd.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("내역을 선택하세요", {title: '알림'});
+		}
+	}
+	
+	// 납입카드 버튼 이벤트
+	var moveGoCardView = function() {
+		var selObj = $(".mLink.on");
+		var barcode = selObj.data("id");
+		var plant_nm = selObj.data("plantnm");
+		var loc_nm = selObj.data("loctp");
+		if (barcode != undefined){
+			$("#popCardView").removeClass("blind");
+			$("main").addClass("popActive");
+			
+			$("#lblPlant").text(plant_nm);
+			$("#lblLoc").text(loc_nm);
+			$("#lblArri_DT").text(m_arri_day);
+			$("#lblArri_TM").text(m_arri_time);
+			$(".btn_btTop").addClass("blind");
+			setBarcode(barcode);
+		} else {
+			popupManager.alert("내역을 선택하세요", {title: '알림'});
+		}
+	};
+	
+	var popCardViewClose = function(){
+		$("#popCardView").addClass("blind");
+		$("main").removeClass("popActive");
+		$(".btn_btTop").removeClass("blind");
+	}
+	
+	// 바코드 출력
+	var setBarcode = function(value) {
+        var btype = "code128";
+        var renderer = "bmp";
+		var quietZone = false;
+        var settings = {
+          output:renderer,
+		  bgColor: "#FFFFFF",
+          color: "#000000",
+		  barWidth : "7",
+          barHeight: "250",
+          moduleSize: "5",
+          addQuietZone: "0"
+        };
+		$("#barcodeArea").html("").show().barcode(value, btype, settings);
+		var screenWidth = M.page.info("screenWidth");
+		$("#barcodeArea").css("width", screenWidth + "px");
+		$("#barcodeArea object").css("width",screenWidth + "px");
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

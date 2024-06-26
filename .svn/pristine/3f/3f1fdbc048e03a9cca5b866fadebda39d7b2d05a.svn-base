@@ -1,0 +1,438 @@
+[
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_activity_imagelist2.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\activity_imagelist2.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_bottom_btn_list_s.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_bottom_btn_list_s.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_batchtwo.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\batchtwo.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_crop_btn_crop_operator.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_crop_btn_crop_operator.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_addon_popup_number_picker.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\addon_popup_number_picker.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_down_selected.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_down_selected.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\xml_network_security_config.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\xml\\network_security_config.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_up_selected.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_up_selected.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_addon_media_crop_cropimage.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\addon_media_crop_cropimage.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_image_list_item.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\image_list_item.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_zoom_out.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_zoom_out.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_input_disabled.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_input_disabled.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_crop_indicator_autocrop.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_crop_indicator_autocrop.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_plugin_docviewer_pdf_textentry.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\plugin_docviewer_pdf_textentry.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_hold.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_hold.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout-xlarge_addon_media_audiorecorder.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout-xlarge\\addon_media_audiorecorder.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_zoom_enter.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_zoom_enter.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_crop_btn_crop_pressed.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_crop_btn_crop_pressed.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_zoom_in.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_zoom_in.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_sample2.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\sample2.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_crop_camera_crop_height.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_crop_camera_crop_height.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_general_title_btn_before.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\general_title_btn_before.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_zoom_exit.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_zoom_exit.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_ic_cancel.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\ic_cancel.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_image_list.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\image_list.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_record_mike.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_record_mike.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\xml_mcore_provider_paths.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\xml\\mcore_provider_paths.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_media_rec_btn_record.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_media_rec_btn_record.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_mapview.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\mapview.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_listitemtitle.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\listitemtitle.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_image_details_activity.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\image_details_activity.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_slide_top_out.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_slide_top_out.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_addon_popup_date_picker_dialog.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\addon_popup_date_picker_dialog.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_bottom_slide_down.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\bottom_slide_down.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_bottom_btn_cancel_s.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_bottom_btn_cancel_s.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_bottom_slide_up.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\bottom_slide_up.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_record_menu_bg.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_record_menu_bg.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_icon.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\icon.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_input_normal.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_input_normal.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_listitem.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\listitem.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_ic_fullscreen_shrink.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\ic_fullscreen_shrink.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_core_progressdialoglayout.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\core_progressdialoglayout.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_crop_ic_rotate_right.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_crop_ic_rotate_right.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_icon.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-mdpi\\icon.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_up_disabled_focused.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_up_disabled_focused.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_slide_top_in.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_slide_top_in.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_tab_shadow.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\tab_shadow.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_up_normal.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_up_normal.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_media_rec_btn_stop.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_media_rec_btn_stop.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_record_bg_shadow.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_record_bg_shadow.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_input_pressed.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_input_pressed.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_bottom_btn_stop_s.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_bottom_btn_stop_s.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_popup_recoding_bg.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_popup_recoding_bg.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_plugin_docviewer_pdf_buttons.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\plugin_docviewer_pdf_buttons.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_bottom_btn_record_n.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_bottom_btn_record_n.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_slide_bottom_out.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_slide_bottom_out.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_down_normal.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_down_normal.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_media_rec_btn_list.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_media_rec_btn_list.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_fade_out.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_fade_out.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_addon_popup_date_picker.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\addon_popup_date_picker.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_record_mike.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_record_mike.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_capture.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\capture.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_batchone.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\batchone.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_activity_blt.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\activity_blt.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_record_bg.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_record_bg.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_activity_media_player.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\activity_media_player.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_none_in.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_none_in.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_notice_list_bg.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\notice_list_bg.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_crop_ic_rotate_left.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_crop_ic_rotate_left.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_bottom_btn_cancel_n.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_bottom_btn_cancel_n.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_addon_net_progressnetworkdialoglayout.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\addon_net_progressnetworkdialoglayout.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_ic_fullscreen_stretch.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\ic_fullscreen_stretch.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_slide_right_out.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_slide_right_out.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_gridview_item.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\gridview_item.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_input_selected.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_input_selected.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_sample.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\sample.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_qr_code_bg.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\qr_code_bg.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_input.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_input.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_record_menu_bg.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_record_menu_bg.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_slide_right_in.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_slide_right_in.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_none_out.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_none_out.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_slide_left_in.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_slide_left_in.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_up_disabled.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_up_disabled.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_crop_selector_crop_button.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_crop_selector_crop_button.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_bottom_btn_record_s.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_bottom_btn_record_s.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_slide_left_out.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_slide_left_out.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_bottom_btn_stop_n.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_bottom_btn_stop_n.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_image_folder_list.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\image_folder_list.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_activity_imagelist.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\activity_imagelist.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_addon_media_audiorecorder.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\addon_media_audiorecorder.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_down_disabled.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_down_disabled.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_down_disabled_focused.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_down_disabled_focused.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi_icon.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-ldpi\\icon.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_addon_media_bottom_btn_list_n.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-hdpi\\addon_media_bottom_btn_list_n.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_up_pressed.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_up_pressed.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_start_bg.jpg.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\start_bg.jpg"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_record_bg.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_record_bg.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_down_btn.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_down_btn.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_plugin_docviewer_activity_webview.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\plugin_docviewer_activity_webview.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_fade_in.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_fade_in.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout-land_encode.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout-land\\encode.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_gridview_item2.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\gridview_item2.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_nativelist.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\nativelist.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_down_pressed.9.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_down_pressed.9.png"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\layout_main.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\layout\\main.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_media_rec_btn_cancel.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_media_rec_btn_cancel.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable_addon_popup_picker_up_btn.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable\\addon_popup_picker_up_btn.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\anim_core_slide_bottom_in.xml.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\anim\\core_slide_bottom_in.xml"
+    },
+    {
+        "merged": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_addon_media_crop_camera_crop_width.png.flat",
+        "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\drawable-xhdpi\\addon_media_crop_camera_crop_width.png"
+    }
+]

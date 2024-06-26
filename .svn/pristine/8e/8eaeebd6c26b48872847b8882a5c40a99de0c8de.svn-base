@@ -1,0 +1,175 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var packOrderNO, driv_id, car_n;
+	var m_status;
+	var vend_cd; //, status;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		packOrderNO = dataManager.param('packOrderNO');
+		driv_id = dataManager.param("driv_id");
+		car_n = dataManager.param("car_n");
+		m_status = dataManager.param("status");
+
+		getSearchData();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnGoFullList").on("click", moveToFullList);
+		$("#btnGoDetail").on("click", moveToDetail);
+		$("#btnExclude").on("click", setExclude);
+		
+		$(".moreArea").on("click", function(){
+			$(this).toggleClass("expand");
+			$(this).siblings(".box_inner").toggleClass("expand");
+		});
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		getSearchData();
+	}
+	
+	var getSearchData = function() {
+		networkManager.httpSend({
+			path: '/api/TLSListMultiSelect.do',
+			data: {
+				'QUERYIDS': "TLS.get_H_D_UM_013_info;TLS.get_H_D_UM_013_List",
+				"DRIV_ID": driv_id,
+				"ORDR_NO": packOrderNO
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount0 != 0) {
+					var data = receivedData.ListData0[0];
+					$("#lblDistCompName").text(data.DIST_VEND_NM);
+					$("#lblPartCompName").text(data.VEND_NM);
+					$("#lblCarNumber").text(car_n);
+					$("#lblDriverName").text(data.DRIV_NM);
+					$("#lblPhoneNumber").text(window.Utils.getTelCenterLine(data.DRIV_TEL));
+					vend_cd = data.DIST_VEND_CD;
+				}
+				
+				var tag =$("#ListHeadTemplate").html();
+				if (receivedData.ListCount1 == 0){
+					tag = $("#ListNoDataTemplate").html();
+				} else {
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData1, function(index,rowData){
+						/*if (index == 0)
+							status = rowData.STATUS;*/
+						tag += template.replace(/\{\{ORDR_NO\}\}/gi, rowData.ORDR_NO)
+								.replace(/\{\{PLANT_NM\}\}/, rowData.PLANT_NM)
+								.replace(/\{\{LOC_TP\}\}/, rowData.LOC_TP)
+								.replace(/\{\{STAT\}\}/, rowData.STAT)
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+				}
+				
+				$(".list_t_um13").html(tag);
+				setListRowEvent();
+			},
+			error: function(errorCode, errorMessage){
+				alert(errorCode + " : " + errorMessage);
+			}
+		});
+	}
+	
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("div").removeClass("on");
+			}
+		});
+	};
+	
+	// 전체목록 버튼 이벤트
+	var moveToFullList = function() {
+		screenManager.moveToPage('/www/html/H_D_UM_014.html', {
+			param: {
+				PACK_NO: M.sec.encrypt(packOrderNO).result,
+				VEND_CD: M.sec.encrypt(vend_cd).result,
+				STATUS: M.sec.encrypt(m_status).result
+			},
+			action: 'NEW_SCR'
+		});
+	}
+	
+	// 상세보기 버튼 이벤트
+	var moveToDetail = function() {
+		var id = $(".mLink.on").data("id");
+		if (id != undefined){
+			screenManager.moveToPage('/www/html/H_D_UM_015.html', {
+				param: {
+					PACK_NO: M.sec.encrypt(packOrderNO).result,
+					ORDR_NO: M.sec.encrypt(id).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("납입문서를 선택하세요", {title: '알림'});
+		}
+	};
+	
+	// 상차제외 버튼 이벤트
+	var setExclude = function() {
+		if (m_status == "D"){
+			var id = $(".mLink.on").data("id");
+			if (id != undefined){
+				networkManager.httpSend({
+					path: '/api/TLSListSelect.do',
+					data: {
+						'QUERYID': "TLS.get_H_D_UM_013_Delete",
+						"PACK_NO": packOrderNO,
+						"ORDR_NO": id
+					},
+					success: function(receivedData, setting) {
+						popupManager.instance("상차제외완료", {title: '알림'});
+						getSearchData();
+					}
+				});
+			} else {
+				popupManager.alert("납입문서를 선택하세요", {title: '알림'});
+			}
+		} else {
+			popupManager.alert("운송중에는 상차제외가 불가능합니다", {title:"알림"});
+			return;
+		}
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

@@ -1,0 +1,143 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+    var EQ_NO="";
+    var STATUS="";
+    var DATE="";
+    var DATEL="";
+    var CHECK_LIST="";
+    var PART_LOC="";
+    var PART_NM="";
+    var MEAS="";
+	// 화면 초기화
+	var setInitScreen = function() {
+	    EQ_NO = dataManager.param("EQ_NO");
+	    STATUS = dataManager.param("STATUS");
+	    DATE = dataManager.param("DATE");
+	    DATEL = dataManager.param("DATEL");
+	    CHECK_LIST = dataManager.param("CHECK_LIST");
+	    PART_LOC = dataManager.param("PART_LOC");
+	    PART_NM = dataManager.param("PART_NM");
+	    MEAS = dataManager.param("MEAS");
+	    $("#txtAUFNR").text(EQ_NO);
+	    $("#txtTDATE").text(window.Utils.getTodayFormat("yyyy.MM.dd HH:mm:ss"));
+	    $("#txtSTATUS").text(STATUS);
+	    $("#txtDATE").text(DATE);
+	    $("#txtDATEL").text(DATEL);
+	    $("#txtCHECK_LIST").text(CHECK_LIST);
+	    $("#txtPART_LOC").text(PART_LOC);
+	    $("#txtPART_NM").text(PART_NM);
+	    getSearchList();
+
+	};
+
+	// 이벤트 초기화
+	var setInitEvent = function() {
+	};
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+	};
+
+	// 메인 검색
+	var getSearchList = function(){
+	    MeasureUnit();
+	    var query = 'SELECT * FROM PVNT WHERE WERKS = "'+optionManager.getWERKS()+'" AND GSTRP = "'+arri_dtst+'" AND ARBPL = "'+optionManager.getARBPL()+'" AND ZPROC = "'+optionManager.getZPROC()+'" AND AUFNR = "'+EQ_NO+'"';
+        M.db.execute(userManager.getDRIV_ID(), query, function(status, result,  name) {
+            if(status == "FAIL" || result.row_count < 1) {
+                popupManager.instance("예방점검 항목 데이터가 없습니다.", {showtime:"SHORT"});
+            } else {
+                popupManager.instance("예방점검 항목 데이터를 불러옵니다.", {showtime:"SHORT"});
+                selectTABLE(result);
+            }
+        });
+    	var tag = "";
+    	var template = $("#ListTemplate").html();
+    		tag += template.replace(/\{\{NUM\}\}/gi, "1")
+    				       .replace(/\{\{VORNR\}\}/gi, "0010")
+    				       .replace(/\{\{LTXA1\}\}/gi, "칠러 가스 압력")
+    				       .replace(/\{\{USR00\}\}/gi, "측정값/육안")
+    				       .replace(/\{\{USR04\}\}/, "10")
+    				       .replace(/\{\{USR05\}\}/, "20")
+    				       .replace(/\{\{USE04\}\}/gi, "g/cm")
+    				       .replace(/\{\{USR01\}\}/gi, "15")
+    				       .replace(/\{\{READC\}\}/gi, "12.1")
+    				       .replace(/\{\{STAT_CD\}\}/, "");
+    	$("#list_bj_041").html(tag);
+	};
+
+	var selectTABLE = function(data) {
+        var tag = "";
+        var template = $("#ListTemplate").html();
+        $.each(data.row_list, function(index,rowData){
+            tag += template.replace(/\{\{NUM\}\}/gi, index+1)
+                		   .replace(/\{\{VORNR\}\}/gi, rowData.VORNR)
+                		   .replace(/\{\{LTXA1\}\}/gi, rowData.LTXA1)
+                		   .replace(/\{\{USR00\}\}/gi, rowData.USR00)
+                		   .replace(/\{\{USR04\}\}/, rowData.USR04)
+                		   .replace(/\{\{USR05\}\}/, rowData.USR05)
+/*                		   if(rowData.USEYN != "" || rowData.USEYN != null || rowData.USEYN != undefined){
+                		       .replace(/\{\{USE04\}\}/, rowData.USE04)
+                		   }*/
+                		   .replace(/\{\{USR04\}\}/gi, rowData.USR04)
+                		   .replace(/\{\{USR01\}\}/gi, rowData.USR01)
+                		   .replace(/\{\{READC\}\}/gi, rowData.READC)
+/*                		   if(rowData.OK == "" || rowData.OK == null || rowData.OK == "O"){
+                               .replace(/\{\{O\}\}/, "checked")
+                           }else{
+                               .replace(/\{\{N\}\}/, "checked")
+                           }*/
+                		   .replace(/\{\{STAT_CD\}\}/, "");
+        });
+        $("#list_bj_041").append(tag);
+        inputEvent();
+    };
+
+	var MeasureUnit = function() {
+    	networkManager.httpSend({
+    		path: 'api/MeasureUnit.do',
+    		data: {
+    			'spras': 'ko',
+                'event':'단위정보'
+    		},
+    		success: function(receivedData, setting) {
+    			var tag = "";
+    			$("select[name='selMUnit']").html("");
+    			$.each(receivedData.MeasureUnitList, function(index,rowData){
+    				tag += "<option value='" + rowData.ISOCODE + "'>" + rowData.MSEH6 + "</option>";
+    			});
+    			$("select[name='selMUnit']").append(tag);
+    		}
+    	});
+    };
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

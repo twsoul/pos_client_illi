@@ -1,0 +1,214 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_pack_ordr_no, m_ordr_no;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_pack_ordr_no = dataManager.param("PACK_NO");
+		m_ordr_no = dataManager.param("ORDR_NO");
+		getSelectList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	// 메인 검색
+	var getSelectList = function(){
+		var ordr_no;
+		networkManager.httpSend({
+			path: '/api/CKDListMultiSelect.do',
+			data: {
+				'QUERYIDS': "CKD.get_H_T_UM_100_List_01;CKD.get_H_T_UM_100_List_03",
+				"ORDR_NO": m_ordr_no
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				var unit_qty_sum = 0;
+				var s_ord_qty_sum= 0;
+				var s_rcv_qty_sum= 0;
+				var s_unit_qty_sum= 0;
+				if (receivedData.ListCount0 == 0){
+					//tag = $("#ListNoDataTemplate").html();
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					//직대여부에 따른 케이스번호 출력
+					var zpack= '';
+					$.each(receivedData.ListData0, function(index,rowData){
+						if(zpack == ''){
+							zpack= rowData.ZPACK;
+						}
+					});
+					
+					if(zpack == '' || zpack == undefined){					
+						var template = $("#ListTemplate").html();
+						tag = $("#ListHeadTemplate").html();
+						$("#list_t_um32_head").html(tag);
+						tag = "";
+						$.each(receivedData.ListData0, function(index,rowData){
+							if (index == 0){
+								$("#lblVEND_NM").text(rowData.VEND_NM);
+								$("#lblIdentiNo").text(rowData.ID_NO + " " + (rowData.PLANT_CD == undefined ? "" : rowData.PLANT_CD));
+								$("#lblPLANT_CD").text(rowData.PLANT_CD);
+								$("#lblLocation").text(rowData.MSC_DESC);
+								$("#lblDate01").text(window.Utils.getStrDateComma(rowData.SEND_DTM));
+								$("#lblDate02").text(window.Utils.getStrDateComma(rowData.ARRI_DT));
+								ordr_no = rowData.ID_NO;
+							}
+							tag += template.replace(/\{\{PART_NO\}\}/gi, rowData.PART_NO)
+									.replace(/\{\{PART_NM\}\}/, rowData.PART_NM)
+									.replace(/\{\{SEQ\}\}/, index+1)
+									.replace(/\{\{ORD_QTY\}\}/, rowData.ORD_QTY)
+									.replace(/\{\{RCV_QTY\}\}/, rowData.RCV_QTY)
+									.replace(/\{\{PO_NO\}\}/, rowData.PO_NO)
+									.replace(/\{\{UNIT_QTY\}\}/, rowData.UNIT_QTY)
+									.replace(/\{\{BOX_QTY\}\}/, rowData.BOX_QTY)
+									.replace(/\{\{LAST_ROW\}\}/, (index+1) == receivedData.ListCount0 ? "" : "");
+							unit_qty_sum += Number(rowData.UNIT_QTY);
+							s_ord_qty_sum += Number(rowData.ORD_QTY);
+							s_rcv_qty_sum += Number(rowData.RCV_QTY);
+							s_unit_qty_sum += Number(rowData.BOX_QTY);
+							if (receivedData.ListData0.length < 5) {
+								for (z = receivedData.ListData0.length; z < 5; z++) {
+									tag += template.replace(/\{\{PART_NO\}\}/gi, "　")
+									.replace(/\{\{PART_NM\}\}/, "　")
+									.replace(/\{\{SEQ\}\}/, " ")
+									.replace(/\{\{ORD_QTY\}\}/, " ")
+									.replace(/\{\{RCV_QTY\}\}/, " ")
+									.replace(/\{\{PO_NO\}\}/, " ")
+									.replace(/\{\{UNIT_QTY\}\}/, " ")
+									.replace(/\{\{BOX_QTY\}\}/, " ")
+									.replace(/\{\{VEND_NM\}\}/, " ")
+									.replace(/\{\{LAST_ROW\}\}/, (index+1) == receivedData.ListCount0 ? "" : "");
+								}
+							}
+						});
+					}else{
+						var template = $("#ListTemplate1").html();
+						tag = $("#ListHeadTemplate1").html();
+						$.each(receivedData.ListData0, function(index,rowData){
+							if (index == 0){
+								$("#lblVEND_NM").text(rowData.VEND_NM);
+								$("#lblIdentiNo").text(rowData.ID_NO + " " + (rowData.PLANT_CD == undefined ? "" : rowData.PLANT_CD));
+								$("#lblPLANT_CD").text(rowData.PLANT_CD);
+								$("#lblLocation").text(rowData.MSC_DESC);
+								$("#lblDate01").text(window.Utils.getStrDateComma(rowData.SEND_DTM));
+								$("#lblDate02").text(window.Utils.getStrDateComma(rowData.ARRI_DT));
+								ordr_no = rowData.ID_NO;
+							}
+							tag += template.replace(/\{\{PART_NO\}\}/gi, rowData.PART_NO)
+									.replace(/\{\{PART_NM\}\}/, rowData.PART_NM)
+									.replace(/\{\{EXIDV\}\}/, rowData.EXIDV)
+									.replace(/\{\{SEQ\}\}/, index+1)
+									.replace(/\{\{ORD_QTY\}\}/, rowData.ORD_QTY)
+									.replace(/\{\{RCV_QTY\}\}/, rowData.RCV_QTY)
+									.replace(/\{\{PO_NO\}\}/, rowData.PO_NO)
+									.replace(/\{\{UNIT_QTY\}\}/, rowData.UNIT_QTY)
+									.replace(/\{\{BOX_QTY\}\}/, rowData.BOX_QTY)
+									.replace(/\{\{LAST_ROW\}\}/, (index+1) == receivedData.ListCount0 ? "" : "");
+							unit_qty_sum += Number(rowData.UNIT_QTY);
+							s_ord_qty_sum += Number(rowData.ORD_QTY);
+							s_rcv_qty_sum += Number(rowData.RCV_QTY);
+							s_unit_qty_sum += Number(rowData.BOX_QTY);
+							if (receivedData.ListData0.length < 5) {
+								for (z = receivedData.ListData0.length; z < 5; z++) {
+									tag += template.replace(/\{\{PART_NO\}\}/gi, "　")
+									.replace(/\{\{PART_NM\}\}/, "　")
+									.replace(/\{\{SEQ\}\}/, " ")
+									.replace(/\{\{ORD_QTY\}\}/, " ")
+									.replace(/\{\{RCV_QTY\}\}/, " ")
+									.replace(/\{\{PO_NO\}\}/, " ")
+									.replace(/\{\{UNIT_QTY\}\}/, " ")
+									.replace(/\{\{BOX_QTY\}\}/, " ")
+									.replace(/\{\{VEND_NM\}\}/, " ")
+									.replace(/\{\{LAST_ROW\}\}/, (index+1) == receivedData.ListCount0 ? "" : "");
+								}
+							}
+						});
+					}
+					
+					
+					$("#list_t_um32_body").html(tag);
+				}
+				
+				tag = "";
+				var footTemplate = $("#ListFootTemplate").html();
+					tag += footTemplate.replace(/\{\{tot_cnt1\}\}/gi, s_ord_qty_sum)
+								.replace(/\{\{tot_cnt2\}\}/gi, s_rcv_qty_sum)
+								.replace(/\{\{tot_cnt3\}\}/gi, unit_qty_sum)
+								.replace(/\{\{tot_cnt4\}\}/gi, s_unit_qty_sum);
+				$("#list_t_um32_foot").html(tag);
+				
+				if (receivedData.ListCount1 != 0) {
+					tag = "";
+					$.each(receivedData.ListData1, function(index,rowData){
+						$("#lblCar").text(rowData.CAR_N);
+						$("#lblDriver").text(rowData.DRIV_NM);span 태그
+						$("#lblDriver_Tel").html(window.Utils.setTelClickCall(rowData.DRIV_TEL));
+						$("#lblbox01").html(rowData.STATUS == "S" ? "<span class=\"confirmSign\" style =\"font-size:1em\">현대트랜시스<br>생산관리부<br>승인</span>" : "");
+						$("#lblbox02").html(rowData.STAT + " <em>" + window.Utils.getStrDateComma(rowData.UPDT_DTM) + "</em>");
+					});
+					$("#list_t_um32_foot").append(tag);
+				}
+				
+				setBarcode(ordr_no);
+				//$("#list_t_um32").html(tag);
+			}
+		 });
+	}
+	
+	// 바코드 출력
+	var setBarcode = function(value) {
+		var btype = "code128";
+		var renderer = "css";
+		var quietZone = false;
+		var settings = {
+				output:renderer,
+				bgColor: "#FFFFFF",
+				color: "#000000",
+				barWidth : "1",
+				barHeight: "20",
+				moduleSize: "5",
+				addQuietZone: "0"
+		};
+		$("#barcodeArea").html("").show().barcode(value, btype, settings);
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

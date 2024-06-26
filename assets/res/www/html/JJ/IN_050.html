@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>용기관리</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000078"></h2><!--용기관리-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="opt_select clearfix"><!--플랜트-->
+								<p class="lineHead" data-lng="LB.0000000030"></p><p class="selectBox"><select name="selPLANT" id="selPLANT"></select></p>
+							</div>
+							<div class="opt_date clearfix"><!--일자-->
+								<p class="lineHead" data-lng="LB.0000000566"></p><p><span><input type="text" id="date_st" readonly></span><em>~</em><span><input type="text" id="date_ed" readonly></span></p>
+							</div>
+							<div class="opt_select opt_select2 opt_input doubleDep clearfix"><!--품번-->
+								<p class="lineHead" data-lng="LB.0000000038"></p><p class="selectBox" style="width:20%;">
+									<select name="selPART_SEARCH_TYPE" id="selPART_SEARCH_TYPE">
+										<option value="1">유사</option>
+										<option value="2">일치</option>
+									</select>
+								</p>
+								<p class="inputBox" style="width:46%;"><span><input type="text" placeholder="입력하세요" id="txtPART_NO"></span></p>
+							</div>
+							<div class="opt_select opt_select2 doubleDep clearfix"><!--라인-->
+								<p class="lineHead" data-lng="LB.0000000195"></p><p class="selectBox" style="width:33%;"><select name="selLOCTP" id="selLOCTP"></select></p>
+								<p class="selectBox"><select name="selLINE_DT" id="selLINE_DT"></select></p>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+			<section>
+				<div class="container">
+					<article class="tableList">
+						<div class="list_inner list_in_050 blind" id="list_in_050_head">
+							<div class="tableHead">
+								<div class="multiple_cate">
+									<p data-lng="LB.0000000030"></p><!--플랜트-->
+									<p data-lng="LB.0000000563"></p><!--주/야간-->
+								</div>
+								<div class="multiple_cate">
+									<p data-lng="LB.0000000564"></p><!--상세라인-->
+									<p data-lng="LB.0000000038"></p><!--품번-->
+								</div>
+								<div class="multiple_cate">
+									<p data-lng="LB.0000000565"></p><!--발생일,시-->
+									<p data-lng="LB.0000000040"></p><!--품명-->
+								</div>
+							</div>
+						</div>
+						<div class="list_inner list_in_050 adjFix" id="list_in_050">
+
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor"><button type="button" id="btnSearch" data-lng="LB.0000000144"></button></p><!--조회-->
+			<p class="classicalBtn adjColor"><button type="button" id="btnRegist" data-lng="LB.0000000017"></button></p><!--등록-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000538">조회된 데이터가 없습니다</span>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont mLink {{FIRST_ROW}}" data-id="{{VER_SEQ}}">
+		<div class="multiple_cate">
+			<p class="PLANT_NM">{{PLANT_NM}}</p>
+			<p class="WORK_TP">{{WORK_TP}}</p>
+		</div>
+		<div class="multiple_cate">
+			<p class="LINE_DT_NM">{{LINE_DT_NM}}</p>
+			<p class="PART_NO">{{PART_NO}}</p>
+		</div>
+		<div class="multiple_cate">
+			<p class="ISSUE_TM">{{ISSUE_TM}}</p>
+			<p class="PART_NM">{{PART_NM}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/IN_050.js"></script>
+</html>

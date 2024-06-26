@@ -1,0 +1,273 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		$("#date_st").val(window.Utils.getTodayFormat("yyyy.MM.dd", -1, "M"));
+		$("#date_ed").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		
+		getSearchList();
+		getNoticeType();
+		
+		//DEBUG
+		//$("#date_st").val("2015.02.01");
+		//$("#date_ed").val("2015.02.15");
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		setTabNSwipe();
+		
+		//우선공지사항
+		$("#btnDetail").on("click", moveToDetail);
+		
+		//공지사항
+		$("#date_st").on("click", function(){
+			window.Utils.getCalendar("date_st", null, "date_ed");
+		});
+		$("#date_ed").on("click", function(){
+			window.Utils.getCalendar("date_ed", "date_st", null);
+		});
+		$("#btnSearch2").on("click", getSearchList2);
+		$("#btnDetail2").on("click", moveToDetail);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	};
+	
+	var getNoticeType = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_NoticeType"
+			},
+			success: function(receivedData, setting) {
+				var tag = "<option value=\"ALL\">전체</option>";
+				$("#selType").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.MSC_CD + "'>" + rowData.MSC_DESC + "</option>";
+				});
+				$("#selType").append(tag);
+			}
+		});
+	};
+	
+	// 메인 검색
+	var getSearchList = function(){
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_H_T_UM_040_List"
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0){
+					//tag = $("#ListNoDataTemplate").html();
+				} else {
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += template.replace(/\{\{NUM\}\}/, rowData.NUM)
+								.replace(/\{\{TITLE\}\}/, rowData.TITLE)
+								.replace(/\{\{ATTACH\}\}/, rowData.ATTACH == "무" ? "" : "<i class=\"material-icons\">attachment</i></span>")
+								.replace(/\{\{KMS_NM\}\}/, rowData.KMS_NM)
+								.replace(/\{\{MLINK\}\}/, "mLink");
+					});
+				}
+				
+				$("#list_t_um40").html(tag);
+				setListRowEvent();
+			}
+		 });
+	};
+	
+	var getSearchList2 = function() {
+		var dtst = window.Utils.replaceAll($("#date_st").val(),".", "");
+		var dtto = window.Utils.replaceAll($("#date_ed").val(),".", "");
+		var gubun = $("#selType > option:selected").val();
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_H_T_UM_042_List",
+				"FROM":dtst,
+				"TO":dtto,
+				"GUBUN":gubun
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0){
+					tag = $("#ListNoDataTemplate").html();
+					popupManager.instance('조회된 공지사항이 없습니다.');
+				} else {
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += template.replace(/\{\{NUM\}\}/, rowData.NUM)
+								.replace(/\{\{TITLE\}\}/, rowData.TITLE)
+								.replace(/\{\{ATTACH\}\}/, rowData.ATTACH == "무" ? "" : "<i class=\"material-icons\">attachment</i></span>")
+								.replace(/\{\{KMS_NM\}\}/, rowData.KMS_NM)
+								.replace(/\{\{MLINK\}\}/, "mLink2");
+					});
+				}
+				
+				$("#list_t_um42").html(tag);
+				setListRowEvent2();
+			}
+		 });
+	};
+	
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("tr").removeClass("on");
+			}
+		})
+	};
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent2 = function(){
+		$(".mLink2").off("click","**");
+		$(".mLink2").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("tr").removeClass("on");
+			}
+		})
+	};
+	
+	var moveToDetail = function() {
+		var id = ""
+		if ($("header div.container h4:first-child").hasClass("on")){
+			id = $(".mLink.on").data("id");
+		} else {
+			id = $(".mLink2.on").data("id");
+		}
+		if (id != undefined){
+			screenManager.moveToPage('/www/html/H_T_UM_041.html', {
+				param: {
+					NUM: M.sec.encrypt(id.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("선택된 값이 없습니다.", {title: '알림'});
+		}
+	};
+	
+	var setTabNSwipe = function() {
+		$(".tabmenu > div > h4").on("click", function(){
+			$(this).addClass("on");
+			$(this).siblings("h4").removeClass("on");
+			var p = $(this).index();
+			if( p == 0 ){
+				$(".contents_inner").css("transform", "translateX(0%)");
+				$(".contents_inner").children("section").first().css("height", "auto");
+				$(".contents_inner").children("section").last().css("height", "0");
+				$(".btn_sec1").removeClass("blind");
+				$(".btn_sec2").addClass("blind");
+				getSearchList();
+			}else if ( p == 1){
+				$(".contents_inner").css("transform", "translateX(-50%)");
+				$(".contents_inner").children("section").first().css("height", "0");
+				$(".contents_inner").children("section").last().css("height", "auto");
+				$(".btn_sec2").removeClass("blind");
+				$(".btn_sec1").addClass("blind");
+				getSearchList2();
+			};
+		});
+		
+		if($(".tabmenu > div > h4").hasClass("on")){	// 초기화면 리셋
+			var p = $(".tabmenu > div > h4").index();
+			if( p == 0 ){
+				$(".contents_inner").css("transform", "translateX(0%)");
+				$(".contents_inner").children("section").first().css("height", "auto");
+				$(".contents_inner").children("section").last().css("height", "0");
+				$(".btn_sec1").removeClass("blind");
+				$(".btn_sec2").addClass("blind");
+			}else if ( p == 1){
+				$(".contents_inner").css("transform", "translateX(-50%)");
+				$(".contents_inner").children("section").first().css("height", "0");
+				$(".contents_inner").children("section").last().css("height", "auto");
+				$(".btn_sec2").removeClass("blind");
+				$(".btn_sec1").addClass("blind");
+			};
+		}
+
+		// swipe
+		window.addEventListener('touchstart', function(event) {
+			var touch = event.touches[0];
+			touchstartX = touch.clientX;
+			touchstartY = touch.clientY;
+		}, false);
+		 
+		window.addEventListener('touchend', function(event) {
+		if(event.touches.length == 0) {
+			var touch = event.changedTouches[event.changedTouches.length - 1];
+			touchendX = touch.clientX;
+			touchendY = touch.clientY;
+
+			touchoffsetX = touchendX - touchstartX;
+			touchoffsetY = touchendY - touchstartY;
+
+		if(Math.abs(touchoffsetX) >= 20 && Math.abs(touchoffsetY) <= 10) {
+			if(touchoffsetX < 0)
+				$(".contents_inner").css("transform", "translateX(-50%)"),
+				$(".contents_inner").children("section").first().css("height", "0"),
+				$(".contents_inner").children("section").last().css("height", "auto"),
+				$(".tabmenu h4").last().addClass("on"),
+				$(".tabmenu h4").first().removeClass("on"),
+				$(".btn_sec2").removeClass("blind"),
+				$(".btn_sec1").addClass("blind");
+			else
+				$(".contents_inner").css("transform", "translateX(0%)"),
+				$(".contents_inner").children("section").first().css("height", "auto"),
+				$(".contents_inner").children("section").last().css("height", "0"),
+				$(".tabmenu h4").first().addClass("on"),
+				$(".tabmenu h4").last().removeClass("on"),
+				$(".btn_sec1").removeClass("blind"),
+				$(".btn_sec2").addClass("blind");
+				}
+			}
+		}, false);
+	};
+	
+	var moveToPage = function() {
+		screenManager.moveToPage('/www/html/H_T_UM_042.html');
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

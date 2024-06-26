@@ -1,0 +1,186 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_pack_ordr_no, m_driv_nm, m_driv_tel, m_car_n, m_arri_day, m_arri_time;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_pack_ordr_no = dataManager.param("packOrderNO");
+		m_driv_nm = dataManager.param("driv_nm");
+		m_driv_tel = dataManager.param("driv_tel");
+		if (m_driv_tel == "undefined")
+			m_driv_tel = "";
+		m_car_n = dataManager.param("car_n");
+		m_arri_day = dataManager.param("arri_day");
+		m_arri_time = dataManager.param("arri_time");
+		
+		$("#lblCarNumber").text(m_car_n);
+		$("#lblDriverName").text(m_driv_nm);
+		$("#lblPhoneNumber").html(window.Utils.setTelClickCall(m_driv_tel));
+		getSearchList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnGoCard1").on("click", moveGoCardDeail);
+		$("#btnGoCard2").on("click", moveGoCardView);
+		$("#btnPopClose").on("click", popCardViewClose);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	// 메인 검색
+	var getSearchList = function(){
+		networkManager.httpSend({
+			path: '/api/CKDListMultiSelect.do',
+			data: {
+				'QUERYIDS': "CKD.get_H_T_UM_095_Update;CKD.get_H_T_UM_095_List",
+				"PACK_ORDR_NO": m_pack_ordr_no
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount1 == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData1, function(index,rowData){
+						tag += template.replace(/\{\{BARCODE\}\}/, rowData.BARCODE)
+								.replace(/\{\{PLANT_NM\}\}/gi, rowData.PLANT_NM)
+								.replace(/\{\{PLANT_CD\}\}/gi, rowData.PLANT_CD)
+								.replace(/\{\{CNT1\}\}/gi, rowData.CNT1)
+								.replace(/\{\{CNT2\}\}/gi, rowData.CNT2)
+								.replace(/\{\{RESULT\}\}/gi, rowData.RESULT)
+								.replace(/\{\{LOC_TP\}\}/gi, rowData.LOC_TP)
+								.replace(/\{\{LOC_CD\}\}/gi, rowData.LOC_CD)
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+				}
+				
+				$(".list_t_um26").html(tag);
+				setListRowEvent();
+			}
+		 });
+	};
+	
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("div").removeClass("on");
+			}
+		})
+	};
+	
+	var moveGoCardDeail = function() {
+		var selObj = $(".mLink.on");
+		var plant_cd = selObj.data("plantcd");
+		var loc_cd = selObj.data("loccd");
+		if (plant_cd != undefined){
+			screenManager.moveToPage('/www/html/H_T_UM_096.html', {
+				param: {
+					PACK_NO: M.sec.encrypt(m_pack_ordr_no.toString()).result,
+					PLANT_CD: M.sec.encrypt(plant_cd.toString()).result,
+					LOC_CD: M.sec.encrypt(loc_cd.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("내역을 선택하세요", {title: '알림'});
+		}
+	}
+	
+	// 납입카드 버튼 이벤트
+	var moveGoCardView = function() {
+		var selObj = $(".mLink.on");
+		var barcode = selObj.data("id");
+		var plant_nm = selObj.data("plantnm");
+		var loc_nm = selObj.data("loctp");
+		if (barcode != undefined){
+			/*screenManager.moveToPage('./H_T_UM_029.html', {
+				param: {
+					BARCODE: barcode,
+					PLANT_NM: plant_nm,
+					LOC_NM: loc_nm,
+					ARRI_DAY: m_arri_day,
+					ARRI_TIME: m_arri_time
+				},
+				action: 'NEW_SCR'
+			});*/
+			$("#popCardView").removeClass("blind");
+			$("main").addClass("popActive");
+			
+			$("#lblPlant").text(plant_nm);
+			$("#lblLoc").text(loc_nm);
+			$("#lblArri_DT").text(m_arri_day);
+			$("#lblArri_TM").text(m_arri_time);
+			$(".btn_btTop").addClass("blind");
+			setBarcode(barcode);
+		} else {
+			popupManager.alert("내역을 선택하세요", {title: '알림'});
+		}
+	};
+	
+	var popCardViewClose = function(){
+		$("#popCardView").addClass("blind");
+		$("main").removeClass("popActive");
+		$(".btn_btTop").removeClass("blind");
+	}
+	
+	// 바코드 출력
+	var setBarcode = function(value) {
+        var btype = "code128";
+        var renderer = "bmp";
+		var quietZone = false;
+        var settings = {
+          output:renderer,
+		  bgColor: "#FFFFFF",
+          color: "#000000",
+		  barWidth : "7",
+          barHeight: "250",
+          moduleSize: "5",
+          addQuietZone: "0"
+        };
+		$("#barcodeArea").html("").show().barcode(value, btype, settings);
+		var screenWidth = M.page.info("screenWidth");
+		$("#barcodeArea").css("width", screenWidth + "px");
+		$("#barcodeArea object").css("width",screenWidth + "px");
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

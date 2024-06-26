@@ -1,0 +1,265 @@
+/**
+ * Created by KangHyungWon on 2016. 1. 13..
+ */
+
+'use strict';
+
+/**
+ * 클래스 방식으로 화면개발을 진행.
+ * 이는 공통에서 다른 화면에 대한 접근이 용이하고, Private, Public 구조의 프로그래밍을 가능하게함
+ * @type {{init}}
+ */
+
+
+var intro = (function(window, document, $, M) {
+
+	/**
+	 * 초기 화면 로딩 시 M.onReady에서 setInitScreen 함수를 호출한다.
+	 */
+	function setInitScreen() {
+		var savedRadius = dataManager.storage('__radius__');
+
+		// 저장된 radius 가 없을 시 디폴트값 추가
+		if (!savedRadius) {
+			dataManager.storage('__radius__', CONSTANT.DEFAULT_RADIUS);
+		}
+
+		//exShowIndicator('리소스 업데이트 중 입니다.');
+
+		// 리소스 업데이트 이후 appUpdate 체크
+		M.net.res.update({
+			finish : function(status, info, option) {
+				// TODO : finish handler
+				console.log('** finish', status);
+				console.log('** finish', info);
+
+				appUpdateChecker(status, info);
+			},
+			progress : function(total, read, remain, percent, option) {
+				// TODO : progress handler
+				console.log('** progress', total, read, remain, percent);
+			},
+			error : function(errCode, errMsg, option) {
+				// TODO : network error handler
+				popupManager.alert('프로그램 초기화 및 리소스 업데이트 중 에러가 발생하였습니다.\n\n다시 시도하시겠습니까?', {
+					title : '알림',
+					buttons : [ '아니오', '예' ]
+				}, function(idx) {
+					if (idx == 0) {
+						M.sys.exit();
+					}
+					else {
+						M.net.res.retry();
+					}
+				});
+			}
+		});
+	}
+
+	/**
+	 * 앱 업데이트 체크 관련 로직
+	 * 로직이 길어 상단의 init에서 분리함
+	 * @param status 업데이트 상태 플러그
+	 * @param info 업데이트 정보
+	 */
+	function appUpdateChecker(status, info) {
+		var deviceInfo = M.info.device();
+//		popupManager.alert('현재버전',info.app_version_info.current_app_version);
+//		popupManager.alert('앱버전',info.app_version_info.client_app_version);
+//		popupManager.alert('appUrl',info.app_version_info.download_market_url);
+//		popupManager.alert('앱제목',M.info.app().app.name);
+
+		// PC 에서는 공백으로 출력됨
+		if ( $.isEmptyObject(info) && deviceInfo.os.name == 'pc') {
+			emergencyNoticeCheck();
+
+			return;
+		}
+
+		switch (status) {
+			// 리소스 업데이트 성공
+			case 'SUCCESS':
+			case 'SUCCESS_AND_REFRESH':
+				// TODO : move page
+				var currentVersion = info.app_version_info.current_app_version,
+						appVersion = info.app_version_info.client_app_version,
+						appUrl = info.app_version_info.download_market_url,
+						appTitle = M.info.app().app.name;
+				
+//				popupManager.alert('현재버전',currentVersion);
+//				popupManager.alert('앱버전',appVersion);
+//				popupManager.alert('appUrl',appUrl);
+//				popupManager.alert('앱제목',appTitle);
+
+				// 서버의 앱 버전이 현재 버전보다 높을 경우 업데이트
+				// 이때는 강제 업데이트를 진행하지 않는다.
+				if (currentVersion > appVersion) {
+					popupManager.alert('업데이트된 앱이 있습니다.\n업데이트 하시겠습니까?', {
+						title : '알림',
+						buttons : [ '나중에', '확인' ]
+					}, function(idx) {
+						if (idx == 0) {
+
+							// 긴급공지를 확인한다.
+							emergencyNoticeCheck();
+
+						} else {
+							M.apps.install(appUrl, appTitle);
+						}
+					});
+				}
+				else {
+					emergencyNoticeCheck();
+				}
+				break;
+
+			// 앱 강제 업데이트
+			case 'FORCED_APP_UPDATING':
+				// 서버에 강제 업데이트 플래그가 설정되이 있고,
+				// 현재 앱 버전이 서버에 등록된 강제업데이트 버전보다 낮을 경우 호출된다.
+
+				popupManager.alert('설치된 앱이 낮은 버전입니다.\n업데이트 하시겠습니까?', {
+					title : '알림',
+					buttons : [ '아니오', '예' ]
+				}, function(idx) {
+					if (idx == 0) {
+						M.sys.exit();
+					}
+					else {
+						var appUrl = info.app_version_info.download_market_url,
+								appTitle = M.info.app().app.name;
+						M.apps.install(appUrl, appTitle);
+					}
+				});
+				break;
+
+			// 라이센스 체크 에러
+			case 'LICENSE_IS_NOT_EXISTENCE':
+			// 라이센스 무결성 회손
+			case 'BROKEN_INTEGRITY_OF_LICENSE':
+			// 라이센스 기간 만료
+			case 'EXPIRED_LICENSE':
+				popupManager.alert('라이센스 오류 입니다.\n\n다시 시도하시겠습니까?', {
+					title : '알림',
+					buttons : [ '아니오', '예' ]
+				}, function(idx) {
+					if (idx == 0) {
+						M.sys.exit();
+					}
+					else {
+						M.net.res.retry();
+					}
+				});
+				break;
+
+			// 설치 메모리 부족
+			case 'INSUFFICIENT_MEMORY':
+				popupManager.alert('프로그램을 설치 할 수 있는 메모리가 부족합니다.\n\n다시 시도하시겠습니까?', {
+					title : '알림',
+					buttons : [ '아니오', '예' ]
+				}, function(idx) {
+					if (idx == 0) {
+						M.sys.exit();
+					}
+					else {
+						M.net.res.retry();
+					}
+				});
+				break;
+
+			// 외장 메모리 카드 사용 오류
+			case 'EXT_MEM_NOT_AVAIL':
+				popupManager.alert('외장 메모리 카드를 사용 할수 없습니다. 외장 메모리카드를 확인해주시기 바랍니다.\n\n다시 시도하시겠습니까?', {
+					title : '알림',
+					buttons : [ '아니오', '예' ]
+				}, function(idx) {
+					if (idx == 0) {
+						M.sys.exit();
+					}
+					else {
+						M.net.res.retry();
+					}
+				});
+				break;
+
+			// UNDEFINED ERROR
+			default:
+				popupManager.alert('프로그램 초기화 및 리소스 업데이트 중 에러가 발생하였습니다.\n\n다시 시도하시겠습니까?', {
+					title : '알림',
+					buttons : [ '아니오', '예' ]
+				}, function(idx) {
+					if (idx == 0) {
+						M.sys.exit();
+					}
+					else {
+						M.net.res.retry();
+					}
+				});
+				break;
+		}
+	}
+
+	/**
+	 * 서버에서 긴급공지 내역을 조회한다.
+	 */
+	function emergencyNoticeCheck() {
+		networkManager.httpSend({
+			path: '/api/ets/emcNotice',
+			data: {},
+			success: function(receivedData) {
+				var noticeInfo = receivedData.emc_notice;
+
+				// 긴급공지가 있을경우 alert 처리
+				if ( noticeInfo ) {
+					popupManager.alert(noticeInfo.cont, {
+						title: noticeInfo.title
+					}, function() {
+						if (noticeInfo.emeFlag == 'Y') {
+							screenManager.moveToPage('H_T_UM_000.html', {
+								action : 'CLEAR_TOP'
+							});
+
+						} else if (noticeInfo.emeFlag == 'C') {
+							M.sys.exit();
+						}
+					});
+				} else {
+					screenManager.moveToPage('H_T_UM_000.html', {
+						action : 'CLEAR_TOP'
+					});
+				}
+			}
+		});
+	}
+
+
+
+	return {
+		setInitScreen: setInitScreen
+	};
+
+})(window, document, $, M);
+
+M.onReady(function(event) {
+	intro.setInitScreen();
+}).onHide(function(event) {
+	// TODO : hide event handle code here
+
+}).onResume(function(event) {
+	// TODO : resume event handle code here
+	console.info('KHW', 'resume')
+}).onPause(function(event) {
+	// TODO : pause event handle code here
+
+}).onRestore(function(event) {
+	// TODO : restore event handle code here
+	console.info('KHW', 'restore');
+}).onDestroy(function(event) {
+	// TODO : destroy event handle code here
+
+}).onBack(function() {
+	// TODO : back event handle code here
+}).onKey(function(event) {
+	// TODO : key event handle code here(android only)
+
+});

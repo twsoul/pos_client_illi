@@ -1,0 +1,345 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.hts.hable"
+4    android:versionCode="1"
+5    android:versionName="1.03" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="19"
+8-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml
+10
+11    <uses-feature
+11-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:38:2-84
+12        android:name="android.hardware.telephony"
+12-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:38:16-57
+13        android:required="false" />
+13-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:38:58-82
+14
+15    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+15-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:39:2-71
+15-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:39:19-69
+16    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+16-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:40:2-80
+16-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:40:19-78
+17    <uses-permission android:name="android.permission.VIBRATE" />
+17-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:41:2-62
+17-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:41:19-60
+18    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+18-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:42:2-76
+18-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:42:19-74
+19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+19-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:43:2-77
+19-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:43:19-75
+20    <uses-permission android:name="android.permission.GET_TASKS" />
+20-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:44:2-64
+20-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:44:19-62
+21    <uses-permission android:name="android.permission.WAKE_LOCK" />
+21-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:45:2-64
+21-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:45:19-62
+22    <uses-permission android:name="android.permission.CALL_PHONE" />
+22-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:46:2-65
+22-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:46:19-63
+23    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+23-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:47:2-71
+23-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:47:19-69
+24    <uses-permission android:name="android.permission.READ_CONTACTS" />
+24-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:48:2-68
+24-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:48:19-66
+25    <uses-permission android:name="android.permission.SEND_SMS" />
+25-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:49:2-63
+25-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:49:19-61
+26    <uses-permission android:name="android.permission.INTERNET" />
+26-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:50:2-63
+26-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:50:19-61
+27    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+27-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:51:2-75
+27-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:51:19-73
+28    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+28-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:52:2-72
+28-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:52:19-70
+29    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+29-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:53:2-72
+29-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:53:19-70
+30    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+30-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:54:2-77
+30-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:54:19-75
+31    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+31-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:55:2-75
+31-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:55:19-73
+32
+33    <uses-feature android:name="android.hardware.camera" />
+33-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:57:2-56
+33-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:57:16-54
+34    <uses-feature android:name="android.hardware.camera.autofocus" />
+34-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:58:2-66
+34-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:58:16-64
+35
+36    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+36-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:59:2-67
+36-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:59:19-65
+37    <uses-permission android:name="android.permission.CAMERA" />
+37-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:60:2-61
+37-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:60:19-59
+38    <uses-permission android:name="android.permission.FLASHLIGHT" />
+38-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:61:2-65
+38-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:61:19-63
+39    <uses-permission android:name="android.permission.BLUETOOTH" />
+39-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:62:2-65
+39-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:62:19-62
+40    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+40-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:63:2-71
+40-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:63:19-68
+41    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_SERVICE" />
+41-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:64:2-80
+41-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:64:19-78
+42    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+42-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:65:2-81
+42-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:65:19-79
+43
+44    <uses-feature
+44-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:67:2-83
+45        android:name="android.hardware.location"
+45-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:67:16-56
+46        android:required="false" />
+46-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:67:57-81
+47    <uses-feature
+47-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:68:2-87
+48        android:name="android.hardware.location.gps"
+48-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:68:16-60
+49        android:required="false" />
+49-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:68:61-85
+50    <uses-feature
+50-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:69:2-91
+51        android:name="android.hardware.location.network"
+51-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:69:16-64
+52        android:required="false" />
+52-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:69:65-89
+53
+54    <!-- GCM & C2DM -->
+55    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+55-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:72:2-70
+55-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:72:19-68
+56
+57    <!-- 안드로이드 9.0 이상 필수 : targetSdkVersion = 28 이상인 경우 -->
+58    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+58-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:75:2-74
+58-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:75:19-71
+59    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+59-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:76:2-78
+59-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:76:19-75
+60
+61    <!-- requestLegacyExternalStorage 관련 오류 발생시, Properties 에서 Android의 project Build Target을  Android 10 으로 지정 하거나, requestLegacyExternalStorage 를 삭제 -->
+62    <!-- android:networkSecurityConfig="@xml/network_security_config" -->
+63    <application
+63-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:4:2-37:16
+64        android:name="com.hts.hable.implementation.ExtendApplication"
+64-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:4:106-167
+65        android:allowBackup="false"
+65-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:4:15-42
+66        android:debuggable="true"
+67        android:icon="@drawable/icon"
+67-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:4:43-72
+68        android:label="@string/app_name"
+68-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:4:73-105
+69        android:requestLegacyExternalStorage="true"
+69-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:4:168-211
+70        android:testOnly="true"
+71        android:usesCleartextTraffic="true" >
+71-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:4:212-247
+72        <uses-library
+72-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:5:3-81
+73            android:name="org.apache.http.legacy"
+73-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:5:17-54
+74            android:required="false" />
+74-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:5:55-79
+75        <!-- 에러 발생시, ${applicationId} 를 packagename 으로 변경 -->
+76        <provider
+76-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:7:3-9:14
+77            android:name="android.support.v4.content.FileProvider"
+77-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:7:118-172
+78            android:authorities="com.hts.hable.provider"
+78-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:7:13-57
+79            android:exported="false"
+79-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:7:58-82
+80            android:grantUriPermissions="true" >
+80-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:7:83-117
+81            <meta-data
+81-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:8:4-112
+82                android:name="android.support.FILE_PROVIDER_PATHS"
+82-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:8:15-65
+83                android:resource="@xml/mcore_provider_paths" />
+83-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:8:66-110
+84        </provider>
+85
+86        <activity
+86-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:10:3-15:14
+87            android:name="com.hts.hable.Startup"
+87-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:10:13-49
+88            android:theme="@android:style/Theme.Black.NoTitleBar" >
+88-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:10:50-103
+89            <intent-filter>
+89-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:11:4-14:20
+90                <action android:name="android.intent.action.MAIN" />
+90-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:12:5-56
+90-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:12:13-54
+91
+92                <category android:name="android.intent.category.LAUNCHER" />
+92-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:13:5-64
+92-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:13:15-62
+93            </intent-filter>
+94        </activity>
+95        <activity
+95-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:16:3-175
+96            android:name="com.hts.hable.BaseActivity"
+96-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:16:132-173
+97            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+97-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:16:13-81
+98            android:imeOptions="actionSend|flagNoEnterAction" />
+98-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:16:82-131
+99        <activity
+99-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:17:3-148
+100            android:name="com.hts.hable.samples.activity.ImageList1Activity"
+100-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:17:82-146
+101            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+101-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:17:13-81
+102        <activity
+102-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:18:3-148
+103            android:name="com.hts.hable.samples.activity.ImageList2Activity"
+103-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:18:82-146
+104            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+104-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:18:13-81
+105        <activity
+105-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:19:3-150
+106            android:name="com.hts.hable.samples.activity.ImageDetailsActivity"
+106-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:19:82-148
+107            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+107-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:19:13-81
+108        <activity
+108-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:20:3-143
+109            android:name="com.hts.hable.samples.activity.StartActivity"
+109-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:20:82-141
+110            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+110-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:20:13-81
+111        <activity
+111-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:21:3-144
+112            android:name="com.hts.hable.samples.activity.SampleActivity"
+112-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:21:82-142
+113            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+113-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:21:13-81
+114        <activity
+114-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:22:3-145
+115            android:name="com.hts.hable.samples.activity.SampleActivity2"
+115-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:22:82-143
+116            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+116-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:22:13-81
+117        <activity
+117-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:23:3-147
+118            android:name="com.hts.hable.samples.activity.BatchTempActivity"
+118-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:23:82-145
+119            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+119-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:23:13-81
+120        <activity
+120-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:24:3-154
+121            android:name="com.hts.hable.samples.activity.SampleNativeListActivity"
+121-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:24:82-152
+122            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+122-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:24:13-81
+123        <activity
+123-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:25:3-153
+124            android:name="com.hts.hable.samples.activity.SampleNativeMapActivity"
+124-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:25:82-151
+125            android:configChanges="locale|keyboardHidden|orientation|screenSize" />
+125-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:25:13-81
+126        <activity
+126-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:26:3-180
+127            android:name="com.hts.hable.BLTPrint"
+127-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:26:13-50
+128            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+128-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:26:51-119
+129            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+129-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:26:120-178
+130        <activity
+130-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:27:3-181
+131            android:name="com.hts.hable.HTMLPrint"
+131-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:27:13-51
+132            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+132-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:27:52-120
+133            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+133-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:27:121-179
+134        <activity
+134-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:28:3-169
+135            android:name="com.hts.hable.samples.activity.ShowPushPopup"
+135-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:28:13-72
+136            android:screenOrientation="portrait"
+136-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:28:73-109
+137            android:windowSoftInputMode="adjustUnspecified|adjustPan" />
+137-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:28:110-167
+138        <activity
+138-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:29:3-196
+139            android:name="m.client.android.library.core.view.MainActivity"
+139-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:29:132-194
+140            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+140-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:29:13-81
+141            android:imeOptions="actionSend|flagNoEnterAction" />
+141-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:29:82-131
+142
+143        <provider
+143-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:30:3-135
+144            android:name="m.client.android.library.core.managers.LocalFileContentProvider"
+144-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:30:55-133
+145            android:authorities="@string/app_package" />
+145-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:30:13-54
+146
+147        <activity
+147-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:31:3-137
+148            android:name="m.client.library.addon.media.AudioRecoderActivity"
+148-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:31:71-135
+149            android:configChanges="locale|keyboardHidden|orientation" />
+149-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:31:13-70
+150        <activity
+150-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:32:3-192
+151            android:name="m.client.library.addon.media.MediaPlayActivity"
+151-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:32:75-136
+152            android:configChanges="keyboardHidden|orientation|screenSize"
+152-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:32:13-74
+153            android:theme="@android:style/Theme.Black.NoTitleBar" />
+153-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:32:137-190
+154        <activity
+154-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:33:3-197
+155            android:name="m.client.library.addon.media.crop.CropImageActivity"
+155-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:33:75-141
+156            android:configChanges="keyboardHidden|orientation|screenSize"
+156-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:33:13-74
+157            android:theme="@android:style/Theme.Black.NoTitleBar" />
+157-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:33:142-195
+158        <activity
+158-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:34:3-316
+159            android:name="com.google.zxing.client.android.CaptureActivity"
+159-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:34:115-177
+160            android:clearTaskOnLaunch="true"
+160-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:34:13-45
+161            android:configChanges="locale|orientation|keyboardHidden|screenSize"
+161-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:34:46-114
+162            android:stateNotNeeded="true"
+162-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:34:178-207
+163            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+163-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:34:208-266
+164            android:windowSoftInputMode="stateAlwaysHidden" />
+164-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:34:267-314
+165        <activity
+165-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:35:3-136
+166            android:name="m.client.library.plugin.viewer.DocViewerActivity"
+166-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:35:71-134
+167            android:configChanges="locale|keyboardHidden|orientation" />
+167-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:35:13-70
+168        <activity
+168-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:36:3-132
+169            android:name="m.client.library.plugin.viewer.MuPDFActivity"
+169-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:36:71-130
+170            android:configChanges="locale|keyboardHidden|orientation" />
+170-->D:\JavaDev\workspace3.0\H_able_Client\AndroidManifest.xml:36:13-70
+171    </application>
+172
+173</manifest>

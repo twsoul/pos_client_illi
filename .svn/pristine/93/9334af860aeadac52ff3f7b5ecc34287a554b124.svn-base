@@ -1,0 +1,265 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+    var ZCODE="";
+    var TITLE="";
+    var LGORT="";
+    var LGOBE="";
+    var WERKS="";
+    var NAME1="";
+	// 화면 초기화
+	var setInitScreen = function() {
+	    if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+            screenManager.moveToPage('../common/login.html', { action: 'CLEAR_TOP' });
+        }
+
+        ZCODE = dataManager.param("ZCODE");
+        TITLE = dataManager.param("TITLE");
+        LGORT = dataManager.param("LGORT");
+        LGOBE = dataManager.param("LGOBE");
+        WERKS = optionManager.getWERKS();
+        NAME1 = dataManager.param("WERKS");
+
+        $("#txtTITLE").text(TITLE);
+        $("#txtWERKS").text(NAME1);
+        $("#txtLGOBE").text(LGOBE);
+
+        var query = 'SELECT * FROM INSP WHERE ZCODE = "'+ZCODE+'" AND LGORT = "'+LGORT+'" AND WERKS = "'+WERKS+'"';
+        M.db.execute(userManager.getDRIV_ID(), query, function(status, result,  name) {
+            alert(status+" / "+JSON.stringify(result)+" / "+name);
+            if(status == "FAIL") {
+                popupManager.instance("저장된 기간 실사 데이터가 없습니다.", {showtime:"SHORT"});
+                createTABLE();
+            } else {
+                if(result.row_count < 1) {
+                    popupManager.instance("저장된 기간 실사 데이터가 없습니다.", {showtime:"SHORT"});
+                    return;
+                }
+                popupManager.instance("저장된 기간 실사 데이터를 불러옵니다.", {showtime:"SHORT"});
+                selectTABLE(result);
+            }
+        });
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+	    $("#inputScan").on('keypress', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                var inputScan = $(this).val();
+                $(this).val("");
+                $(this).blur();
+                if(inputScan != ""){
+                    searchValidation(inputScan);//해당품번 조회(중복검사 기능 추가)
+                }else{
+                    popupManager.alert("NO INPUT", {title: '알림'});
+                }
+            }
+        });
+        $("#btnSave").on("click",  setSave);
+        $("#btnFin").on("click",  PDAUserReq);
+	};
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+
+	};
+
+	var inputEvent = function() {
+	    $("#list_bj_031 .MENGE").on("keyup change", function(){
+            var QTY = $(this).parent().siblings(".LABST").text();
+            var IMSI = $(this).parent().siblings(".ZTEMP").text();
+            $(this).parent().siblings(".DIFF").text($(this).val()-(parseInt(QTY)+parseInt(IMSI)));
+        });
+	};
+
+	var createTABLE = function() {
+        var query = 'CREATE TABLE IF NOT EXISTS INSP (ZCODE TEXT NOT NULL, WERKS TEXT NOT NULL, LGORT TEXT NOT NULL, MATNR TEXT NOT NULL, MAKTX TEXT, LABST TEXT, ZTEMP TEXT, MENGE TEXT, PRIMARY KEY(ZCODE, WERKS, LGORT, MATNR))'
+        M.db.execute(userManager.getDRIV_ID(), query, function(status, result, name) {
+        });
+    };
+
+    var deleteTABLE = function() {
+        var query = 'DELETE FROM INSP WHERE ZCODE = "'+ZCODE+'" AND LGORT = "'+LGORT+'" AND WERKS = "'+WERKS+'"';
+        M.db.execute(userManager.getDRIV_ID(), query, function(status, result, name) {
+        });
+    };
+
+    var selectTABLE = function(data) {
+        var tag = "";
+        var template = $("#ListTemplate").html();
+        $.each(data.row_list, function(index,rowData){
+            tag += template.replace(/\{\{PART_NO\}\}/gi, rowData.MATNR)
+                           .replace(/\{\{PART_NM\}\}/, rowData.MAKTX)
+                           .replace(/\{\{QTY\}\}/, rowData.LABST)
+                           .replace(/\{\{IMSI\}\}/, rowData.ZTEMP)
+                           .replace(/\{\{DIFF\}\}/, parseInt(rowData.MENGE)-(parseInt(rowData.LABST)+parseInt(rowData.ZTEMP)))
+                           .replace(/\{\{CNT\}\}/, parseInt(rowData.MENGE));
+        });
+        $("#list_bj_031").append(tag);
+        $(".btn_area").removeClass("blind");
+        inputEvent();
+    };
+
+	var setSave = function() {
+    	popupManager.alert('리스트 저장하시겠습니까?', {
+    		title: '알림',
+    		buttons: ['취소', '확인']
+    	}, function(index) {
+    		switch(index) {
+    			case 0:
+    				break;
+    			case 1:
+    				saveSearchList();
+    				break;
+    		}
+    	});
+    };
+
+    var saveSearchList = function(){
+        var querytag= "";
+        $("#list_bj_031 .tableCont").each(function() {
+            var MATNR = $(this).find(".MATNR").text();
+            var MAKTX = $(this).find(".MAKTX").text();
+            var LABST = $(this).find(".LABST").text();
+            var ZTEMP = $(this).find(".ZTEMP").text();
+            var MENGE = $(this).find(".MENGE").val();
+            var query = 'INSERT OR REPLACE INTO INSP (ZCODE, WERKS, LGORT, MATNR, MAKTX, LABST, ZTEMP, MENGE) values ("'+ZCODE+'","'+WERKS+'","'+LGORT+'","'+MATNR+'","'+MAKTX+'","'+LABST+'","'+ZTEMP+'","'+MENGE+'");';
+            querytag += query;
+        });
+        M.db.execute({
+            path:userManager.getDRIV_ID(),
+            sql:querytag,
+            multiple: true,
+            callback: function(status, result, name) {
+            }
+        });
+    };
+
+    var searchValidation = function(inputScan) {
+        var exist = false;
+        $("#list_bj_031 .tableCont").each(function() {
+            if($(this).data("code") == inputScan){
+                exist = true;
+            }
+        });
+        if (exist){
+        	popupManager.instance("이미 등록된 품목 입니다.", {showtime:"SHORT"});
+        	return;
+        }
+        MaterialInfoReq(inputScan);
+    };
+
+	var MaterialInfoReq = function(inputScan){
+        networkManager.httpSend({
+            path: 'api/MaterialInfoReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'werks':WERKS,
+                'lgort':LGORT,
+                'matnr':inputScan,
+                'event':'품번 조회 수신'
+            },
+            success: function(receivedData, setting) {
+                if (receivedData.MaterialInfoReqCount == 0){
+                	popupManager.alert(receivedData.MaterialInfoReqMsg, {title: '알림'});
+                } else {
+                    var rowData = receivedData.MaterialInfoReqList[0];
+                    var tag = "";
+                    var template = $("#ListTemplate").html();
+                    tag += template.replace(/\{\{PART_NO\}\}/gi, rowData.MATNR)
+                    	    	   .replace(/\{\{PART_NM\}\}/, rowData.MAKTX)
+                    	    	   .replace(/\{\{QTY\}\}/, parseInt(rowData.LABST))
+                    	    	   .replace(/\{\{IMSI\}\}/, parseInt(rowData.ZTEMP))
+                    	    	   .replace(/\{\{DIFF\}\}/, parseInt(rowData.MENGE)-(parseInt(rowData.LABST)+parseInt(rowData.ZTEMP)))
+                    	    	   .replace(/\{\{CNT\}\}/, parseInt(rowData.MENGE));
+                    $("#list_bj_031").append(tag);
+                    $(".btn_area").removeClass("blind");
+                    inputEvent();
+                }
+            }
+        });
+    };
+
+    var PDAUserReq = function() {
+        networkManager.httpSend({
+            path: 'api/PDAUserReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'tplnr':optionManager.getTPLNR(),
+                'werks':WERKS,
+                'zproc':optionManager.getZPROC(),
+                'event':'PDA 사용자 (재고실사자) 전송'
+            },
+            success: function(receivedData, setting) {
+                if (receivedData.PDAUserReqCount == 0){
+                	popupManager.alert(receivedData.PDAUserReqMsg, {title: '알림'});
+                	return;
+                } else {
+                	var empcd = "";
+                	$.each(receivedData.PDAUserReqList, function(index,rowData){
+                	    if(rowData.EMPCD == userManager.getDRIV_ID()){empcd = rowData.EMPCD}
+                	});
+                	if(empcd == ""){return;}
+                	StockInspectionReq(empcd);
+                }
+            }
+        });
+    };
+
+    var StockInspectionReq = function(empcd) {
+        var inspList = [];
+        $("#list_bj_031 .tableCont").each(function() {
+            var MATNR = $(this).find(".MATNR").text();
+            var LABST = $(this).find(".LABST").text();
+            var MENGE = $(this).find(".MENGE").val();
+            inspList.push({"tplnr":optionManager.getTPLNR(),"werks":optionManager.getWERKS(),"lgort":optionManager.getLGORT(),"matnr":MATNR,"labst":LABST,"menge":MENGE});
+        });
+        networkManager.httpSend({
+            path: 'api/StockInspectionReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'ztype':"B",
+                'zcode':ZCODE,
+                'empcd':empcd,
+                'final':"X",
+                'tbody':inspList,
+                'event':'보전자재 재고실사 데이터 수신(재고실사)'
+            },
+            success: function(receivedData, setting) {
+                popupManager.alert(receivedData.StockInspectionReqMsg, {title: '알림'});
+                if(receivedData.StockInspectionReqReturn == "S"){
+                    deleteTABLE();
+                }
+            }
+        });
+    };
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

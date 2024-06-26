@@ -1,0 +1,140 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		$("#date_st").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		$("#date_ed").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		getNoticeType();
+		
+		//DEBUG
+		//$("#date_st").val("2015.02.01");
+		//$("#date_ed").val("2015.02.15");
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnTab01").on("click", moveToBack);
+		$("#btnCal_st").on("click", function(){
+			window.Utils.getCalendar("date_st", null, "date_ed");
+		});
+		$("#btnCal_ed").on("click", function(){
+			window.Utils.getCalendar("date_ed", "date_st", null);
+		});
+		$("#btnSearch").on("click", getSearchList);
+		$("#btnDetail").on("click", moveToDetail);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	};
+	
+	var getNoticeType = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_NoticeType"
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				$("#selType").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.MSC_CD + "'>" + rowData.MSC_DESC + "</option>";
+				});
+				$("#selType").append(tag);
+			}
+		});
+	};
+	
+	
+	var getSearchList = function() {
+		var dtst = window.Utils.replaceAll($("#date_st").val(),".", "");
+		var dtto = window.Utils.replaceAll($("#date_ed").val(),".", "");
+		var gubun = $("#selType > option:selected").val();
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_H_T_UM_042_List",
+				"FROM":dtst,
+				"TO":dtto,
+				"GUBUN":gubun
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0){
+					tag = $("#ListNoDataTemplate").html();
+				} else {
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += template.replace(/\{\{NUM\}\}/, rowData.NUM)
+								.replace(/\{\{TITLE\}\}/, rowData.TITLE)
+								.replace(/\{\{ATTACH\}\}/, rowData.ATTACH == undefined ? "" : rowData.ATTACH)
+								.replace(/\{\{KMS_NM\}\}/, rowData.KMS_NM);
+					});
+				}
+				
+				$("#tblList tbody").html(tag);
+				setListRowEvent();
+			}
+		 });
+	};
+	
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			$(".mLink").attr("class","mLink");
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("info selected");
+			}
+		})
+	};
+	
+	var moveToDetail = function() {
+		var id = $(".mLink.selected").data("id");
+		if (id != undefined){
+			screenManager.moveToPage('/www/html/H_T_UM_041.html', {
+				param: {
+					NUM: M.sec.encrypt(id.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("선택된 값이 없습니다.", {title: '알림'});
+		}
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

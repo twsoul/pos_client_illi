@@ -1,0 +1,333 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var isFirstRun = true;
+	var objDistSelect, objPartSelect, objCarNSelect, objDrivSelect;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		$("#date_st").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		$("#date_ed").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		
+		//DEBUG
+		//$("#date_st").val("2015.01.01");
+		//$("#date_ed").val("2015.02.28");
+		
+		setModeForAccountState();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#date_st").on("click", function(){
+			window.Utils.getCalendar("date_st", null, "date_ed");
+		});
+		$("#date_ed").on("click", function(){
+			window.Utils.getCalendar("date_ed", "date_st", null);
+		});
+		$("#btnSearch").on("click", getSearchList);
+		$("#divSearchAreaExpander").on("click", function(){
+			$(this).toggleClass("expand");
+			$("#divSearchArea").toggleClass("expand");
+		});
+		$("#btnGPSStop").on("click", setGPSOff);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		getSearchList();
+	}
+	
+	// 계정상태에 따른 초기 화면 세팅
+	var setModeForAccountState = function() {
+		if (isFirstRun){
+			var vend_tp = userManager.getVEND_TP();
+			if (vend_tp == "C"){
+				setSelectPop();
+				
+				$("#btnPartSearch").on("click", setInitPartCompList);
+				$("#num_vehicle").on("click", setInitCarNumber);
+				$("#carrier").on("click", setInitDriver);
+				
+				//부품사 선택 가능하게..
+				setInitDistCompList();
+			} else {
+				$("#btnPartSearch").parent().hide();
+				var car_n = dataManager.storage("CAR_N");
+				var driv_id = userManager.getDRIV_ID();
+				var driv_nm = userManager.getDRIV_NM();
+				var vend_cd = userManager.getVEND_CD();
+				var vend_nm = userManager.getVEND_NM();
+				
+				if (vend_tp == "B") {
+					$("#distribution").data("code", vend_cd).data("name", vend_nm).html(vend_nm);
+					$("#co_parts").attr("placeholder", "선택불가").attr("readonly",true);
+				} else if (vend_tp == "A") {
+					$("#distribution").text("선택불가");
+					$("#co_parts").data("code", vend_cd).data("name", vend_nm).attr("placeholder",vend_nm).attr("readonly",true);
+				}
+				
+				if (userManager.getRD_CD() == "D") {
+					$("#num_vehicle").data("code", driv_id).data("name", car_n).html(car_n);
+					$("#carrier").data("code", driv_id).data("name", driv_nm).html(driv_nm);
+				} else {
+					//P_VEND_CD set
+					//P_VEND_NM set
+					setSelectPop();
+					$("#num_vehicle").on("click", setInitCarNumber);
+					$("#carrier").on("click", setInitDriver);
+					if (car_n != undefined && car_n != ""){
+						$("#num_vehicle").data("code", driv_id).data("name", car_n).html(car_n);
+						$("#carrier").data("code", driv_id).data("name", driv_nm).html(driv_nm);
+					}
+				}
+			}
+			isFirstRun = false;
+		}
+	}
+	
+	// 물류사명 SELECT BOX Initialize
+	var setInitDistCompList = function(){
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_vend_distCompList"
+			},
+			success: function(receivedData, setting) {
+				objDistSelect.setDB(receivedData.ListData, "VEND_CD", "VEND_NM");
+			}
+		 });
+	};
+	
+	// 부품사명 SELECT BOX Initialize
+	var setInitPartCompList = function(){
+		var vend_nm = $("#co_parts").val();
+		var dist_vend_cd = $("#distribution").data("code");
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_vend_partCompList",
+				"VEND_NM": vend_nm,
+				"DIST_VEND_CD": dist_vend_cd
+			},
+			success: function(receivedData, setting) {
+				objPartSelect.setDB(receivedData.ListData, "VEND_CD", "VEND_NM");
+				objPartSelect.show();
+			}
+		 });
+	};
+	
+	// 차량번호 SELECT BOX Initialize
+	var setInitCarNumber = function(){
+		var dist_vend_cd = $("#distribution").data("code");
+		var vend_cd = $("#co_parts").data("code");
+		if (dist_vend_cd == undefined && vend_cd == undefined){
+			popupManager.alert("물류사/부품사를 먼저 선택하세요.", {title: '알림'});
+			return;
+		}
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_car_number",
+				"VEND_CD": vend_cd,
+				"DIST_VEND_CD": dist_vend_cd
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조건에 맞는 차량리스트가 없습니다.", {title: '알림'});
+				} else {
+					objCarNSelect.setDB(receivedData.ListData, "DRIV_ID", "CAR_N", "DRIV_NM");
+					objCarNSelect.show();
+				}
+			}
+		 });
+	};
+	
+	// 운전자 셀렉트박스 초기화
+	var setInitDriver = function(){
+		var dist_vend_cd = $("#distribution").data("code");
+		var vend_cd = $("#co_parts").data("code");
+		var carnFromDrivID = $("#num_vehicle").data("code");
+		if (dist_vend_cd == undefined && vend_cd == undefined){
+			popupManager.alert("물류사/부품사를 먼저 선택하세요.", {title: '알림'});
+			return;
+		}
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_driver",
+				"VEND_CD": vend_cd,
+				"DIST_VEND_CD": dist_vend_cd
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조건에 맞는 운전자 리스트가 없습니다.", {title: '알림'});
+				} else {
+					objDrivSelect.setDB(receivedData.ListData, "DRIV_ID", "DRIV_NM");
+					objDrivSelect.setSelectCode(carnFromDrivID);
+					objDrivSelect.show();
+				}
+			}
+		 });
+	};
+	
+	// 메인 검색
+	var getSearchList = function(){
+		var distComp, partComp, car_n, driver, arri_dtst, arri_dtto;
+		arri_dtst = window.Utils.replaceAll($("#date_st").val(),".", "");
+		arri_dtto = window.Utils.replaceAll($("#date_ed").val(),".", "");
+		distComp = $("#distribution").data("code");
+		partComp = $("#co_parts").data("code");
+		car_n = $("#num_vehicle").data("name") == undefined ? "" : $("#num_vehicle").data("name");
+		driver = $("#carrier").data("code") == undefined ? "" : $("#carrier").data("code");
+		
+		if (!searchValidation(distComp, partComp, car_n, driver)){
+			return;
+		}
+		
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_H_D_UM_025_List",
+				"FROM": arri_dtst,
+				"TO": arri_dtto,
+				"DRIV_ID": driver,
+				"CAR_N": car_n
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += template.replace(/\{\{PACK_ORDR_NO\}\}/gi, rowData.PACK_ORDR_NO)
+								.replace(/\{\{ARRI_DAY\}\}/gi, window.Utils.getStrDateComma(rowData.ARRI_DT))
+								.replace(/\{\{ARRI_TIME\}\}/gi, rowData.ARRI_T)
+								.replace(/\{\{CAR_N\}\}/gi, rowData.CAR_N)
+								.replace(/\{\{DRIV_NM\}\}/gi, rowData.DRIV_NM)
+								.replace(/\{\{DRIV_TEL\}\}/gi, rowData.DRIV_TEL)
+								.replace(/\{\{DRIV_TEL_L\}\}/gi, window.Utils.getTelCenterLine(rowData.DRIV_TEL))
+								.replace(/\{\{STATUS\}\}/, rowData.STAT)
+								.replace(/\{\{STAT_CD\}\}/, rowData.STATUS == "S" ? "ap_color1" : "")
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+					
+					$("#divSearchAreaExpander").removeClass("expand");
+					$("#divSearchArea").removeClass("expand");
+				}
+				
+				$("#list_t_um25").html(tag);
+				setListRowEvent();
+			}
+		 });
+	};
+	
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var pack_order_no = $(this).data("id");
+			var car_n = $(this).data("carn");
+			var driv_nm = $(this).data("drivnm");
+			var driv_tel = $(this).data("drivtel");
+			var arri_day = $(this).data("day");
+			var arri_time = $(this).data("time");
+			$(this).addClass("on");
+			if (pack_order_no != undefined) {
+				screenManager.moveToPage('/www/html/H_D_UM_026.html', {
+					param: {
+						packOrderNO: M.sec.encrypt(pack_order_no.toString()).result,
+						driv_nm: M.sec.encrypt(driv_nm.toString()).result,
+						driv_tel: M.sec.encrypt(driv_tel.toString()).result,
+						car_n: M.sec.encrypt(car_n.toString()).result,
+						arri_day: M.sec.encrypt(arri_day.toString()).result,
+						arri_time: M.sec.encrypt(arri_time.toString()).result
+					},
+					action: 'NEW_SCR'
+				});
+			}
+		})
+	}
+	
+	var searchValidation = function(distComp, partComp, car_n, driver) {
+		if (window.Utils.trim(car_n) == ""){
+			popupManager.alert("차량번호를 선택하세요", {title: '알림'});
+			return;
+		}
+		if (window.Utils.trim(driver) == ""){
+			popupManager.alert("운전자명을 선택하세요", {title: '알림'});
+			return;
+		}
+		return true;
+	};
+	
+	var setSelectPop = function() {
+	    var vend_tp = userManager.getVEND_TP();
+	    if(vend_tp != "A"){
+            objDistSelect = new SelectListPopup({ title: "물류사명 선택", id: "popDist", btnObj : $("#distribution"), submitCallback: function(code, name){
+                $("#distribution").data("code", code).data("name", name).html(name).addClass("typeValue");
+                $("#co_parts").removeData("code").removeData("name").val("").removeClass("typeValue");
+                $("#num_vehicle").removeData("code").removeData("name").html("선택하세요").removeClass("typeValue");
+                $("#carrier").removeData("code").removeData("name").html("선택하세요").removeClass("typeValue");
+            }});
+            objDistSelect.init();
+		}
+		objPartSelect = new SelectListPopup({ title: "부품사명 선택", id: "popPart", submitCallback: function(code, name){
+			$("#co_parts").data("code", code).data("name", name).val(name);
+			$("#num_vehicle").removeData("code").removeData("name").html("선택하세요").removeClass("typeValue");
+			$("#carrier").removeData("code").removeData("name").html("선택하세요").removeClass("typeValue");
+		}});
+		objPartSelect.init();
+		objCarNSelect = new SelectListPopup({ title: "차량번호 선택", id: "popCarN", submitCallback: function(code, name, ext1){
+			if (code != undefined){
+				$("#num_vehicle").data("code", code).data("name", name).html(name).addClass("typeValue");
+				$("#carrier").data("code", code).data("name", ext1).html(ext1).addClass("typeValue");
+			} else {
+				$("#carrier").removeData("code").removeData("name").html("선택하세요").removeClass("typeValue");
+			}
+		}});
+		objCarNSelect.init();
+		objDrivSelect = new SelectListPopup({ title: "운전자명 선택", id : "popDriv", submitCallback: function(code, name){
+			if (code != undefined){
+				$("#carrier").data("code", code).data("name", name).html(name).addClass("typeValue");
+			}
+		}});
+		objDrivSelect.init();
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	var setGPSOff = function(){
+		exWNStopGPSInfo();
+		popupManager.alert("도착처리되었습니다.", {title: '알림'});
+	};
+	
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

@@ -1,0 +1,236 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+	    if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+            screenManager.moveToPage('../common/login.html', { action: 'CLEAR_TOP' });
+        }
+	    PlantReq();
+        StorageLocationReq();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#inputScan").on('keypress', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                var inputScan = $(this).val();
+                $(this).val("");
+                $(this).blur();
+                if(inputScan != ""){
+                    searchValidation(inputScan);//해당품번 조회(중복검사 기능 추가)
+                }else{
+                    popupManager.alert("NO INPUT", {title: '알림'});
+                }
+            }
+        });
+        $("#btnInit").on("click",  setInit);
+        $("#btnFin").on("click", PDAUserReq);
+    };
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+
+	};
+
+	var inputEvent = function() {
+        $("#list_bj_031 .MENGE").on("keyup change", function(){
+            var QTY = $(this).parent().siblings(".LABST").text();
+            var IMSI = $(this).parent().siblings(".ZTEMP").text();
+            $(this).parent().siblings(".DIFF").text($(this).val()-(parseInt(QTY)+parseInt(IMSI)));
+        });
+    };
+
+	var setInit = function() {
+    	popupManager.alert('리스트 초기화하시겠습니까?', {
+    		title: '알림',
+    		buttons: ['취소', '확인']
+    	}, function(index) {
+    		switch(index) {
+    			case 0:
+    				break;
+    			case 1:
+    				resetSearchList();
+    				break;
+    		}
+    	});
+    };
+
+    var resetSearchList = function(){
+        $("#list_bj_031").html("");
+        $(".btn_area").addClass("blind");
+    };
+
+	var searchValidation = function(inputScan) {
+	    var exist = false;
+	    $("#list_bj_031 .tableCont").each(function() {
+	        if($(this).data("code") == inputScan){
+	            exist = true;
+            }
+	    });
+	    if (exist){
+        	popupManager.instance("이미 등록된 품목 입니다.", {showtime:"SHORT"});
+        	return;
+        }
+	    MaterialInfoReq(inputScan);
+	};
+
+	var PlantReq = function() {
+        networkManager.httpSend({
+            path: 'api/PlantReq.do',
+            data: {
+            'bukrs': userManager.getCOMP_CD(),
+            'tplnr': optionManager.getTPLNR(),
+            'werks': userManager.getPLANT_CD(),
+            'zproc': optionManager.getZPROC(),
+            'event':'플랜트정보 전송'
+            },
+            success: function(receivedData, setting) {
+                $.each(receivedData.PlantReqList, function(index,rowData){
+                    if(rowData.WERKS==optionManager.getWERKS()){
+                        $("#txtWERKS").text(rowData.NAME1);
+                    }
+                });
+            }
+        });
+    };
+
+    var StorageLocationReq = function() {
+        networkManager.httpSend({
+            path: 'api/StorageLocationReq.do',
+            data: {
+            'bukrs': userManager.getCOMP_CD(),
+            'tplnr': optionManager.getTPLNR(),
+            'werks': optionManager.getWERKS(),
+            'zproc': optionManager.getZPROC(),
+            'event':'저장위치정보 전송'
+            },
+            success: function(receivedData, setting) {
+                var tag = "";
+                $.each(receivedData.StorageLocationReqList, function(index,rowData){
+                    tag += "<option value='" + rowData.LGORT + "'>" + rowData.LGOBE + "</option>";
+                });
+                $("#selPLOC").append(tag);
+                $("#selPLOC").val(optionManager.getLGORT()).prop("selected", true);
+                $("#selPLOC").on("change", function(){
+                    resetSearchList();
+                });
+            }
+        });
+    };
+
+    var MaterialInfoReq = function(inputScan){
+        networkManager.httpSend({
+            path: 'api/MaterialInfoReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'werks':optionManager.getWERKS(),
+                'lgort':$("#selPLOC option:selected").val(),
+                'matnr':inputScan,
+                'event':'품번 조회 수신'
+            },
+            success: function(receivedData, setting) {
+                if (receivedData.MaterialInfoReqCount == 0){
+                	popupManager.alert(receivedData.MaterialInfoReqMsg, {title: '알림'});
+                } else {
+                    var rowData = receivedData.MaterialInfoReqList[0];
+                    var tag = "";
+                    var template = $("#ListTemplate").html();
+                    tag += template.replace(/\{\{PART_NO\}\}/gi, rowData.MATNR)
+                    	    	   .replace(/\{\{PART_NM\}\}/, rowData.MAKTX)
+                    	    	   .replace(/\{\{QTY\}\}/, parseInt(rowData.LABST))
+                    	    	   .replace(/\{\{IMSI\}\}/, parseInt(rowData.ZTEMP))
+                    	    	   .replace(/\{\{DIFF\}\}/, parseInt(rowData.MENGE)-(parseInt(rowData.LABST)+parseInt(rowData.ZTEMP)))
+                    	    	   .replace(/\{\{CNT\}\}/, parseInt(rowData.MENGE));
+                    $("#list_bj_031").append(tag);
+                    $(".btn_area").removeClass("blind");
+                    inputEvent();
+                }
+            }
+        });
+    };
+
+    var PDAUserReq = function() {
+        networkManager.httpSend({
+            path: 'api/PDAUserReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'tplnr':optionManager.getTPLNR(),
+                'werks':optionManager.getWERKS(),
+                'zproc':optionManager.getZPROC(),
+                'event':'PDA 사용자 (재고실사자) 전송'
+            },
+            success: function(receivedData, setting) {
+                if (receivedData.PDAUserReqCount == 0){
+                	popupManager.alert(receivedData.PDAUserReqMsg, {title: '알림'});
+                	return;
+                } else {
+                	var empcd = "";
+                	$.each(receivedData.PDAUserReqList, function(index,rowData){
+                	    if(rowData.EMPCD == userManager.getDRIV_ID()){empcd = rowData.EMPCD}
+                	});
+                	if(empcd == ""){
+                	    popupManager.alert("실사자가 아닙니다.", {title: '알림'});
+                	    return;
+                	}
+                	StockInspectionReq(empcd);
+                }
+            }
+        });
+    };
+
+    var StockInspectionReq = function(empcd) {
+        var inspList = [];
+        $("#list_bj_031 .tableCont").each(function() {
+            var MATNR = $(this).find(".MATNR").text();
+            var LABST = $(this).find(".LABST").text();
+            var MENGE = $(this).find(".MENGE").val();
+            inspList.push({"tplnr":optionManager.getTPLNR(),"werks":optionManager.getWERKS(),"lgort":optionManager.getLGORT(),"matnr":MATNR,"labst":LABST,"menge":MENGE});
+        });
+        networkManager.httpSend({
+            path: 'api/StockInspectionReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'ztype':"A",
+                'zcode':"",
+                'empcd':empcd,
+                'final':"X",
+                'tbody':inspList,
+                'event':'보전자재 재고실사 데이터 수신(일일실사)'
+            },
+            success: function(receivedData, setting) {
+                    popupManager.alert(receivedData.StockInspectionReqMsg, {title: '알림'});
+                    if(receivedData.StockInspectionReqReturn == "S"){return;}
+            }
+        });
+    };
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

@@ -1,0 +1,188 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+	    if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+            screenManager.moveToPage('../common/login.html', { action: 'CLEAR_TOP' });
+        }
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#inputScan").on('keypress', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                var inputScan = $(this).val();
+                $(this).val("");
+                $(this).blur();
+                $("tbody tr td span").each(function(){$(this).text("");});
+                $("#txtINVOICE_NO").closest("td").addClass("unsearched");
+                $("#list_bj_010").html("");
+                $(".btn_area").addClass("blind");
+                if(inputScan != ""){
+                    InvoiceInfoReq(inputScan);
+                }else{
+                    popupManager.alert("NO INPUT", {title: '알림'});
+                }
+            }
+        });
+
+        $("#btnInsert").on("click", ApprovalReq);
+
+        objPrintInput = new InputPopup({ title: "라벨 인쇄", id: "popPrint", type: "number", label: "인쇄 매수", phr: "매수를 입력하세요.", goBottom: true, submitCallback: function(code){
+            if(code == null || code == undefined || code == "" || code < 1){
+                popupManager.alert("인쇄 매수 오류", {title: '알림'});
+                return;
+            }
+            var MATNR=$("#list_bj_010 .tableCont").find(".MATNR").text();
+            var MAKTX=$("#list_bj_010 .tableCont").find(".MAKTX").text();
+            var GROES=$("#list_bj_010 .tableCont").data("groes");
+            var LGPBE=$("#list_bj_010 .tableCont").data("lgpbe");
+            var ZSIGD=$("#list_bj_010 .tableCont").data("zsigd");
+            var BUDAT=$("#list_bj_010 .tableCont").data("budat");
+            if(ZSIGD.trim() == ""){
+                if(BUDAT.trim() == ""){
+                    ZSIGD = window.Utils.getTodayFormat("yyyy.MM.dd");
+                }else{
+                    ZSIGD = BUDAT;
+                }
+            }
+            exWNPrintLabel(optionManager.getZPROC(), optionManager.getLNG(), MATNR, MAKTX, GROES, LGPBE, ZSIGD.replace(/\-/g, "."), code);
+        }});
+
+        objPrintInput.init();
+
+        $("#btnPrint").on("click", function() {
+            objPrintInput.show();
+        });
+
+	};
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+
+	};
+
+	// 메인 검색
+	var InvoiceInfoReq = function(inputScan){
+	    networkManager.httpSend({
+            path: 'api/InvoiceInfoReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'tplnr':optionManager.getTPLNR(),
+                'werks':optionManager.getWERKS(),
+                'zgubun':'V',
+                'zinvon':inputScan,
+                'event':'송장 조회 수신'
+            },
+            success: function(receivedData, setting) {
+                $("#list_bj_010").html("");
+                if (receivedData.InvoiceInfoReqCount == 0){
+                	popupManager.alert(receivedData.InvoiceInfoReqMsg, {title: '알림'});
+                } else {
+                    var tag = "";
+                	var template = $("#ListTemplate").html();
+                	$.each(receivedData.InvoiceInfoReqList, function(index,rowData){
+                		tag += template.replace(/\{\{INDEX\}\}/, index+1)
+                		               .replace(/\{\{GROES\}\}/, rowData.GROES)
+                		               .replace(/\{\{LGPBE\}\}/, rowData.LGPBE)
+                		               .replace(/\{\{ZSIGD\}\}/, rowData.ZSIGD)
+                		               .replace(/\{\{BUDAT\}\}/, rowData.budat)
+                		               .replace(/\{\{ZIVSEQ\}\}/, rowData.ZIVSEQ)
+                				       .replace(/\{\{PART_NO\}\}/, rowData.MATNR)
+                				       .replace(/\{\{STATUS\}\}/, rowData.ZFTUS)
+                				       .replace(/\{\{PART_NM\}\}/, rowData.MAKTX)
+                				       .replace(/\{\{QTY\}\}/, rowData.MENGE)
+                				       .replace(/\{\{PRICE\}\}/, rowData.ZSUM_AMT);
+                	});
+                    $("#list_bj_010").append(tag);
+                    $("#txtINVOICE_NO").text(inputScan);
+                    $("#txtINVOICE_NO").closest("td").removeClass("unsearched");
+                    $("#txtTOTAL").text(receivedData.InvoiceInfoReqSum);
+                    $("#txtCNT").text(receivedData.InvoiceInfoReqCount);
+                    $(".btn_area").removeClass("blind");
+                }
+            }
+        });
+	};
+
+	var ApprovalReq = function() {
+	    networkManager.httpSend({
+            path: 'api/ApprovalReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'tplnr':optionManager.getTPLNR(),
+                'werks':optionManager.getWERKS(),
+                'zproc':optionManager.getZPROC(),
+                'event':'시스템 설정 - 입고결재선 전송'
+            },
+            success: function(receivedData, setting) {
+                if (receivedData.ApprovalReqCount == 0){
+                	popupManager.alert(receivedData.ApprovalReqMsg, {title: '알림'});
+                } else {
+                	var empcd1 = "";
+                	var empcd2 = "";
+                	var empcd3 = "";
+                	$.each(receivedData.ApprovalReqList, function(index,rowData){
+                	    if(rowData.EMPCD == userManager.getDRIV_ID() && rowData.PHASE == "01"){empcd1 = rowData.EMPCD}
+                	    if(rowData.PHASE == "02"){empcd2 = rowData.EMPCD}
+                	    if(rowData.PHASE == "03"){empcd3 = rowData.EMPCD}
+                	});
+                	if(empcd1 == "" || empcd3 == ""){
+                	    popupManager.alert("결재자가 아닙니다.", {title: '알림'});
+                	    return;
+                	}
+                	ReceiptReq(empcd1,empcd2,empcd3);
+                }
+            }
+        });
+	}
+
+	var ReceiptReq = function(empcd1,empcd2,empcd3) {
+	    networkManager.httpSend({
+            path: 'api/ReceiptReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'tplnr':optionManager.getTPLNR(),
+                'werks':optionManager.getWERKS(),
+                'zinvon':$("#txtINVOICE_NO").text(),
+                'empcd1':empcd1,
+                'empcd2':empcd2,
+                'empcd3':empcd3,
+                'zproc':optionManager.getZPROC(),
+                'event':'입고처리 수신'
+            },
+            success: function(receivedData, setting) {
+                popupManager.alert(receivedData.ReceiptReqMsg, {title: '알림'});
+            }
+        });
+	}
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

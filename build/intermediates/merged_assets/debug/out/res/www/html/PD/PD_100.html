@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>공팔레트입고(사내)</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000599"></h2><!--공팔레트입고(사내)-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area adjForm">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selPLANT" id="selPLANT"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:2px;">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000663"></span></th><!--PALLET-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td align="center"><span id="inpBoxQty">0</span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+			<section>
+				<div class="container">
+					<article class="tableList">
+						<div class="list_inner list_pd_100 blind" id="list_pd_100_head">
+							<div class="tableHead">
+								<div>
+									<p data-lng="LB.0000000663" style="font-size:3.5rem;"></p><!--PALLET-->
+								</div>
+							</div>
+						</div>
+						<div class="list_inner list_pd_100 adjFix" id="list_pd_100">
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p><!--초기화-->
+			<p class="classicalBtn adjColor"><button type="button" id="btnSave" data-lng="LB.0000000127"></button></p><!--저장-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000359">팔레트 정보가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000685">이미 사내 공팔레트 입니다</span>
+<span class="blind" data-lng="MSG.0000000658">공팔레트가 아닙니다</span>
+<span class="blind" data-lng="MSG.0000000394">이미 스캔한 팔레트입니다</span>
+<span class="blind" data-lng="MSG.0000000137">스캔하신 내역이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000373">저장에 실패하였습니다</span>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont">
+		<div>
+			<p class="PLT_NO">{{PLT_NO}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/PD/PD_100.js"></script>
+<script type="text/javascript" src="../../js/common/qrManager.js"></script>
+</html>

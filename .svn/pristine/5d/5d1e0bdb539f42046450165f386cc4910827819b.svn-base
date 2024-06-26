@@ -1,0 +1,197 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var ban_no, status, st_dt, plant, plant_nm, alloc_num, alloc_nm, car_n, driv_nm;
+	var apr_id, apr_nm;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		ban_no = dataManager.param('ban_no');
+		status = dataManager.param('status');
+		st_dt = dataManager.param("st_dt");
+		plant = dataManager.param("plant");
+		plant_nm = dataManager.param("plant_nm");
+		alloc_num = dataManager.param("alloc_num");
+		alloc_nm = dataManager.param("alloc_nm");
+		car_n = dataManager.param("car_n");
+		driv_nm = dataManager.param("driv_nm");
+		
+		var pageId = dataManager.param("pageId");
+
+		$("#date_st").val(to_date_format(st_dt, '.'));
+		$("#selPlant").text(plant_nm);
+		$("#selAllocNum").text(alloc_nm);
+		$("#num_vehicle").text(car_n);
+		$("#carrier").text(driv_nm);
+		
+		getSearchData();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		//$("#btnInfo").on("click", btnInfo);
+		$(document).on("click", "#btnInfo", function(e){	
+			btnInfo();
+		});			
+		
+		$("#btnInfo1").on("click", btnInfo1);
+		$("#btnInfo2").on("click", btnInfo2);
+		$("#btnInfo3").on("click", btnInfo3);
+		$("#btnInfo4").on("click", btnInfo4);
+	};
+	
+	var btnInfo = function() {
+		setTimeout(function(){
+			$(".layerPop").removeClass("blind");
+		}, 300);
+	}	
+	
+	var btnInfo3 = function() {
+		$('.layerPop').addClass('blind');
+	}
+	
+	var btnInfo1 = function() {
+		if (ban_no != undefined) {
+			var pageId= M.page.info("filename");
+			screenManager.moveToPage('/www/html/H_T_UM_048.html', {
+				param: {
+					ban_no: M.sec.encrypt(ban_no.toString()).result,
+					status: M.sec.encrypt(status.toString()).result,
+					pageId: M.sec.encrypt(pageId.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		}
+	}
+	
+	var btnInfo2 = function() {
+		if (ban_no != undefined) {
+			var pageId= M.page.info("filename");
+			screenManager.moveToPage('/www/html/H_T_UM_051.html', {
+				param: {
+					ban_no: M.sec.encrypt(ban_no.toString()).result,
+					status: M.sec.encrypt(status.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		}
+	}	
+	
+	var btnInfo4 = function() {
+		if (ban_no != undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_053_1.html', {
+				param: {
+					ban_no: M.sec.encrypt(ban_no.toString()).result,
+					status: M.sec.encrypt(status.toString()).result,
+					st_dt: M.sec.encrypt(st_dt.toString()).result,
+					plant: M.sec.encrypt(plant.toString()).result,
+					plant_nm: M.sec.encrypt(plant_nm.toString()).result,
+					alloc_num: M.sec.encrypt(alloc_num.toString()).result,
+					alloc_nm: M.sec.encrypt(alloc_nm.toString()).result,
+					car_n: M.sec.encrypt(car_n.toString()).result,
+					driv_nm: M.sec.encrypt(driv_nm.toString()).result,
+					apr_id: M.sec.encrypt(apr_id.toString()).result,
+					apr_nm: M.sec.encrypt(apr_nm.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		}
+	}	
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	var getSearchData = function() {
+		networkManager.httpSend({
+			path: '/api/COTLSListSelect.do',
+			data: {
+				'QUERYID': "CO.get_H_T_UM_056_List",
+				"BANNO": ban_no,
+				"ZCAR_SER": status
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					var data= receivedData.ListData[0];
+					
+					apr_id= data.APR_ID == undefined ? '' : data.APR_ID;
+					apr_nm= data.APR_NM == undefined ? '' : data.APR_NM;
+					
+/*					var plan_date= data.SHIP_PLAN_DATE == undefined ? '' : data.SHIP_PLAN_DATE;
+					var plan_time= data.SHIP_PLAN_TIME == undefined ? '' : data.SHIP_PLAN_TIME;
+					var req_date= data.SHIP_REQ_DATE == undefined ? '' : data.SHIP_REQ_DATE;
+					var req_time= data.SHIP_REQ_TIME == undefined ? '' : data.SHIP_REQ_TIME;
+					var con_date= data.SHIP_CON_DATE == undefined ? '' : data.SHIP_CON_DATE;
+					var con_time= data.SHIP_CON_TIME == undefined ? '' : data.SHIP_CON_TIME;*/
+					var carriage_date= data.SHIP_CARRIAGE_DATE == undefined ? '' : data.SHIP_CARRIAGE_DATE;
+					var carriage_time= data.SHIP_CARRIAGE_TIME == undefined ? '' : data.SHIP_CARRIAGE_TIME;
+					var start_date= data.SHIP_START_DATE == undefined ? '' : data.SHIP_START_DATE;
+					var start_time= data.SHIP_START_TIME == undefined ? '' : data.SHIP_START_TIME;
+					var arr_date= data.SHIP_ARR_DATE == undefined ? '' : data.SHIP_ARR_DATE;
+					var arr_time= data.SHIP_ARR_TIME == undefined ? '' : data.SHIP_ARR_TIME;
+					var memo= data.SHIP_MEMO == undefined ? '' : data.SHIP_MEMO;
+					
+					if(memo.length != 0){
+						$('#btnInfo').addClass('adjColor');
+					}
+					
+/*					$('#txt_plan_date').html(plan_date+' [<em>'+plan_time+'</em>]');
+					$('#txt_req_date').html(req_date+' [<em>'+req_time+'</em>]');
+					$('#txt_con_date').html(con_date+' [<em>'+con_time+'</em>]');*/
+					$('#txt_carriage_date').html(carriage_date+' [<em>'+carriage_time+'</em>]');
+					$('#txt_start_date').html(start_date+' [<em>'+start_time+'</em>]');
+					$('#txt_arr_date').html(arr_date+' [<em>'+arr_time+'</em>]');
+					$('#txt_memo').html(memo.replace(/(?:\r\n|\r|\n)/gi, "<br/>"));
+				}
+				
+			}
+		 });	
+	}
+	
+	/*
+	 * yyyyMMdd 날짜문자열을 gubun으로 포맷을 변경
+	 */
+	function to_date_format(date_str, gubun)
+	{
+	    var yyyyMMdd = String(date_str);
+	    var sYear = yyyyMMdd.substring(0,4);
+	    var sMonth = yyyyMMdd.substring(4,6);
+	    var sDate = yyyyMMdd.substring(6,8);
+
+	    return sYear + gubun + sMonth + gubun + sDate;
+	}	
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

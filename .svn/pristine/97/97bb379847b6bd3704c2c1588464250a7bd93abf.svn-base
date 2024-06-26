@@ -1,0 +1,272 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var packOrderNO, driv_id, car_n;
+	var m_status, m_sum;
+	var m_ord_kind = true;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		packOrderNO = dataManager.param('packOrderNO');
+		driv_id = dataManager.param("driv_id");
+		car_n = dataManager.param("car_n");
+		//getInfomationForDriverID();
+		getSearchData();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnOrderCard").on("click", moveToDetail);
+		$("#btnGPSStart").on("click", setGPSOn);
+		$("#btnGPSStop").on("click", setGPSOff);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		getSearchData();
+	}
+	
+	var getSearchData = function() {
+		m_sum = 0;
+		networkManager.httpSend({
+			path: '/api/CKDListMultiSelect.do',
+			data: {
+				'QUERYIDS': "CKD.get_H_T_UM_087_info;CKD.get_H_T_UM_087_List",
+				"DRIV_ID": driv_id,
+				"PACK_ORDR_NO": packOrderNO
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount0 != 0) {
+					var data = receivedData.ListData0[0];
+					$("#lblCarNumber").text(car_n);
+					$("#lblDriverName").text(data.DRIV_NM);
+					$("#lblPhoneNumber").text(window.Utils.getTelCenterLine(data.DRIV_TEL));
+					vend_cd = data.DIST_VEND_CD;
+				}
+				
+				var tag =$("#ListHeadTemplate").html();
+				if (receivedData.ListCount1 == 0){
+					tag = $("#ListNoDataTemplate").html();
+				} else {
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData1, function(index,rowData){
+						if (index == 0)
+							m_status = rowData.STATUS;
+						if (rowData.RST == "E")
+							m_sum += 1;
+						if (rowData.ORD_KIND == undefined)
+							m_ord_kind = false;
+						tag += template.replace(/\{\{PLANT_CD\}\}/gi, rowData.PLANT_CD)
+								.replace(/\{\{RST\}\}/, rowData.RST)
+								.replace(/\{\{LOC_CD\}\}/, rowData.LOC_CD)
+								.replace(/\{\{PLANT_NM\}\}/, rowData.PLANT_NM)
+								.replace(/\{\{LOC_TP\}\}/, rowData.LOC_TP)
+								.replace(/\{\{CNT1\}\}/, rowData.CNT1)
+								.replace(/\{\{CNT2\}\}/, rowData.CNT2)
+								.replace(/\{\{RESULT\}\}/, rowData.RESULT)
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+				}
+				
+				$(".list_t_um17").html(tag);
+				setListRowEvent();
+			}
+		});
+	};
+	
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("div").removeClass("on");
+			}
+		})
+	};
+	
+	var setGPSOn = function() {
+		var vend_tp = userManager.getVEND_TP();
+		
+		if (vend_tp == "C"){
+			popupManager.alert("HTS사용자는 사용할 수 없는 권한입니다.", {title: '알림'});
+		} else {
+			if (m_sum == 0){
+				if (m_status == "S"){
+					popupManager.alert("이미 입고가 완료된 배차입니다.", {title: '알림'});
+				} else if (m_status == "T") {
+					popupManager.alert("검수중인 배차입니다.", {title: '알림'});
+				} else if (m_status == "G"){
+					popupManager.alert("이미 운송중 입니다.", {title: '알림'});
+				} else {
+					// m_status == D
+					
+					// ORD_KIND 확인
+					networkManager.httpSend({
+						path: '/api/CKDListSelect.do',
+						data: {
+							'QUERYID': "CKD.get_H_T_UM_087_List_CHK",
+							"PACK_ORDR_NO": packOrderNO
+						},
+						success: function(receivedData, setting) {
+							if (receivedData.ListCount == 0){
+							} else {
+								$.each(receivedData.ListData, function(index,rowData){
+									if(rowData.KIND_CHK != '0'){
+										popupManager.alert("용도 등록이 안된 납입문서가 있습니다.", {title: '알림'});
+									}else{
+						
+					M.plugin("location").current({
+						timeout: 10000,
+						maximumAge: 1,
+						callback: function( result ) {
+							if ( result.status === 'NS' ) {
+								popupManager.alert("지원되지 않는 GPS 입니다.", {title: 'GPS오류'});
+							}
+							else if ( result.status !== 'SUCCESS' ) {
+								if ( result.message ) {
+									//alert( result.status + ":" + result.message );
+									popupManager.alert("위치 정보 확인에 오류가 발생하였습니다. GPS가 켜져 있는지 확인해 주세요.", {title: 'GPS오류'});
+								}
+								else {
+									popupManager.alert("위치 정보 확인을 실패 하였습니다. GPS가 켜져 있는지 확인해 주세요.", {title: 'GPS오류'});
+								}
+							}
+							else {
+								if ( result.coords ) {
+									//alert( JSON.stringify(result.coords) );
+									networkManager.httpSend({
+										path: '/api/Action_And_PushSend.do',
+										data: {
+											'QUERYID': "CKD.set_H_T_UM_087_Update",
+											"PACK_ORDR_NO": packOrderNO,
+											"MODE":"11",
+                                            "db_kind":dataManager.storage('saveUserDb')
+										},
+										success: function(receivedData, setting) {
+											popupManager.instance('출발 등록 되었습니다.', {showtime:"SHORT"});
+											// TODO : GPS Background ON!!!!!
+											exWNStartGPSInfo(packOrderNO, "60000","GCS");
+											
+											//배차상태 인터페이스(배차상태)
+											networkManager.httpSend({
+												path: '/api/CKDListSelect.do',
+												data: {
+													'QUERYID': "CKD.get_OrderNo_Select1",
+													'PACK_ORDR_NO':packOrderNO
+												},
+												success: function(receivedData, setting) {
+													if (receivedData.ListCount == 0){
+													} else {
+														var zdrivnm= $('#lblDriverName').text();
+														var zdrivtel= $('#lblPhoneNumber').text();
+														var zcarn= $('#lblCarNumber').text();
+														$.each(receivedData.ListData, function(index,rowData){
+															networkManager.httpSend({
+																path: '/api/carInfo.do',
+																data: {
+																	'ordr_no':rowData.ORDR_NO,
+																	'udt_stat':'1',
+																	'status':'G',
+																	'statcd':rowData.STAT_CD,
+																	'ordkind':rowData.ORD_KIND,
+																	'statvend':rowData.STAT_VEND,
+																	'ordeono':rowData.ORD_EONO,
+																	'drdhis':rowData.ORD_HIS,
+																	'zdrivnm':zdrivnm,
+																	'zdrivtel':zdrivtel,
+																	'zcarn':zcarn,
+																	'statsns':'',
+																	'cancel':'',
+																	'event':'출발(set_H_T_UM_087_Update)'
+																},
+																success: function(receivedData, setting) {
+/*																	setTimeout(function() {
+																		moveToBack();
+																	}, 3000);*/
+																}
+															});	
+														});
+													}
+												}
+											});											
+											
+										},
+										error: function(){
+											popupManager.alert("출발 등록에 실패하였습니다.", {title: '알림'});
+										}
+									});
+								}
+								else {
+									popupManager.alert("위치 정보 확인을 실패 하였습니다.GPS 상태를 확인해 주세요.", {title: 'GPS오류'});
+								}
+							}
+						}
+					});
+					
+				}
+			});
+		}
+	}
+ });
+ 
+				}
+			} else {
+				popupManager.alert("미완료된 납입문서카드가 있습니다.", {title: '알림'});
+			}
+		}
+	}
+	
+	var setGPSOff = function(){
+		exWNStopGPSInfo();
+	};
+	
+	var moveToDetail = function() {
+		var plant = $(".mLink.on").data("id");
+		var loc = $(".mLink.on").data("loccd");
+		if (plant != undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_088.html', {
+				param: {
+					PACK_NO: M.sec.encrypt(packOrderNO.toString()).result,
+					PLANT: M.sec.encrypt(plant.toString()).result,
+					LOC: M.sec.encrypt(loc.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("목록 중 선택하세요", {title: '알림'});
+		}
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

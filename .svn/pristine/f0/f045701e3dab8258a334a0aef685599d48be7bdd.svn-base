@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>입고관리</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000070"></h2><!--입고관리-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main id="main" class="main">
+			<section>
+				<div class="container">
+					<div class="Item_belt">
+						<ul class="clearfix">
+							<li data-page="IN_010.html" class="S90000938 blind"><p><span class="item_title" data-lng="LB.0000000074"></span></p></li><!--배차입고(TMS)-->
+							<li data-page="IN_020.html" class="S90000939 blind"><p><span class="item_title" data-lng="LB.0000000075"></span></p></li><!--납입카드입고-->
+							<li data-page="IN_030.html" class="S90000940 blind"><p><span class="item_title" data-lng="LB.0000000076"></span></p></li><!--플랜트이동입고-->
+							<li data-page="IN_040.html" class="S90000941 blind"><p><span class="item_title" data-lng="LB.0000000077"></span></p></li><!--KD이동입고-->
+							<li data-page="IN_051.html" class="S90000942 blind"><p><span class="item_title" data-lng="LB.0000000078"></span></p></li><!--용기관리-->
+							<li data-page="IN_060.html" class="S90001441 blind"><p><span class="item_title" data-lng="LB.0000000306"></span></p></li><!--KD입고-->
+							<li data-page="IN_070.html" class="S90001588 blind"><p><span class="item_title" data-lng="LB.0000000585"></span></p></li><!--유상사급 입고-->
+							<li data-page="IN_080.html" class="S90001696 blind"><p><span class="item_title" data-lng="LB.0000000693"></span></p></li><!--하우징입고-->
+							<li data-page="IN_090.html" class="S90001812 blind"><p><span class="item_title" data-lng="LB.0000000470"></span></p></li><!--수입검사-->
+						</ul><span></span>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+</body>
+
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/IN_000.js"></script>
+
+</html>

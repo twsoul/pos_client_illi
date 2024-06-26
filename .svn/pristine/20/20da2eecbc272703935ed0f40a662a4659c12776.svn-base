@@ -1,0 +1,135 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var mapObj;
+	var m_selVendCD, m_selVendType, m_plant_cd;
+	var m_openIW = null;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_selVendCD = dataManager.param("selVendCD");
+		m_selVendType = dataManager.param("selVendType");
+		m_plant_cd = dataManager.param("plantCD");
+		mapDraw();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	var getSearchList = function() {
+		var linePath = [];
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_H_T_UM_022_List",
+				"VEND_CD" : m_selVendCD,
+				"VEND_TYPE" : m_selVendType,
+				"DEBUG": "true"
+			},
+			success: function(receivedData, setting) {
+				var bounds = new daum.maps.LatLngBounds();
+				$.each(receivedData.ListData, function(index,rowData){
+					if (rowData.GPS_LAT != '0.0' && rowData.GPS_LONG != '0.0'){
+						var pos = new daum.maps.LatLng(rowData.GPS_LAT, rowData.GPS_LONG);
+						var markerImage = new daum.maps.MarkerImage("../images/ap_img_loca.png", new daum.maps.Size(46,57));
+						var marker = new daum.maps.Marker({
+							position: pos,
+							image: markerImage,
+						    clickable: true
+						});
+						marker.setMap(mapObj);
+						
+						daum.maps.event.addListener(marker, "click", function() {
+							if (m_openIW != null)
+								m_openIW.close();
+							var iwContent = $("#infoWindowTemplate").html().replace(/\{\{CAR_N\}\}/gi, rowData.CAR_N)
+							.replace(/\{\{ARRI_T\}\}/gi, rowData.ARRI_T)
+							.replace(/\{\{DRIV_NM\}\}/gi, rowData.DRIV_NM)
+							.replace(/\{\{DRIV_TEL\}\}/gi, rowData.DRIV_TEL)
+							.replace(/\{\{DRIV_TEL_L\}\}/gi, window.Utils.setTelClickCall(rowData.DRIV_TEL))
+							.replace(/\{\{GPS_ADDR\}\}/gi, rowData.GPS_ADDR)
+							.replace(/\{\{PACK_ORDR_NO\}\}/, rowData.PACK_ORDR_NO);
+							var iwRemoveable = true;
+							
+							var infoWindow = new daum.maps.InfoWindow({
+								content : iwContent,
+								removable : iwRemoveable
+							});
+							infoWindow.open(mapObj, marker);
+							m_openIW = infoWindow;
+						});
+						bounds.extend(pos);
+					}
+				});
+				mapObj.setBounds(bounds);
+			}
+		 });
+	};
+	
+	var setMoreClickEvent = function(obj){
+		var pack_ordr_no = $(obj).data("no");
+		var car_n = $(obj).data("carn");
+		var driv_nm = $(obj).data("drivnm");
+		var driv_tel = $(obj).data("drivtel");
+		screenManager.moveToPage('./H_T_UM_024.html', {
+			param: {
+				packOrderNO: pack_ordr_no,
+				carN: car_n,
+				drivNM: driv_nm,
+				drivTEL: driv_tel,
+				plantCD: m_plant_cd
+			},
+			action: 'NEW_SCR'
+		});
+	};
+	
+	var mapDraw = function() {
+		var mapContainer = document.getElementById("map");
+		var options = {
+				center: new daum.maps.LatLng("36.8574300", "126.4396670"),
+				level:3
+		};
+		mapObj = new daum.maps.Map(mapContainer, options);
+		
+		getSearchList();
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent,
+		setMoreClickEvent: setMoreClickEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

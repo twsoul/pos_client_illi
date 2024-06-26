@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>자재 변경</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png" alt="이전으로 돌아갑니다."></span></div>
+				<h2>자재 변경</h2>
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox">
+						<h5 class="blind">옵션 선택 및 확인</h5>
+						<div class="box_inner">
+							<div class="opt_input">
+								<p class="lineHead">자재 바코드</p><p class="inputBox"><span><input type="text" placeholder="입력하세요" id="inputScan"><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:0.5vmax;">
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>날짜</span></th>
+										<th><span>품명</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span>03.12(금) 오전 10:28</span></td>
+										<td><span>기어웜드레서</span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>품번</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td class="unsearched"><span id="txtINVOICE_NO"></span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>규격</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span>CCGW 120404 HPD010/한국교세라정</span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>단가</span></th>
+										<th><span>재고 수량</span></th>
+										<th><span>임시</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span>24,000</span></td>
+										<td><span>20</span></td>
+										<td><span>0</span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>저장 위치</span></th>
+										<th><span>저장 BIN</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span>보전저장창고</span></td>
+										<td><span>S01-02-03</span></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+		<!--<section class="popup_area layerPop">
+			<div class="container">
+				<div class="pop_cont">
+					<p class="pop_cont_head"><span>{{TITLE}}</span></p>
+					<div class="box_inner">
+						<div class="opt_input">
+							<p class="lineHead">적발내용</p><p class="inputBox_outline"><input type="text" placeholder="eo no를 기입해주세요" class="adjTextcolor"></p>
+						</div>
+					</div>
+					<div class="btn_area">
+						<p class="classicalBtn adjColor"><button type="submit" class="btn_confirm">확인</button></p>
+						<p class="classicalBtn"><button type="button" class="btn_cancel">취소</button></p>
+					</div>
+				</div>
+			</div>
+		</section>-->
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor btn_sec1 "><button type="button" id="btnMove">재고이동</button></p>
+			<p class="classicalBtn adjColor btn_sec2 "><button type="button" id="btnChange">BIN변경</button></p>
+			<p class="classicalBtn adjColor btn_sec3 "><button type="button" id="btnPrint">라벨인쇄</button></p>
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<li><button type="button" data-value="../common/notification.html"></button></li>
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+</body>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/bj/bj_022.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customInSPopup.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customInputPopup.js"></script>
+</html>

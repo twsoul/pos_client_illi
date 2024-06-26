@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>불출관리</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000071"></h2><!--불출관리-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main id="main" class="main">
+			<section>
+				<div class="container">
+					<div class="Item_belt">
+						<ul class="clearfix">
+							<li data-page="OT_010.html" class="S90000943 blind"><p><span class="item_title" data-lng="LB.0000000079"></span></p></li><!--일반불출(조립)-->
+							<li data-page="OT_015.html" class="S90001350 blind"><p><span class="item_title" data-lng="LB.0000000079"></span></p></li><!--일반불출(조립)경주-->
+							<li data-page="OT_020.html" class="S90000944 blind"><p><span class="item_title" data-lng="LB.0000000080"></span></p></li><!--일반불출(가공)-->
+							<li data-page="OT_025.html" class="S90001821 blind"><p><span class="item_title" data-lng="LB.0000001008"></span></p></li><!--인계불출(조립)-->
+							<li data-page="OT_030.html" class="S90000945 blind"><p><span class="item_title" data-lng="LB.0000000081"></span></p></li><!--인계불출(가공)-->
+							<li data-page="OT_035.html" class="S90001530 blind"><p><span class="item_title" data-lng="LB.0000000496"></span></p></li><!--선별품불출-->
+							<li data-page="OT_040.html" class="S90000946 blind"><p><span class="item_title" data-lng="LB.0000000082"></span></p></li><!--이종확인불출-->
+							<li data-page="OT_041.html" class="S90001665 blind"><p><span class="item_title" data-lng="LB.0000000767"></span></p></li><!--이종확인불출 (1공장 백운)-->
+							<li data-page="OT_045.html" class="S90001860 blind"><p><span class="item_title" data-lng="LB.0000001022"></span></p></li><!--사내창고불출-->
+							<li data-page="OT_050.html" class="S90000947 blind"><p><span class="item_title" data-lng="LB.0000000083"></span></p></li><!--반납(현창->원창)-->
+							<li data-page="OT_060.html" class="S90000948 blind"><p><span class="item_title" data-lng="LB.0000000084"></span></p></li><!--반납(무전표)-->
+							<li data-page="OT_070.html" class="S90000949 blind"><p><span class="item_title" data-lng="LB.0000000085"></span></p></li><!--플랜트이동출고-->
+							<li data-page="OT_080.html" class="S90000950 blind"><p><span class="item_title" data-lng="LB.0000000086"></span></p></li><!--반출처리-->
+							<li data-page="OT_085.html" class="S90001288 blind"><p><span class="item_title" data-lng="LB.0000000330"></span></p></li><!--반출처리(현창)-->
+							<li data-page="OT_086.html" class="S90001503 blind"><p><span class="item_title" data-lng="LB.0000000330"></span></p></li><!--반출처리(현창)-->
+							<li data-page="OT_087.html" class="S90001589 blind"><p><span class="item_title" data-lng="LB.0000000586"></span></p></li><!--유상사급 반출-->
+							<li data-page="OT_090.html" class="S90000951 blind"><p><span class="item_title" data-lng="LB.0000000046"></span></p></li><!--자재이동-->
+							<li data-page="OT_100.html" class="S90000952 blind"><p><span class="item_title" data-lng="LB.0000000087"></span></p></li><!--출고지시(자동창고)-->
+							<li data-page="OT_111.html" class="S90001549 blind"><p><span class="item_title" data-lng="LB.0000000518"></span></p></li><!--타용도불출-->
+							<li data-page="OT_110.html" class="S90000953 blind"><p><span class="item_title" data-lng="LB.0000000088"></span></p></li><!--타용도불출(원창)-->
+							<!--<li data-page="OT_115.html" class="S90001547 blind"><p><span class="item_title" data-lng="LB.0000000509"></span></p></li>타용도불출(현창)-->
+							<li data-page="OT_118.html" class="S90001822 blind"><p><span class="item_title" data-lng="LB.0000001009"></span></p></li><!--라인입고(조립)-->
+							<li data-page="OT_120.html" class="S90000954 blind"><p><span class="item_title" data-lng="LB.0000000089"></span></p></li><!--라인입고(가공)-->
+							<li data-page="OT_130.html" class="S90001595 blind"><p><span class="item_title" data-lng="LB.0000000594"></span></p></li><!--일반불출 CKD-->
+							<li data-page="OT_140.html" class="S90001596 blind"><p><span class="item_title" data-lng="LB.0000000618"></span></p></li><!--긴급불출오더-->
+							<li data-page="OT_145.html" class="S90001753 blind"><p><span class="item_title" data-lng="LB.0000000784"></span></p></li><!--불출오더완료-->
+							<li data-page="OT_150.html" class="S90001597 blind"><p><span class="item_title" data-lng="LB.0000000595"></span></p></li><!--DOCK IN/OUT-->
+						</ul>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+</body>
+
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/OT_000.js"></script>
+
+</html>

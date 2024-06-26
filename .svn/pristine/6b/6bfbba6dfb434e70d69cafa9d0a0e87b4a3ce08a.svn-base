@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>사이트 맵</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back blind" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<div class="rt_area"><span class="btn_close" id="btn_close"><img src="../../img/close_nav.png"></span></div>
+				<h2 data-lng="LB.0000000023"></h2>
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section>
+				<div>
+					<article class="optionBox">
+						<div class="allmenu_pop">
+							<h2 data-lng="LB.0000000024"></h2><!--사용자-->
+							<ul class="user">
+								<li><button type="button"></button></li>
+								<li data-page-name="../BJ/option.html" class="S90000819 blind"><button type="button" data-lng="LB.0000000022"></button></li><!--설정-->
+								<li data-page-name="../common/option.html" class="commonOpt"><button type="button" data-lng="LB.0000000022"></button></li><!--설정-->
+							</ul>
+							<h2 class="S90000665 blind" data-lng="LB.0000000001">자재관리</h2>
+							<ul class="S90000665 blind">
+								<li class="S90000938 blind" data-page-name="../JJ/IN_010.html"><button type="button" data-lng="LB.0000000074">배차입고(TMS)</button></li>
+								<li class="S90000939 blind" data-page-name="../JJ/IN_020.html"><button type="button" data-lng="LB.0000000075">납입카드입고</button></li>
+								<li class="S90000940 blind" data-page-name="../JJ/IN_030.html"><button type="button" data-lng="LB.0000000076">플랜트이동입고</button></li>
+								<li class="S90000941 blind" data-page-name="../JJ/IN_040.html"><button type="button" data-lng="LB.0000000077">KD이동입고</button></li>
+								<li class="S90000942 blind" data-page-name="../JJ/IN_050.html"><button type="button" data-lng="LB.0000000078">용기관리</button></li>
+								<li class="S90000943 blind" data-page-name="../JJ/OT_010.html"><button type="button" data-lng="LB.0000000079">일반불출(조립)</button></li>
+								<li class="S90001350 blind" data-page-name="../JJ/OT_015.html"><button type="button" data-lng="LB.0000000340">일반불출</button></li>
+								<li class="S90000944 blind" data-page-name="../JJ/OT_020.html"><button type="button" data-lng="LB.0000000080">일반불출(가공)</button></li>
+								<li class="S90000945 blind" data-page-name="../JJ/OT_030.html"><button type="button" data-lng="LB.0000000081">인계불출(가공)</button></li>
+								<li class="S90000946 blind" data-page-name="../JJ/OT_040.html"><button type="button" data-lng="LB.0000000082">이종확인불출</button></li>
+								<li class="S90000947 blind" data-page-name="../JJ/OT_050.html"><button type="button" data-lng="LB.0000000083">반납(현창->원창)</button></li>
+								<li class="S90000948 blind" data-page-name="../JJ/OT_060.html"><button type="button" data-lng="LB.0000000084">반납(무전표)</button></li>
+								<li class="S90000949 blind" data-page-name="../JJ/OT_070.html"><button type="button" data-lng="LB.0000000085">플랜트이동츨고</button></li>
+								<li class="S90000950 blind" data-page-name="../JJ/OT_080.html"><button type="button" data-lng="LB.0000000086">반출처리</button></li>
+								<li class="S90001288 blind" data-page-name="../JJ/OT_085.html"><button type="button" data-lng="LB.0000000330">반출처리(현창)</button></li>
+								<li class="S90000951 blind" data-page-name="../JJ/OT_090.html"><button type="button" data-lng="LB.0000000046">재고이동</button></li>
+								<li class="S90000952 blind" data-page-name="../JJ/OT_100.html"><button type="button" data-lng="LB.0000000087">출고지시(자동창고)</button></li>
+								<li class="S90000953 blind" data-page-name="../JJ/OT_110.html"><button type="button" data-lng="LB.0000000088">타용도불출</button></li>
+								<li class="S90000954 blind" data-page-name="../JJ/OT_120.html"><button type="button" data-lng="LB.0000000089">라인입고(가공)</button></li>
+								<li class="S90000957 blind" data-page-name="../JJ/ST_010.html"><button type="button" data-lng="LB.0000000092">재고파악(결품시점관리)</button></li>
+								<li class="S90000958 blind" data-page-name="../JJ/ST_020.html"><button type="button" data-lng="LB.0000000093">부품식별표분할생성</button></li>
+								<li class="S90000959 blind" data-page-name="../JJ/ST_030.html"><button type="button" data-lng="LB.0000000094">부품식별표병합</button></li>
+								<li class="S90000960 blind" data-page-name="../JJ/ST_040.html"><button type="button" data-lng="LB.0000000095">정기재고실사(원창)</button></li>
+								<li class="S90000961 blind" data-page-name="../JJ/ST_050.html"><button type="button" data-lng="LB.0000000096">정기재고실사(현창)</button></li>
+								<li class="S90000962 blind" data-page-name="../JJ/ST_060.html"><button type="button" data-lng="LB.0000000097">수시재고실사(원창)</button></li>
+								<li class="S90000963 blind" data-page-name="../JJ/ST_070.html"><button type="button" data-lng="LB.0000000098">RACK맵핑</button></li>
+								<li class="S90000964 blind" data-page-name="../JJ/ST_080.html"><button type="button" data-lng="LB.0000000099">타용도등록</button></li>
+								<li class="S90001351 blind" data-page-name="../JJ/ST_090.html"><button type="button" data-lng="LB.0000000341">박스분할</button></li>
+								<li class="S90001195 blind" data-page-name="../JJ/KI_010.html"><button type="button" data-lng="LB.0000000306">KD입고</button></li>
+							</ul>
+							<h2 class="2 blind" data-lng="LB.0000000002">제품관리</h2>
+							<ul class="2 blind">
+								<li class="S90001201 blind" data-page-name="../PD/PD_010.html"><button type="button" data-lng="LB.0000000342">정상출하</button></li>
+								<li class="S90001202 blind" data-page-name="../PD/PD_020.html"><button type="button" data-lng="LB.0000000343">비축출하</button></li>
+								<li class="S90001203 blind" data-page-name="../PD/PD_030.html"><button type="button" data-lng="LB.0000000344">기타출하</button></li>
+								<li class="S90001204 blind" data-page-name="../PD/PD_040.html"><button type="button" data-lng="LB.0000000345">팔레트출하</button></li>
+								<li class="S90001353 blind" data-page-name="../PD/PD_045.html"><button type="button" data-lng="LB.0000000345">팔레트출하</button></li>
+								<li class="S90001197 blind" data-page-name="../PD/PD_050.html"><button type="button" data-lng="LB.0000000336">제품검사</button></li>
+								<li class="S90001198 blind" data-page-name="../PD/PD_060.html"><button type="button" data-lng="LB.0000000337">팔레트매핑</button></li>
+								<li class="S90001352 blind" data-page-name="../PD/PD_065.html"><button type="button" data-lng="LB.0000000337">팔레트매핑</button></li>
+								<li class="S90001205 blind" data-page-name="../PD/PD_071.html"><button type="button" data-lng="LB.0000000346">사외출하</button></li>
+								<li class="S90001206 blind" data-page-name="../PD/PD_075.html"><button type="button" data-lng="LB.0000000337">팔레트매핑</button></li>
+								<li class="S90001200 blind" data-page-name="../PD/PD_080.html"><button type="button" data-lng="LB.0000000339">공용기입고</button></li>
+							</ul>
+							<h2 class="3 blind" data-lng="LB.0000000003">협력사관리</h2>
+							<ul class="3 blind">
+								<li><button type="button">서브메뉴 3-1</button></li>
+								<li><button type="button">서브메뉴 3-2</button></li>
+							</ul>
+							<h2 class="S90000820 blind" data-lng="LB.0000000004">사외관리</h2>
+							<ul class="S90000820 blind">
+								<li class="S90000966 blind" data-page-name="../KD/KD_010.html"><button type="button" data-lng="LB.0000000100">사외창고입고</button></li>
+								<li class="S90000967 blind" data-page-name="../KD/KD_020.html"><button type="button" data-lng="LB.0000000101">보관창고 및 구역이동</button></li>
+								<li class="S90000968 blind" data-page-name="../KD/KD_030.html"><button type="button" data-lng="LB.0000000102">사외창고실사(정기)</button></li>
+								<li class="S90000969 blind" data-page-name="../KD/KD_040.html"><button type="button" data-lng="LB.0000000103">사외창고실사(수시)</button></li>
+								<li class="S90000970 blind" data-page-name="../KD/KD_050.html"><button type="button" data-lng="LB.0000000104">출고대상등록</button></li>
+								<li class="S90000971 blind" data-page-name="../KD/KD_060.html"><button type="button" data-lng="LB.0000000105">출고확정</button></li>
+								<li class="S90000972 blind" data-page-name="../KD/KD_070.html"><button type="button" data-lng="LB.0000000106">사급출고</button></li>
+								<li class="S90000973 blind" data-page-name="../KD/KD_080.html"><button type="button" data-lng="LB.0000000094">부품식별표병합</button></li>
+							</ul>
+							<h2 class="S90000819 blind" data-lng="LB.0000000005">보전/금형 관리</h2>
+							<ul class="S90000819 blind">
+								<li class="S90000821 blind" data-page-name="../BJ/BJ_010.html"><button type="button" data-lng="LB.0000000006">자재입고</button></li>
+								<li class="S90000822 blind" data-page-name="../BJ/BJ_020.html"><button type="button" data-lng="LB.0000000007">자재변경</button></li>
+								<li class="S90000825 blind" data-page-name="../BJ/BJ_031.html"><button type="button" data-lng="LB.0000000009">일일실사</button></li>
+								<li class="S90000826 blind" data-page-name="../BJ/BJ_035.html"><button type="button" data-lng="LB.0000000010">기간실사</button></li>
+								<li class="S90000824 blind" data-page-name="../BJ/BJ_040.html"><button type="button" data-lng="LB.0000000011">예방점검</button></li>
+							</ul>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="non_footer">
+	</footer>
+
+</div>
+</body>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/common/allmenu.js"></script>
+</html>

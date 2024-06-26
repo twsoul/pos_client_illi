@@ -1,0 +1,65 @@
+@font-face {
+  font-family: 'HDharmonyL';
+  src: url('/fonts/HDharmonyL.eot'); 
+  src:local(※), url('../fonts/HDharmonyL.woff') format(‘woff’);
+  src: url('../fonts/HDharmonyL.eot?#iefix') format('embedded-opentype'), 
+  url('../fonts/HDharmonyL.woff2') format('woff2'), 
+  url('../fonts/HDharmonyL.woff') format('woff'), 
+  url('.fonts/HDharmonyL.ttf')  format('truetype'),
+  url('../fonts/HDharmonyL.svg#svgFontName') format('svg');
+  font-weight:normal;
+}
+@font-face {
+  font-family: 'HDharmonyM';
+  src: url('../fonts/HDharmonyM.eot'); 
+  src:local(※), url('../fonts/HDharmonyM.woff') format(‘woff’);
+  src: url('../fonts/HDharmonyM.eot?#iefix') format('embedded-opentype'), 
+  url('../fonts/HDharmonyM.woff2') format('woff2'), 
+  url('../fonts/HDharmonyM.woff') format('woff'), 
+  url('../fonts/HDharmonyM.ttf')  format('truetype'),
+  url('../fonts/HDharmonyM.svg#svgFontName') format('svg');
+  font-weight:normal;
+}
+@font-face {
+  font-family: 'HDharmonyB';
+  src: url('../fonts/HDharmonyB.eot'); 
+  src:local(※), url('../fonts/HDharmonyB.woff') format(‘woff’);
+  src: url('../fonts/HDharmonyB.eot?#iefix') format('embedded-opentype'), 
+  url('../fonts/HDharmonyB.woff2') format('woff2'), 
+  url('../fonts/HDharmonyB.woff') format('woff'), 
+  url('../fonts/HDharmonyB.ttf')  format('truetype'),
+  url('../fonts/HDharmonyB.svg#svgFontName') format('svg');
+  font-weight:normal;
+}
+/* Material Icons*/
+@font-face {
+  font-family: 'Material_Icons';
+  src: url(../fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url('../fonts/MaterialIcons-Regular.woff2') format('woff2'),
+    url('../fonts/MaterialIcons-Regular.woff') format('woff'),
+    url('../fonts/MaterialIcons-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+}
+.material-icons {
+  font-family: 'Material_Icons';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+/* Support for all WebKit browsers. */
+-webkit-font-smoothing: antialiased;
+/* Support for Safari and Chrome. */
+text-rendering: optimizeLegibility;
+/* Support for Firefox. */
+-moz-osx-font-smoothing: grayscale;
+/* Support for IE. */
+font-feature-settings: 'liga';
+}

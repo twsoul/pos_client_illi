@@ -1,0 +1,267 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var packOrderNO, driv_id, car_n;
+	var m_status, m_sum;
+	var m_ord_kind = true;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		packOrderNO = dataManager.param('packOrderNO');
+		driv_id = dataManager.param("driv_id");
+		car_n = dataManager.param("car_n");
+		
+		// TODO : DEBUG - START
+		// KD.get_H_T_UM_059_List  ==> 쿼리 재 작성 필요(KD에 맞게. 현재는 값이 나오는 GCS로 작성)
+		// TODO : DEBUG - END
+		
+		getSearchData();
+	};
+	// 이벤트 초기화 
+	var setInitEvent = function() {
+		$("#btnOrderCard").on("click", moveToDetail);
+		$("#btnGPSStart").on("click", setGPSOn);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		getSearchData();
+	};
+	
+	var getSearchData = function() {
+		m_sum = 0;
+		networkManager.httpSend({
+			path: '/api/GCSListMultiSelect.do',
+			data: {
+				'QUERYIDS': "KD.get_H_T_UM_059_info;KD.get_H_T_UM_059_List",
+				"DRIV_ID": driv_id,
+				"PACK_ORDR_NO": packOrderNO
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount0 != 0) {
+					var data = receivedData.ListData0[0];
+					$("#lblCarNumber").text(car_n);
+					$("#lblDriverName").text(data.DRIV_NM);
+					$("#lblPhoneNumber").text(window.Utils.getTelCenterLine(data.DRIV_TEL));
+					vend_cd = data.DIST_VEND_CD;
+				}
+				
+				var tag =$("#ListHeadTemplate").html();
+				if (receivedData.ListCount1 == 0){
+					tag = $("#ListNoDataTemplate").html();
+				} else {
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData1, function(index,rowData){
+						/* KD 포장장 별도 */
+						if (rowData.PLANT_CD == "A1") {
+							PLANT_NM = "사내포장장";
+						} else if (rowData.PLANT_CD == "B1") {
+							PLANT_NM = "서영1공장(아산)";
+						} else if (rowData.PLANT_CD == "B2") {
+							PLANT_NM = "서영2공장(아산)";
+						} else {
+							PLANT_NM = rowData.PLANT_NM;
+						}
+						if (rowData.LOC_CD == "PTA") {
+							LOC_TP = "PTA포장";
+						} else if (rowData.LOC_CD == "PTC") {
+							LOC_TP = "PTC포장";
+						} else if (rowData.LOC_CD == "PTC-W") {
+							LOC_TP = "위아포장";
+						} else if (rowData.LOC_CD == "PTM") {
+							LOC_TP = "PTM포장";
+						} else {
+							LOC_TP = rowData.LOC_TP;
+						}
+						if (index == 0)
+							m_status = rowData.STATUS;
+						if (rowData.RST == "E")
+							m_sum += 1;
+						if (rowData.ORD_KIND == undefined || rowData.ORD_KIND == "")
+							m_ord_kind = false;
+						tag += template.replace(/\{\{PLANT_CD\}\}/gi, rowData.PLANT_CD)
+								.replace(/\{\{RST\}\}/, rowData.RST)
+								.replace(/\{\{LOC_CD\}\}/, rowData.LOC_CD)
+								.replace(/\{\{IN_NO\}\}/, rowData.IN_NO)
+								.replace(/\{\{PLANT_NM\}\}/, PLANT_NM)
+								.replace(/\{\{LOC_TP\}\}/, rowData.LOC_TP == undefined ? "" : rowData.LOC_TP)
+								.replace(/\{\{CNT1\}\}/, rowData.CNT1)
+								.replace(/\{\{CNT2\}\}/, rowData.CNT2)
+								.replace(/\{\{RESULT\}\}/, rowData.RESULT)
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+				}
+				
+				$(".list_t_um17").html(tag);
+				setListRowEvent();
+			}
+		});
+	};
+	
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("div").removeClass("on");
+			}
+		})
+	};
+	
+	var setGPSOn = function() {
+		var vend_tp = userManager.getVEND_TP();
+		
+		if (vend_tp == "C"){
+			popupManager.alert("HTS사용자는 사용할 수 없는 권한입니다.", {title: '알림'});
+		} else {
+			if (m_sum == 0){
+				if (m_status == "S"){
+					popupManager.alert("이미 입고가 완료된 배차입니다.", {title: '알림'});
+				} else if (m_status == "T") {
+					popupManager.alert("검수중인 배차입니다.", {title: '알림'});
+				} else if (m_status == "G"){
+					popupManager.alert("이미 운송중 입니다.", {title: '알림'});
+				} else {
+					// m_status == D
+					
+					// ORD_KIND 확인
+					networkManager.httpSend({
+						path: '/api/GCSListSelect.do',
+						data: {
+							'QUERYID': "KD.get_H_T_UM_087_List_CHK",
+							"PACK_ORDR_NO": packOrderNO
+						},
+						success: function(receivedData, setting) {
+							if (receivedData.ListCount == 0){
+							} else {
+								$.each(receivedData.ListData, function(index,rowData){
+									if(rowData.KIND_CHK != '0'){
+										popupManager.alert("용도 등록이 안된 납입문서가 있습니다.", {title: '알림'});
+									}else{
+					
+					networkManager.httpSend({
+						path: '/api/Action_And_PushSend.do',
+						data: {
+							'QUERYID': "KD.set_H_T_UM_059_Update",
+							"PACK_ORDR_NO": packOrderNO,
+							"MODE":"11",
+                            "db_kind":dataManager.storage('saveUserDb')
+						},
+						success: function(receivedData, setting) {
+							popupManager.instance('출발 등록 되었습니다.', {showtime:"SHORT"});
+							
+							//배차상태 인터페이스(배차상태)
+							networkManager.httpSend({
+								path: '/api/GCSListSelect.do',
+								data: {
+									'QUERYID': "KD.get_OrderNo_Select1",
+									'PACK_ORDR_NO':packOrderNO
+								},
+								success: function(receivedData, setting) {
+									if (receivedData.ListCount == 0){
+									} else {
+										var zdrivnm= $('#lblDriverName').text();
+										var zdrivtel= $('#lblPhoneNumber').text();
+										var zcarn= $('#lblCarNumber').text();
+										var kd_ordr_no_chk = rowData.ORDR_NO.substring( 0, 1 );
+										//if (kd_ordr_no_chk == "3") {
+											$.each(receivedData.ListData, function(index,rowData){
+												networkManager.httpSend({
+													path: '/api/carInfo.do',
+													data: {
+														'ordr_no':rowData.ORDR_NO,
+														'udt_stat':'1',
+														'status':'G',
+														'statcd':rowData.STAT_CD,
+														'ordkind':'',
+														'statvend':rowData.STAT_VEND,
+														'ordeono':'',
+														'drdhis':'',
+														'zdrivnm':zdrivnm,
+														'zdrivtel':zdrivtel,
+														'zcarn':zcarn,
+														'statsns':'',
+														'cancel':'',
+														'event':'출발(set_H_T_UM_059_Update)'
+													},
+													success: function(receivedData, setting) {
+														moveToBack();
+													}
+												});	
+											});
+										//}
+									}
+								}
+							});
+						},
+						error: function(){
+							popupManager.alert("출발 등록에 실패하였습니다.", {title: '알림'});
+						}
+					});
+					
+									}
+								});
+							}
+						}
+					 });
+					
+				}
+			} else {
+				popupManager.alert("미완료된 납입문서카드가 있습니다.", {title: '알림'});
+			}
+		}
+	};
+	
+	var moveToDetail = function() {
+		var plant = $(".mLink.on").data("id");
+		var loc = $(".mLink.on").data("loccd");
+		var in_no = $(".mLink.on").data("inno");
+		if (plant != undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_060.html', {
+				param: {
+					PACK_NO: M.sec.encrypt(packOrderNO.toString()).result,
+					PLANT: M.sec.encrypt(plant.toString()).result,
+					LOC: M.sec.encrypt(loc.toString()).result,
+					IN_NO: M.sec.encrypt(in_no.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		} else {
+			popupManager.alert("목록 중 선택하세요", {title: '알림'});
+		}
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

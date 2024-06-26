@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>세척투입</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000604"></h2><!--세척투입-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area adjForm">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+											<th><span data-lng="LB.0000000631"></span></th><!--사외창고-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selPLANT" id="selPLANT"></select></p></td>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selLOGI" id="selLOGI"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="opt_select clearfix"><!--세척기-->
+								<p class="lineHead" data-lng="LB.0000000634"></p><p class="selectBox"><select name="selOT_PROC" id="selOT_PROC"></select></p>
+							</div>
+							<div class="opt_input"><!--품번-->
+								<p class="lineHead" data-lng="LB.0000000038"></p><p class="adjLayout"><span><input type="text" id="txtPART_CD" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--케이스-->
+								<p class="lineHead" data-lng="LB.0000000635"></p><p class="adjLayout"><span><input type="text" id="txtCASE_NO" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--수량-->
+								<p class="lineHead" data-lng="LB.0000000019"></p><p class="adjLayout"><span><input type="text" id="txtGOOD_QTY" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--작업시작-->
+								<p class="lineHead" data-lng="LB.0000000636"></p><p class="adjLayout"><span><input type="text" id="txtWORK_TM" readonly></span></p>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor btn_sec1"><button type="button" id="btnCncl" data-lng="LB.0000000751"></button></p><!--불량등록-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000632">사외창고 조회정보가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000637">세척설비 조회정보가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오.</span>
+<span class="blind" data-lng="MSG.0000000633">사외창고를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000638">세척설비를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000639">존재하지 않는 CASE NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000641">사용할 수 없는 CASE NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000640">이미 투입된 CASE NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000735">세척중인 다른 품번이 존재합니다. 투입하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000373">저장에 실패하였습니다</span>
+<span class="blind" data-lng="MSG.0000000756">세척 취소를 하시겠습니까?</span>
+</body>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/KD/KD_120.js"></script>
+<script type="text/javascript" src="../../js/common/qrManager.js"></script>
+</html>

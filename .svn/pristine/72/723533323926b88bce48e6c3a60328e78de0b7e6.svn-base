@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>자재 입고</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png" alt="이전으로 돌아갑니다."></span></div>
+				<h2>자재 입고</h2>
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<h5 class="blind">옵션 선택 및 확인</h5>
+						<div class="box_inner expand">
+							<div class="opt_input">
+								<p class="lineHead moreArea2">송장 바코드</p><p class="inputBox"><span><input type="text" placeholder="스캔하세요." id="inputScan"><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:0.5vmax;">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:auto;">
+										<col style="width:55%;">
+									</colgroup>
+									<thead>
+									<tr>
+										<th><span>송장번호</span></th>
+										<th><span>내역</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td class="unsearched"><span id="txtINVOICE_NO"></span></td>
+										<td><span>설비 저장품 구매</span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>금액</span></th>
+										<th><span>항목</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span>8,000,000</span></td>
+										<td><span>5</span></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+			<section>
+				<div class="container">
+					<article class="tableList">
+						<div class="list_inner list_bj_012 adjFix" id="list_bj_012">
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor btn_sec1 "><button type="button" id="btnAInsert">입고</button></p>
+			<p class="classicalBtn adjColor btn_sec2 "><button type="button" id="btnPrint">라벨인쇄</button></p>
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<li><button type="button" data-value="../common/notification.html"></button></li>
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont {{MLINK}} {{STAT_CD}}" data-id="{{NUM}}">
+		<div class="multiple_cate checkBox_list">
+			<span class="check_select">
+				<label>
+					<input value="check" type="checkbox" checked="checked">
+					<span></span>
+				</label>
+			</span>
+		</div>
+		<div class="multiple_cate">
+			<p class="harf_cell">
+				<span>{{PART_NO}}</span>
+				<span>{{STATUS}}</span>
+			</p>
+			<p>{{PART_NM}}</p>
+			<p class="harf_cell">
+				<span>수량</span><span>{{QTY}}</span>
+				<span>금액</span><span>{{PRICE}}</span>
+			</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/bj/bj_012.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customInputPopup.js"></script>
+</html>

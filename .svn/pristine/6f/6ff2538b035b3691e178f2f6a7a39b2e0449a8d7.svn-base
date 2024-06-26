@@ -1,0 +1,91 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		var tms_auth = userManager.getTMS_AUTH();
+		//Log.d("tms_auth", tms_auth);
+		switch(tms_auth){
+		case "1":
+			//LP : 현대트랜시스
+			$("#btGCS").removeClass("blind");
+			$("#btCKD").removeClass("blind");
+			$("#btKD").removeClass("blind");
+			$("#btCOUT").removeClass("blind");
+			break;
+		case "2":
+			//KD
+			$("#btKD").removeClass("blind");
+			break;
+		case "3":
+			//CKD
+			$("#btCKD").removeClass("blind");
+			break;
+		case "4":
+			//완제품
+			$("#btCOUT").removeClass("blind");
+			break;
+		}
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$(".edgeStyle").on("click", moveToPage);
+	};
+	
+	var moveToPage = function() {
+		var id = $(this).data("id");
+		
+		dataManager.storage("GATE_IN", id);
+		switch(id){
+		case "GCS":
+		case "KD":
+		case "CKD":
+			screenManager.moveToPage('/www/html/H_T_UM_003.html');
+			break;
+		case "COUT":
+			screenManager.moveToPage('/www/html/H_T_UM_044.html');
+			break;
+		default:
+			popupManager.alert("준비중입니다.", {title: '알림'});
+			break;
+		}
+	}
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	popupManager.alert('앱을 종료하시겠습니까?', {
+		title: '알림',
+		buttons: ['취소', '확인']
+	}, function(index) {
+		switch(index) {
+			case 0:
+				break;
+			case 1:
+//			    exWNStopGPSInfo();
+				M.sys.exit();
+				break;
+		}
+	});
+});

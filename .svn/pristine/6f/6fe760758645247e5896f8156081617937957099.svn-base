@@ -1,0 +1,369 @@
+/*******************************************************************
+*	로그인 페이지 메인 로직
+*******************************************************************/
+var isRunning = false;
+var isSecu;
+var version;
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+		// 로그인 진입 시 badge count 0
+		M.plugin('push').notificationCenter.badge(0);
+		// remote 푸시 활성화
+		M.plugin('push').remote.enabled(true);
+		version = 'Ver ' + exWNVersionInfo();
+		$("#txtVersion").val(version);
+		/*
+		M.plugin('push').remote.registerService({
+			callback: function (result) {
+				
+			}
+		});
+		
+		//푸쉬메세지체크
+		M.execute("exCheckPush");*/
+		
+		// design 문제로 인한...
+		pwKeypad();
+
+		//이전에 접속했던 서버 정보 저장 - 20200114
+		if(dataManager.storage('saveUserDb') == "GCS"){
+			$("#GCS").prop("checked", true);
+		}else if(dataManager.storage('saveUserDb') == "TLS"){
+			$("#TLS").prop("checked", true);
+		}else{
+			$("#GCS").prop("checked", true);
+		}
+		
+		if (dataManager.storage('saveUserId')) {
+			$('#txtLogID').val(dataManager.storage('saveUserId'));
+			//$("#txtLogPW").val(dataManager.storage('saveUserPw'));
+			$('#chk_holdInfo').prop('checked', true);
+		}
+		
+		// 테스트용 (현대트랜시스)
+		$("#btnTEST1").on("click", function() {
+			$("#txtLogID").val("R526D074");
+			$("#txtLogPW").val("r526d074!");
+		});
+		
+		// 테스트용 (물류사)
+		$("#btnTEST2").on("click", function() {
+			$("#txtLogID").val("VA170D001");
+			$("#txtLogPW").val("va170d001!");
+		});
+		
+		// 테스트용 (업로드)
+		$("#btnTEST3").on("click", function() {
+			screenManager.moveToPage('/www/html/TEST.html');
+		});
+
+        //앱 버전 체크
+		versionCheck();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btn_login").on("click", loginProcess);
+		
+		$("#txtLogID").focus();
+	};
+
+    // 버전체크
+    var versionCheck = function() {
+        //os_gb  : 기종 구분(ANDROID : 안드로이드, IOS : 아이폰)
+        //app_version : 현재 App Version.(AndroidManifest의 android:versionName 값 참조)
+        networkManager.httpSend({
+            path: '/api/versionCheck.do',
+            data: {
+                'os_gb':'ANDROID',
+                'app_version':exWNVersionInfo()
+            },
+            success: function(receivedData, setting) {
+				if (receivedData.RESULT == "Y"){
+
+				} else if(receivedData.RESULT == "E"){
+					popupManager.alert("버전정보를 가져올 수 없거나, 등록된 최신버전보다 상위버전입니다.\r\n관리자에게 문의하십시오.", {
+						title: '알림',
+			            buttons: ['확인']
+					}, function(index){
+					    switch(index){
+					    case 0:
+                            M.sys.exit();
+                            break;
+                         }
+                    });
+				} else if(receivedData.RESULT == "W"){
+					popupManager.alert("앱 버전이 최신버전이 아닙니다.\r\n최신버전 사용을 권장합니다.", {
+						title: '알림'
+					});
+				} else if(receivedData.RESULT == "N"){
+					popupManager.alert("앱 버전이 최신버전이 아닙니다.\r\n최신버전으로 업데이트 하십시오.", {
+						title: '알림',
+			            buttons: ['확인']
+					}, function(index){
+					    switch(index){
+					    case 0:
+                            M.sys.exit();
+                            break;
+                         }
+                    });
+				} else {
+                    popupManager.alert("버전정보를 가져올 수 없거나, 등록된 최신버전보다 상위버전입니다.\r\n관리자에게 문의하십시오.", {
+                        title: '알림',
+                        buttons: ['확인']
+                    }, function(index){
+                        switch(index){
+                        case 0:
+                              M.sys.exit();
+                              break;
+                           }
+                      });
+                }
+            }
+         });
+    };
+	
+	// 로그인 (process)
+	var loginProcess = function() {
+		var id, pw;
+
+		var db_kind = $('input[name="radServer"]:checked').val();
+
+		id = $("#txtLogID").val();
+		pw = $("#txtLogPW").val();
+
+		if (!loginValidate(id, pw)) {
+		 	return;
+		 }
+	
+		if ($("#chk_holdInfo").prop("checked")) {
+			dataManager.storage("saveUserId", id);
+			//dataManager.storage("saveUserPw", pw);getWebView
+		} else {
+			dataManager.removeStorage("saveUserId");
+			//dataManager.removeStorage("saveUserPw");
+		}
+
+		//new_gb : 신규 클라이언트 구분
+		//os_gb  : 기종 구분(ANDROID : 안드로이드, IOS : 아이폰)
+		networkManager.httpSend({
+			path: '/api/login.do',
+			data: {
+				'user_id': id,
+				'user_pw': pw,
+				'db_kind': db_kind,
+				'new_gb':'Y'
+			},
+			success: function(receivedData, setting) {
+                if (receivedData.RESULT == "OK"){
+                    var user = receivedData.AUTH_INFO;
+                    if(receivedData.CONFIRM_YN == "Y"){
+                        //로그인 성공 시 선택했던 서버 정보 저장 - 20200114
+                        dataManager.storage("saveUserDb", db_kind);
+                        userManager.setUserData(user);
+                        pushRegNmoveToPage();
+                    }else{
+				        setConfirmYN(id,user,db_kind);
+                    }
+                } else{
+                    popupManager.alert("계정정보가 올바르지 않습니다", {
+                        title: '알림'
+                    });
+                }
+			}
+		 });
+	};
+	
+	var loginValidate = function(id, pw) {
+		if (window.Utils.trim(id) == "") {
+			popupManager.alert("아이디를 입력하세요", {
+				title: '알림'
+			}, function() {
+				$("#txtLogID").val("");
+				$("#txtLogID").focus();
+			});
+			return;
+		}
+		
+		if (window.Utils.trim(pw) == "") {
+			popupManager.alert("패스워드를 입력하세요", {
+				title: '알림'
+			}, function() {
+				$("#txtLogPW").val("");
+				$("#txtLogPW").focus();
+			});
+			return;
+		}
+		return true;
+	}
+
+
+	function setConfirmYN(id,user,db_kind) {
+	    var noti = '※ 개인정보입력항목\r\n- 업체명, 성명, 휴대전화번호, 차량 번호\r\n\r\n';
+            noti += '※ 개인정보수집 및 이용목적\r\n- 개인정보수집항목\r\n· 성명, 휴대전화번호, 차량 번호\r\n';
+            noti += '· 개인정보 보유 및 이용기간 : 1년(* 보유기간 이후 자동 폐기)\r\n\r\n- 개인정보이용목적\r\n';
+            noti += '· 현대 트랜시스㈜의 협력사 납품 차량 정보 관리 시스템 구축을 위한 물류 기사의 신상 정보 등록\r\n';
+            noti += '[물류 기사의 휴대 전화 내 GPS 기능과 현대 트랜시스㈜의 내부시스템을 연계한 차량 위치 관리]\r\n\r\n';
+            noti += '※ 개인정보수집에 동의 거부를 할수 있으며, 동의 거부시 시스템 사용이 불가합니다.';
+		popupManager.alert(noti, {
+			title: '개인정보수집·이용 동의',
+			buttons: ['거부', '동의']
+		}, function(index) {
+			switch(index) {
+				case 0:
+					break;
+				case 1:
+				    if(db_kind == "GCS"){
+                        networkManager.httpSend({
+                            path: '/api/GCSListSelect.do',
+                            data: {
+                                'QUERYID': "GCS.set_USER_CONFIRM",
+                                'DRIV_ID': id
+                            },
+                            success: function(receivedData, setting) {
+                                    dataManager.storage("saveUserDb", db_kind);
+                                    userManager.setUserData(user);
+                                    pushRegNmoveToPage();
+                            },
+                            error: function(){
+                                popupManager.alert("보안서약 등록에 실패하였습니다.\r\n네트워크 상태를 다시 확인해주십시오.", {title: '알림'});
+                            }
+                         });
+				    }else if(db_kind == "TLS"){
+                        networkManager.httpSend({
+                            path: '/api/TLSListSelect.do',
+                            data: {
+                                'QUERYID': "TLS.set_USER_CONFIRM",
+                                'DRIV_ID': id
+                            },
+                            success: function(receivedData, setting) {
+                                    dataManager.storage("saveUserDb", db_kind);
+                                    userManager.setUserData(user);
+                                    pushRegNmoveToPage();
+                            },
+                            error: function(){
+                                popupManager.alert("보안서약 등록에 실패하였습니다.\r\n네트워크 상태를 다시 확인해주십시오.", {title: '알림'});
+                            }
+                         });
+				    }
+					break;
+			}
+		});
+	}
+	
+	var pushRegNmoveToPage = function(){
+		exShowIndicator("푸시정보 상태조회중입니다.");
+		setTimeout("callbackPushService(2,'err')", 5000);
+		M.plugin('push').remote.registerServiceAndUser({
+			cuid: userManager.getDRIV_ID(),
+			name: userManager.getDRIV_NM(),
+			callback: function( status ) {
+				// callback은 공통 callback함수로...
+				var serviceCode = status.status == 'SUCCESS' ? 0 : 1;
+				callbackPushService(serviceCode);
+			}
+		});
+	}
+	
+	var moveToPage = function() {
+		exHideIndicator();
+		if (userManager.getRD_CD() == "D"){
+			if(dataManager.storage('saveUserDb') == "GCS"){
+				screenManager.moveToPage('/www/html/H_T_UM_001.html', { action: 'CLEAR_TOP' });
+			}
+			else{
+				screenManager.moveToPage('/www/html/H_D_UM_001.html', { action: 'CLEAR_TOP' });
+			}
+		} else {
+			if (Number(userManager.getCNT()) > 0){
+				if(dataManager.storage('saveUserDb') == "GCS"){
+					screenManager.moveToPage('/www/html/H_T_UM_001.html', { action: 'CLEAR_TOP' });
+				}
+				else{
+					screenManager.moveToPage('/www/html/H_D_UM_001.html', { action: 'CLEAR_TOP' });
+				}
+			} else {
+				if(dataManager.storage('saveUserDb') == "GCS"){
+					screenManager.moveToPage('/www/html/H_T_UM_002.html', { action: 'CLEAR_TOP' });
+				}
+				else{
+					screenManager.moveToPage('/www/html/H_D_UM_002.html', { action: 'CLEAR_TOP' });
+				}
+			}
+		}
+	}
+	
+	var pwKeypad = function(){
+		var displayHeight = $(window).outerHeight();
+		var displayOriginalHeight = displayHeight;
+		var adjHeight = displayOriginalHeight * 0.6;
+		
+		$(window).on("resize", function(){
+			var changeDefault = $(window).outerHeight();
+			if(changeDefault < adjHeight ){
+				$("#wrapper.login").css("height", "100%");
+			}else{
+				$("#wrapper.login").removeAttr("style");
+			};
+		});
+	};
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToPage: moveToPage
+	};
+})(window, document, $, M);
+
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	popupManager.alert('앱을 종료하시겠습니까?', {
+		title: '알림',
+		buttons: ['취소', '확인']
+	}, function(index) {
+		switch(index) {
+			case 0:
+				break;
+			case 1:
+				M.sys.exit();
+				break;
+		}
+	});
+});
+
+function callbackPushService(serviceCode, msg){
+	if (!isRunning){
+		isRunning = true;
+		exHideIndicator();
+		if (serviceCode == 0){
+			popupManager.instance('푸시 알림이 설정되었습니다.');
+			page.moveToPage();
+		} else {
+			popupManager.alert('푸시 알림 설정에 오류가 발생하였습니다. 로그인을 계속 진행하시겠습니까?', {
+				title: '확인',
+				buttons: ['취소', '확인']
+			}, function(index) {
+				switch(index) {
+					case 0:
+						isRunning = false;
+						break;
+					case 1:
+						page.moveToPage();
+						break;
+				}
+			});
+		}
+	}
+}

@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.hts.hable_pos.test",
+  "variantName": "processDebugAndroidTestResources",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 0,
+      "versionName": "",
+      "outputFile": "H_able_Client-debug-androidTest.apk"
+    }
+  ]
+}

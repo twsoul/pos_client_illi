@@ -1,0 +1,234 @@
+package com.hts.hable;
+
+import m.client.android.library.core.common.CommonLibHandler;
+import m.client.android.library.core.utils.PLog;
+import m.client.android.library.core.view.MainActivity;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.view.View;
+import android.view.WindowManager;
+import android.webkit.WebView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ * BaseActivity Class
+ * 
+ * @author 김태욱(<a mailto="tukim@uracle.co.kr">tukim@uracle.co.kr</a>)
+ * @version v 1.0.0
+ * @since Android 2.1 <br>
+ *        <DT><B>Date: </B>
+ *        <DD>2013.08.01</DD>
+ *        <DT><B>Company: </B>
+ *        <DD>Uracle Co., Ltd.</DD>
+ * 
+ * 모피어스 내에서 제공되는 모든 Web 페이지의 기본이 되는 Activity
+ * html 화면은 모두 BaseActivity 상에서 출력된다.
+ * 제어를 원하는 이벤트들은 overriding 하여 구현하며, 각각 페이지 별 이벤트는 화면 단위로 분기하여 처리한다.
+ * 플랫폼 내부에서 사용하는 클래스로 해당 클래스의 이름은 변경할 수 없다.
+ * 
+ * Copyright (c) 2001-2011 Uracle Co., Ltd. 
+ * 166 Samseong-dong, Gangnam-gu, Seoul, 135-090, Korea All Rights Reserved.
+ */
+
+public class BaseActivity extends MainActivity {
+
+	private String mCurrentPhotoPath; // 최근 촬영이미지 경로
+	public static final int ACT_REQ_CODE_TAKE_PHOTO = 1000;
+	public static final int PERM_REQ_CODE_TAKE_PHOTO = 2000;
+
+	/**
+	 * Webview가 시작 될 때 호출되는 함수
+	 */
+	@Override
+	public void onPageStarted (WebView view, String url, Bitmap favicon) {
+		//캡처 허용, 비허용
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+		super.onPageStarted(view, url, favicon);
+	}
+	
+	/**
+	 * Webview내 컨텐츠가 로드되고 난 후 호출되는 함수
+	 */
+	@Override
+	public void onPageFinished(WebView view, String url)  {
+		super.onPageFinished(view, url);
+		view.requestFocus(View.FOCUS_DOWN);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+
+//		PLog.i("BaseActivity", "onActivityResult(int requestCode, int resultCode, Intent data)");
+//		PLog.d("BaseActivity", "requestCode = " + requestCode);
+//		PLog.d("BaseActivity", "resultCode = " + resultCode);
+//		PLog.d("BaseActivity", "data = " + data);
+
+		// 사진촬영
+		if (requestCode == ACT_REQ_CODE_TAKE_PHOTO) {
+			// 사진촬영 완료 - 사용자 취소(back key 등으로)가 아닐경우 실행
+			if (resultCode == Activity.RESULT_OK) {
+				getWebView().loadUrl("javascript:onTakePictureComplete('" + mCurrentPhotoPath + "')");
+			} else { // 사용자 취소(back key 등으로)
+				getWebView().loadUrl("javascript:onTakePictureCancel()");
+			}
+		}
+
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode == 2583){
+			//final String callback = data.getStringExtra("callback");
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					try {
+						JSONObject obj = new JSONObject();
+						obj.put("result",  URLEncoder.encode(data.getStringExtra("RESULT"), "utf-8"));
+						getWebView().loadUrl("javascript:fnBarcodeCallback(" + obj.toString() + ");");
+					} catch (UnsupportedEncodingException | JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+			});
+
+			//Toast.makeText(this, "RESULT : " +data.getStringExtra("RESULT"), Toast.LENGTH_LONG).show();
+		}
+	}
+
+	// 앱 버전 가져오기
+	public String getVersionInfo(){
+		String version = null;
+		try {
+			PackageInfo i = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+			version = i.versionName;
+		} catch(PackageManager.NameNotFoundException e) { }
+		return version;
+	}
+
+	// 앱 버전 가져오기
+	public String getDeviceInfo(){
+		CommonLibHandler commHandle = CommonLibHandler.getInstance();
+		String Device = null;
+		try {
+			Device = commHandle.g_strDeviceModelName;
+		} catch(NullPointerException e) {
+			PLog.i("getDeviceInfo", e.toString());
+		}
+		return Device;
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case PERM_REQ_CODE_TAKE_PHOTO:
+				// If request is cancelled, the result arrays are empty.
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					// permission was granted, yay! Do the
+					// contacts-related task you need to do.
+					callTakePictureActivity();
+				} else {
+					// permission denied, boo! Disable the
+					// functionality that depends on this permission.
+				}
+				return;
+		}
+	}
+
+	public void takePicture() {
+		if (Build.VERSION.SDK_INT < 23) {
+			// direct call camera activity
+			callTakePictureActivity();
+		} else {
+			// check permission process then call camera activity
+			checkPermission();
+		}
+	}
+
+
+	private boolean isCamearaPermissionGranted() {
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+				== PackageManager.PERMISSION_GRANTED
+				&& ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+				== PackageManager.PERMISSION_GRANTED) {
+			return true;
+		}
+		return false;
+	}
+
+	private void checkPermission() {
+		if (isCamearaPermissionGranted()) {
+			callTakePictureActivity();
+		} else {
+			// Should we show an explanation?
+			if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+					Manifest.permission.CAMERA)) {
+				// Show an explanation to the user *asynchronously* -- don't block
+				// this thread waiting for the user's response! After the user
+				// sees the explanation, try again to request the permission.
+			} else {
+				// No explanation needed, we can request the permission.
+				ActivityCompat.requestPermissions(this,
+						new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+						PERM_REQ_CODE_TAKE_PHOTO);
+
+				// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+				// app-defined int constant. The callback method gets the
+				// result of the request.
+			}
+		}
+	}
+
+	private void callTakePictureActivity() {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
+			File photoFile = null;
+			try {
+				photoFile = createImageFile();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+
+			if(photoFile != null) {
+				Uri photoUri = FileProvider.getUriForFile(this,
+						"com.hts.hable.fileprovider", photoFile);
+				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+				startActivityForResult(takePictureIntent, ACT_REQ_CODE_TAKE_PHOTO);
+			}
+		}
+	}
+
+	private File createImageFile() throws IOException {
+		String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFilename = "JPEG_" + timestamp;
+		File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File image = File.createTempFile(imageFilename, ".jpg", dir);
+
+		mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+
+		return image;
+	}
+}

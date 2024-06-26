@@ -1,0 +1,172 @@
+# List of SDK dependencies of this app, this information is also included in an encrypted form in the APK.
+# For more information visit: https://d.android.com/r/tools/dependency-metadata
+
+library {
+  maven_library {
+    groupId: "com.android.support"
+    artifactId: "multidex"
+    version: "1.0.3"
+  }
+  digests {
+    sha256: "\354\366\t\205r\342;QU\272\263\271\250+/\321S\016\332ll\025wE\340\365(|f\356\306\f"
+  }
+}
+library {
+  maven_library {
+    groupId: "com.samskivert"
+    artifactId: "jmustache"
+    version: "1.15"
+  }
+  digests {
+    sha256: "\032\353\226\271\334\027\274)T\v\2143B\350\351\036\351t\325\306\004\026^\315F\235\327k\004\034%\f"
+  }
+}
+library {
+  digests {
+    sha256: "8\371\273\250\253\364\261r\252g\r\255?\375\325\322\220;\336\222\226\274bA\244\213\232\313\0270\240U"
+  }
+}
+library {
+  digests {
+    sha256: "u\201\f\004c\266\266\177g\303-\214\024\334i\0306\262.b7\313\204\300\200\272?a\323\355\023l"
+  }
+}
+library {
+  digests {
+    sha256: "\033\266\022\267\275.E\324\206E\300kg\2269zMXd\330\303\3639{E,\364\024\325T\021o"
+  }
+}
+library {
+  digests {
+    sha256: "\221\034\216\215\376\303a\005W\034\234P\245A\003z\216\231\333\324A/\227\306\327e=\271\233\a{\351"
+  }
+}
+library {
+  digests {
+    sha256: "\024\253m\201\226\245\001\362\0050B\356\231\vP\350\025h\3479\227\203\242\005\266\214\320\224\243\365\255\030"
+  }
+}
+library {
+  digests {
+    sha256: "\362\324E\207\271x\2713\245\301\vO\311\207\240,^\372:gM\326])\366b\243HR\331h\035"
+  }
+}
+library {
+  digests {
+    sha256: "\344\025\261\231wZ>\225\226y\233\341q\252\222\v\221_\023\246&%\017{\253w\001\006\341r(N"
+  }
+}
+library {
+  digests {
+    sha256: "j7\223TS8\234\230\003\340%\362\022\2517\337\355\256\272m\037U\377Jc.-\244\366e\353\244"
+  }
+}
+library {
+  digests {
+    sha256: "\275--}\313\277\'\a\224\037\233c\374\t&,\327\211~\327;\330\312\006\246\241\271\377\000\233\364j"
+  }
+}
+library {
+  digests {
+    sha256: "|a\226\027\242;9\a\024L.\365\362EbQ\031\361\211\226E_\203Sd\234\235\327\020\240\270\214"
+  }
+}
+library {
+  digests {
+    sha256: "\303\362\276)1\341\303D\024D\035\245R\037~\254\221\005]L\005\021a\357O\221\035\374\356\322Q\304"
+  }
+}
+library {
+  digests {
+    sha256: "\021\0258\221\3339q\322\343c!\002\035\271_\337\321j\376\317\b\326\303\273<\262j\321\226i\330\177"
+  }
+}
+library {
+  digests {
+    sha256: "\261\033\246\275\351\317\032w\352\202IZB\366\036k<\310\327\0206\224\334\302\326\343hgd\023\327\272"
+  }
+}
+library {
+  digests {
+    sha256: "\207\313\'\331\004\255 \a\274\255\331\314\006\274\3752\325\202\257\300\3137\177\314reb\260\255\311\250X"
+  }
+}
+library {
+  digests {
+    sha256: "c\257w\223\373\211\245\352\304\206\246K\236s\232@:\366O\tV4\367\a\305U\223\371\023\n,\204"
+  }
+}
+library {
+  digests {
+    sha256: " \222\320\202\030\375N\004\034\330!\177H\264)w\342 \312Od\340.\361\344\264\207#+p1\251"
+  }
+}
+library_dependencies {
+  library_index: 2
+}
+library_dependencies {
+  library_index: 3
+}
+library_dependencies {
+  library_index: 4
+}
+library_dependencies {
+  library_index: 5
+}
+library_dependencies {
+  library_index: 6
+}
+library_dependencies {
+  library_index: 7
+}
+library_dependencies {
+  library_index: 8
+}
+library_dependencies {
+  library_index: 9
+}
+library_dependencies {
+  library_index: 10
+}
+library_dependencies {
+  library_index: 11
+}
+library_dependencies {
+  library_index: 12
+}
+library_dependencies {
+  library_index: 13
+}
+library_dependencies {
+  library_index: 14
+}
+library_dependencies {
+  library_index: 15
+}
+library_dependencies {
+  library_index: 16
+}
+library_dependencies {
+  library_index: 17
+}
+module_dependencies {
+  module_name: "base"
+  dependency_index: 0
+  dependency_index: 1
+  dependency_index: 2
+  dependency_index: 3
+  dependency_index: 4
+  dependency_index: 5
+  dependency_index: 6
+  dependency_index: 7
+  dependency_index: 8
+  dependency_index: 9
+  dependency_index: 10
+  dependency_index: 11
+  dependency_index: 12
+  dependency_index: 13
+  dependency_index: 14
+  dependency_index: 15
+  dependency_index: 16
+  dependency_index: 17
+}

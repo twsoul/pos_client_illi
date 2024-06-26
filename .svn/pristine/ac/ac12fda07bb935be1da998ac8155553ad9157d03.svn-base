@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>부품식별표병합</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000094"></h2><!--부품식별표병합-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:35%;">
+										<col style="width:35%;">
+										<col style="width:30%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+											<th><span data-lng="LB.0000000031"></span></th><!--저장위치-->
+											<th><span data-lng="LB.0000000211"></span></th><!--신규식별표 생성-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="text-align:-webkit-center;" class="deepCell"><p class="FoldselectBox"><select name="selPLANT" id="selPLANT"></select></p></td>
+											<td style="text-align:-webkit-center;" class="deepCell"><p class="FoldselectBox"><select name="selLOCTP" id="selLOCTP"></select></p></td>
+											<td style="text-align:-webkit-center;">
+												<div class="checkBox_list">
+													<span class="check_select">
+														<label>
+															<input id="chk_Info" value="check" type="checkbox">
+															<span></span>
+														</label>
+													</span>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area" style="margin-top:2px;">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:30%;">
+										<col style="width:70%;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th><span data-lng="LB.0000000120"></span></th><!--부품식별표-->
+											<td><span id="txtBOX_NO"></span></td>
+										</tr>
+										<tr>
+											<th><span data-lng="LB.0000000038"></span></th><!--품번-->
+											<td><span id="txtPART_CD"></span></td>
+										</tr>
+										<tr>
+											<th><span data-lng="LB.0000000208"></span></th><!--재고수량-->
+											<td><span id="txtBARQTY"></span></td>
+										</tr>
+										<tr>
+											<th><span data-lng="LB.0000000170"></span></th><!--예상수량-->
+											<td><span id="txtEXPQTY"></span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+			<section>
+				<div class="container">
+					<article class="tableList">
+						<div class="list_inner list_st_030 blind" id="list_st_030_head">
+							<div class="tableHead">
+								<div class="">
+									<p data-lng="LB.0000000225"></p><!--상대부품식별표-->
+								</div>
+								<div class="">
+									<p data-lng="LB.0000000038"></p><!--품번-->
+								</div>
+								<div class="">
+									<p data-lng="LB.0000000019"></p><!--수량-->
+								</div>
+							</div>
+						</div>
+						<div class="list_inner list_st_030 adjFix" id="list_st_030">
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+<!-- footer -->
+<footer id="footer">
+	<div class="btn_area fixedArea">
+		<p class="classicalBtn adjColor"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p><!--초기화-->
+		<p class="classicalBtn adjColor"><button type="button" id="btnSave" data-lng="LB.0000000127"></button></p><!--저장-->
+	</div>
+	<ul>
+		<li><button type="button" data-value="../common/main.html"></button></li>
+		<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+		<li><button type="button" data-value="../common/allmenu.html"></button></li>
+	</ul>
+</footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000117">저장위치를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000270">부품식별표가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000244">이미 리스트에 존재하는 BOX NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000297">타 공장 바코드입니다</span>
+<span class="blind" data-lng="MSG.0000000453">입하상태의 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000455">사용할 수 없는 부품식별표 입니다</span>
+<span class="blind" data-lng="MSG.0000000299">대상 부품식별표와 품번이 다릅니다</span>
+<span class="blind" data-lng="MSG.0000000137">스캔하신 내역이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000300">병합하고자 하는 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000302">타 저장위치 바코드 입니다</span>
+<span class="blind" data-lng="MSG.0000000308">1개 이하의 부품식별표는 신규 부품식별표를 생성 할 수없습니다</span>
+<span class="blind" data-lng="MSG.0000000315">보류상태의 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000303">해당 부품식별표의 수량이 0개 입니다</span>
+<span class="blind" data-lng="MSG.0000000323">신규 부품식별표 생성에 실패 하였습니다</span>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont" data-coperatecd="{{COPORATE_CD}}" data-plantcd="{{PLANT_CD}}" data-loctp="{{LOC_TP}}" data-loctptype="{{LOC_TP_TYPE}}" data-boxno="{{BOX_NO}}" data-partcd="{{PART_CD}}" data-barqty="{{BAR_QTY}}" data-vendorcd="{{VENDOR_CD}}" data-vendnm="{{VENDOR_NM}}" data-boxbarno="{{BOX_BAR_NO}}" data-preinspdttm="{{PRE_INSP_DTTM}}" data-fifochk="{{FIFO_CHK}}" data-fifoflag="{{FIFO_FLAG}}">
+		<div>
+			<p class="BOX_NO">{{BOX_NO}}</p>
+		</div>
+		<div>
+			<p class="PART_CD">{{PART_CD}}</p>
+		</div>
+		<div>
+			<p class="BAR_QTY">{{BAR_QTY}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/ST_030.js"></script>
+</html>

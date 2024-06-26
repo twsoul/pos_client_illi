@@ -1,0 +1,79 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+    var objMoveInput, objChangeInput, objPrintInput;
+	// 화면 초기화
+	var setInitScreen = function() {
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#inputScan").on('keypress', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+               $("#txtINVOICE_NO").text($(this).val());
+               $("#txtINVOICE_NO").closest("td").removeClass("unsearched");
+               $(this).val("");
+               $(this).blur();
+            }
+        });
+
+        objMoveInput = new InSPopup({ title: "재고이동", id: "popMove", label: "수량", type: "number", phr: "이동수량을 입력하세요.", label2: "이동위치", goBottom: true, submitCallback: function(code){
+            alert(code);
+        }});
+        objMoveInput.init();
+
+        objChangeInput = new InputPopup({ title: "BIN변경", id: "popChange", type: "text", label: "변경BIN", phr: "대상BIN을 입력하세요.", goBottom: true, submitCallback: function(code){
+            alert(code);
+        }});
+        objChangeInput.init();
+
+        objPrintInput = new InputPopup({ title: "라벨 인쇄", id: "popPrint", type: "number", label: "인쇄 매수", phr: "매수를 입력하세요.", goBottom: true, submitCallback: function(code){
+            alert(code);
+        }});
+        objPrintInput.init();
+
+        $("#btnMove").on("click", function() {
+            objMoveInput.show();
+        });
+        $("#btnChange").on("click", function() {
+            objChangeInput.show();
+        });
+        $("#btnPrint").on("click", function() {
+            objPrintInput.show();
+        });
+	};
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+
+	};
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

@@ -1,0 +1,168 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var ban_no, status, st_dt, plant, plant_nm, alloc_num, alloc_nm, car_n, driv_nm, kunnr_t;
+	var push_plant, push_plant_nm, push_alloc_nm, push_kunnr, db_kind;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		ban_no = dataManager.param('ban_no');
+		status = dataManager.param('status');
+		st_dt = dataManager.param("st_dt");
+		plant = dataManager.param("plant");
+		plant_nm = dataManager.param("plant_nm");
+		alloc_num = dataManager.param("alloc_num");
+		alloc_nm = dataManager.param("alloc_nm");
+		car_n = dataManager.param("car_n");
+		driv_nm = dataManager.param("driv_nm");
+		
+		//푸시관련
+		push_plant = dataManager.param("push_plant");
+		push_plant_nm = dataManager.param("push_plant_nm");
+		push_alloc_nm = dataManager.param("push_alloc_nm");
+		push_kunnr = dataManager.param("push_kunnr");
+		db_kind =  dataManager.storage('saveUserDb');
+
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnSubmit").on("click", setSubmitComplete);
+		
+		$(document).ready(function() {
+		    $('#txt_momo').on('keyup', function() {
+		        if($(this).val().length > 300) {
+		            $(this).val($(this).val().substring(0, 300));
+		        }
+		    });
+		});
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	var setSubmitComplete = function() {
+		setGPSOff();
+		
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth() + 1;
+		var yyyy = today.getFullYear();
+		var hh= today.getHours();
+		var mm1= today.getMinutes();
+		var ss= today.getSeconds();
+		
+		var if_date= yyyy + '-' + String(mm).lpad(2, 0) + '-' + String(dd).lpad(2, 0);
+		var if_time= String(hh).lpad(2, 0) + ':' + String(mm1).lpad(2, 0) + ':' + String(ss).lpad(2, 0);
+		
+		var memo= $('#txt_momo').val();
+		
+		networkManager.httpSend({
+			path: '/api/COTLSListSelect.do',
+			data: {
+				'QUERYID': "COTLS.get_H_D_UM_054_Update",
+				"BANNO": ban_no,
+				"ZCAR_SER": status,
+				"SHIP_ARR_DATE": if_date,
+				"SHIP_ARR_TIME": if_time,
+				"SHIP_MEMO": memo
+			},
+			success: function(receivedData, setting) {
+				//하차확정 푸시 전송
+				networkManager.httpSend({
+					path: '/api/PushSend.do',
+					data: {
+						'MODE': "54",
+						'BANNO':ban_no,
+						'SHIP_ARR_DATE': if_date,
+						'SHIP_ARR_TIME': if_time,
+						'SHIP_MEMO': memo,
+						'PLANT_CD': push_plant,
+						'WERKS_T': push_plant_nm,
+						'ZCAR_SER': push_alloc_nm,
+						'KUNNR_T': push_kunnr,
+						'db_kind' : db_kind
+					},
+					success: function(receivedData, setting) {
+						popupManager.instance('하차확인 전송 되었습니다.');
+						//moveToBack();
+						screenManager.moveToPage("/www/html/H_D_UM_044.html", {animation:"SLIDE_RIGHT", action: "CLEAR_TOP"});
+					},
+                    error: function(){
+                        popupManager.alert("오류가 발생하였습니다. 이전페이지로 이동합니다.", {title:"알림"});
+                        moveToBack();
+                    }
+				});
+				
+				
+				//출하상태 인터페이스(하차확인)
+				networkManager.httpSend({
+					path: '/api/banShipTime.do',
+					data: {
+						'ban_no':ban_no,
+						'udt_stat':'3',
+						'carriage_date': '',
+						'carriage_time': '',
+						'start_date': '',
+						'start_time': '',
+						'arr_date': if_date,
+						'arr_time': if_time,
+						'memo' : memo,
+						'event':'하차확인(get_H_D_UM_054_Update)'
+					},
+					success: function(receivedData, setting) {
+						popupManager.instance('하차확인 전송 되었습니다.');
+						//moveToBack();
+						screenManager.moveToPage("/www/html/H_D_UM_044.html", {animation:"SLIDE_RIGHT", action: "CLEAR_TOP"});
+					}
+				});
+				
+			}
+		 });
+	};	
+	
+	var setGPSOff = function(){
+		exWNStopGPSInfo();
+	};
+	
+	String.prototype.lpad = function(padLength, padString){
+	    var s = this;
+	    while(s.length < padLength)
+	        s = padString + s;
+	    return s;
+	}		
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent,
+		setSubmitComplete: setSubmitComplete
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

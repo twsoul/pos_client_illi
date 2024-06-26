@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>예방 점검</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png" alt="이전으로 돌아갑니다."></span></div>
+				<h2>예방 점검</h2>
+			</div>
+		</div>
+	</header>
+
+
+	<!-- contents -->
+	<div id="contents" class="swipeScreen adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<h5 class="blind">옵션 선택 및 확인</h5>
+						<div class="box_inner expand" id="divSearchArea">
+							<div class="opt_date clearfix">
+								<p class="lineHead moreArea2">점검일자</p><p style="text-align:end;"><span><input type="text" id="date_st" readonly></span><span class="blind"><input type="text" id="date_ed" readonly></span></p>
+							</div>
+							<div class="opt_input blind">
+								<p class="lineHead moreArea2">설비 바코드</p><p class="inputBox"><span><input type="text" placeholder="스캔하세요." id="inputScan"><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:0.5vmax;">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:auto;">
+										<col style="width:20%;">
+									</colgroup>
+									<thead>
+									<tr>
+										<th><span>날짜</span></th>
+										<th><span>작업자</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span id="txtDATE"></span></td>
+										<td><span id="txtNM"></span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:auto;">
+										<col style="width:15%;">
+									</colgroup>
+									<thead>
+									<tr>
+										<th><span>부서</span></th>
+										<th><span>작업장</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span id="txtDEPT"></span></td>
+										<td><span id="txtARBPL"></span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>전체</span></th>
+										<th><span>완료</span></th>
+										<th><span>미완료</span></th>
+										<th><span>전송</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span id="txtSUM">0</span></td>
+										<td><span id="txtDONE">0</span></td>
+										<td><span style="color:red;" id="txtUNDONE">0</span></td>
+										<td><span id="txtTRAN">0</span></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand" id="divSearchAreaExpander"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+
+			<header class="page_header tabmenu">
+				<div class="container">
+					<h5 class="on">전체</h5><h5>미완료</h5><h5>완료</h5>
+				</div>
+			</header>
+			<div class="contents_inner tripleTab">
+				<!-- H_T_UM040 -->
+				<section class="form1">
+					<div class="container">
+						<article class="tableList tapPosible">
+							<div class="list_inner list_bj_040_1 adjFix" id="list_bj_040_1">
+							</div>
+						</article>
+					</div>
+				</section>
+				<section class="form2">
+					<div class="container">
+						<article class="tableList tapPosible">
+							<div class="list_inner list_bj_040_2 adjFix" id="list_bj_040_2">
+							</div>
+						</article>
+					</div>
+				</section>
+				<section class="form3">
+					<div class="container">
+						<article class="tableList tapPosible">
+							<div class="list_inner list_bj_040_2 adjFix" id="list_bj_040_3">
+							</div>
+						</article>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor"><button type="button" id="btnSearch">조 회</button></p>
+			<p class="classicalBtn adjColor btn_ins blind"><button type="button" id="btnInsert">전 송</button></p>
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<li><button type="button" data-value="../common/notification.html"></button></li>
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+</body>
+<script type="text/template" id="ListTemplateAll" class="none">
+	<div class="tableCont {{MLINK}}" data-code="{{EQ_NO}}" data-date="{{DATE}}" data-datel="{{DATEL}}">
+		<div class="multiple_cate">
+			<p class="harf_cell">
+				<span>{{DATE}}</span>
+				<span>{{EQ_NO}}</span>
+				<span class="STATUS">{{STATUS}}</span>
+			</p>
+			<p class="KTEXT">{{CHECK_LIST}}</p>
+			<p class="TPLNR">{{PART_LOC}}</p>
+			<p class="EQKTX">{{PART_NM}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont {{MLINK}}" data-code="{{EQ_NO}}" data-date="{{DATE}}">
+		<div class="multiple_cate">
+			<p class="harf_cell">
+				<span>{{DATE}}</span>
+				<span>{{EQ_NO}}</span>
+			</p>
+			<p>{{CHECK_LIST}}</p>
+			<p>{{PART_LOC}}</p>
+			<p>{{PART_NM}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/bj/bj_040.js"></script>
+</html>

@@ -1,0 +1,119 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var ban_no, status;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		ban_no = dataManager.param('ban_no');
+		status = dataManager.param('status');
+
+		getSearchData();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+
+	var getSearchData = function() {
+		networkManager.httpSend({
+			path: '/api/COTLSListMultiSelect.do',
+			data: {
+				'QUERYIDS': "CO.get_H_T_UM_051_Info;CO.get_H_T_UM_051_List",
+				"BANNO": ban_no,
+				"ZCAR_SER": status
+			},
+			success: function(receivedData, setting) {
+				var data;
+				if (receivedData.ListCount0 != 0) {
+					data = receivedData.ListData0[0];
+					$("#txt_org_id_t").text(data.ORG_ID_T);
+					$("#txt_banno").text(ban_no);
+					$("#txt_banrs").text(data.BANRS);
+					$("#txt_kunnr_t").text(data.KUNNR_T);
+					$("#txt_bannm_t").text(data.BANNM_T);
+					$("#txt_zcarno").text(data.ZCARNO);
+					$("#txt_zfrenm").text(data.ZFRENM);
+					$("#txt_vend").text('한백뉴로텍㈜');
+					$("#txt_carriage_date").text(data.SHIP_CARRIAGE_DATE);
+					$("#lblbox01").html("<span class=\"confirmSign\" style =\"font-size:1em\">현대트랜시스<br>생산관리부<br>승인</span>");
+					
+					var cflag= data.CFLAG == 'X' ? ' (운송 반영)' : ' (운송 미반영)';
+					$("#txt_zton").text(data.ZTON+cflag);
+					var sdate= data.SDATE == undefined ? '' : data.SDATE;
+					var ctime= data.CTIME == undefined ? '' : data.CTIME;
+					$("#txt_sdate").text(sdate+' '+ctime);
+				}
+				
+				var total= 0;
+				var meins= '';
+				var tag =$("#ListHeadTemplate").html();
+				if (receivedData.ListCount1 == 0){
+					tag = $("#ListNoDataTemplate").html();
+				} else {
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData1, function(index,rowData){
+						tag += template.replace(/\{\{ROWNUM\}\}/, rowData.ROWNUM)
+								.replace(/\{\{MATNR\}\}/, rowData.MATNR)
+								.replace(/\{\{MATNR_T\}\}/, rowData.MATNR_T == undefined ? ' ' : rowData.MATNR_T)
+								.replace(/\{\{MENGE\}\}/, rowData.MENGE);
+						total += Number(rowData.MENGE);
+						if(meins == ''){meins= rowData.MEINS;}
+					});
+				}
+				
+/*				var template1 = $("#ListTemplate1").html();
+				tag += template1.replace(/\{\{TOTAL\}\}/, total)
+								.replace(/\{\{CFLAG\}\}/, data.CFLAG == 'X' ? '반영' : '미반영')
+								.replace(/\{\{SDATE\}\}/, data.SDATE == undefined ? '' : data.SDATE)
+								.replace(/\{\{CTIME\}\}/, data.CTIME == undefined ? '' : data.CTIME)
+								.replace(/\{\{ZTON\}\}/, data.ZTON);*/
+				
+				$(".list_t_um51").html(tag);
+				
+				$("#txt_total").text(total);
+				
+			},
+			error: function(errorCode, errorMessage){
+				alert(errorCode + " : " + errorMessage);
+			}
+		});
+	}
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

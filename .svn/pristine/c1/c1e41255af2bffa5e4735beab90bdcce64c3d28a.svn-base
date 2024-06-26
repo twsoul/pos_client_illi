@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>포장장</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000622"></h2><!--포장장-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main id="main" class="main">
+			<section>
+				<div class="container">
+					<div class="Item_belt">
+						<ul class="clearfix">
+							<li data-page="KD_200.html" class="S90001617 blind"><p><span class="item_title" data-lng="LB.0000000100"></span></p></li><!--사외창고입고-->
+							<li data-page="KD_205.html" class="S90001751 blind"><p><span class="item_title" data-lng="LB.0000000786"></span></p></li><!--S. Location 맵핑-->
+							<li data-page="KD_210.html" class="S90001618 blind"><p><span class="item_title" data-lng="LB.0000000611"></span></p></li><!--포장장이동-->
+							<li data-page="KD_220.html" class="S90001619 blind"><p><span class="item_title" data-lng="LB.0000000612"></span></p></li><!--포장완료처리-->
+							<li data-page="KD_229.html" class="S90001700 blind"><p><span class="item_title" data-lng="LB.0000000704"></span></p></li><!--출하준비-->
+							<li data-page="KD_230.html" class="S90001620 blind"><p><span class="item_title" data-lng="LB.0000000613"></span></p></li><!--출하처리-->
+							<li data-page="KD_240.html" class="S90001621 blind"><p><span class="item_title" data-lng="LB.0000000614"></span></p></li><!--완제품반입-->
+							<li data-page="KD_250.html" class="S90001622 blind"><p><span class="item_title" data-lng="LB.0000000615"></span></p></li><!--공팔레트입고(포장장)-->
+							<li data-page="KD_253.html" class="S90001648 blind"><p><span class="item_title" data-lng="LB.0000000433"></span></p></li><!--보류처리-->
+							<li data-page="KD_255.html" class="S90001649 blind"><p><span class="item_title" data-lng="LB.0000000437"></span></p></li><!--보류해제-->
+							<li data-page="KD_257.html" class="S90001660 blind"><p><span class="item_title" data-lng="LB.0000000600"></span></p></li><!--유수명기간 연장-->
+							<li data-page="KD_260.html" class="S90001623 blind"><p><span class="item_title" data-lng="LB.0000000616"></span></p></li><!--팔레트매핑(리빌딩)-->
+							<li data-page="KD_265.html" class="S90001743 blind"><p><span class="item_title" data-lng="LB.0000000764"></span></p></li><!--팔레트매핑(반품)-->
+							<li data-page="KD_270.html" class="S90001624 blind"><p><span class="item_title" data-lng="LB.0000000617"></span></p></li><!--반품입고(포장장)-->
+						</ul>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+</body>
+
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/KD/KD_003.js"></script>
+
+</html>

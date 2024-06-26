@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>TM 현황</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000001002"></h2><!--TM현황-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area" style="margin-top:2px;">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000426"></span></th><!--TM No-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtTM_NO"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:50%;">
+										<col style="width:50%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000038"></span></th><!--품번-->
+											<th><span data-lng="LB.0000000368"></span></th><!--SERIAL-->
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtPART_CD"></span></td>
+											<td><span id="txtSERIAL_NO"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000040"></span></th><!--품명-->
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtPART_NM"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:50%;">
+										<col style="width:50%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000123"></span></th><!--거래처-->
+											<th><span data-lng="LB.0000000406"></span></th><!--팔레트-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtVENDOR_NM"></span></td>
+											<td><span id="txtPLT_NO"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:50%;">
+										<col style="width:50%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000001003"></span></th><!--사용유무-->
+											<th><span data-lng="LB.0000001004"></span></th><!--보류유무-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtUSE_FLAG"></span></td>
+											<td><span id="txtHOLD_FLAG"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:50%;">
+										<col style="width:50%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000109"></span></th><!--공장-->
+											<th><span data-lng="LB.0000000031"></span></th><!--저장위치-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtPLANT_CD"></span></td>
+											<td><span id="txtLOC_TP"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:50%;">
+										<col style="width:50%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000473"></span></th><!--마지막 작업-->
+											<th><span data-lng="LB.0000000474"></span></th><!--마지막 작업일시-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtTRANS_TYPE"></span></td>
+											<td><span id="txtTRANS_KEY"></span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="MSG.0000000432">TM_NO가 존재하지 않습니다</span>
+</body>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/PD/PD_150.js"></script>
+</html>

@@ -1,0 +1,82 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+	    getSearchList();
+	};
+
+	// 이벤트 초기화
+	var setInitEvent = function() {
+	};
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+	};
+
+	// 메인 검색
+	var getSearchList = function(){
+    	var tag = "";
+    	var template = $("#ListTemplate").html();
+    		tag += template.replace(/\{\{NUM\}\}/gi, "1")
+    				       .replace(/\{\{VORNR\}\}/gi, "0010")
+    				       .replace(/\{\{LTXA1\}\}/gi, "칠러 가스 압력")
+    				       .replace(/\{\{USR00\}\}/gi, "측정값/육안")
+    				       .replace(/\{\{USR04\}\}/, "10")
+    				       .replace(/\{\{USR05\}\}/, "20")
+    				       .replace(/\{\{USE04\}\}/gi, "g/cm")
+    				       .replace(/\{\{USR01\}\}/gi, "15")
+    				       .replace(/\{\{READC\}\}/gi, "12.1")
+    				       .replace(/\{\{STAT_CD\}\}/, "");
+    	$("#list_bj_042").html(tag);
+    	getMeasureUnitList();
+	};
+
+	var getMeasureUnitList = function() {
+    	networkManager.httpSend({
+    		path: 'api/MeasureUnit.do',
+    		data: {
+    			'spras': 'ko',
+                'event':'단위정보'
+    		},
+    		success: function(receivedData, setting) {
+    			var tag = "";
+    			$("select[name='selMUnit']").html("");
+    			$.each(receivedData.MeasureUnitList, function(index,rowData){
+    				tag += "<option value='" + rowData.ISOCODE + "'>" + rowData.MSEH6 + "</option>";
+    			});
+    			$("select[name='selMUnit']").append(tag);
+    		}
+    	});
+    };
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

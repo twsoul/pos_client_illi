@@ -1,0 +1,244 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_pack_ordr_no, m_plant_cd, m_loc_cd;
+	var pageNo = 1;
+	var m_stat_cd = "", m_ordr_no = "", m_docType = "";
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_pack_ordr_no = dataManager.param("PACK_NO");
+		m_plant_cd = dataManager.param("PLANT_CD");
+		m_loc_cd = dataManager.param("LOC_CD");
+		getSelectList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnPrev").on("click", moveToPrevPage);
+		$("#btnNext").on("click", moveToNextPage);
+		$("#btnProc01").on("click", setProcStatChange01);
+		$("#btnProc02").on("click", setProcStatChange02);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	// 메인 검색
+	var getSelectList = function(){
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_H_D_UM_027_List",
+				"PACK_ORDR_NO": m_pack_ordr_no,
+				"PLANT_CD": m_plant_cd,
+				"LOC_CD": m_loc_cd,
+				"SEQ": pageNo
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0 && pageNo == 1){
+					tag = $("#ListNoDataTemplate").html();
+					$("#frmBarcode").html("");
+					$(".list_t_um28").html(tag);
+				} else if (receivedData.ListCount == 0){
+					pageNo -= 1;
+					popupManager.alert("마지막 페이지 입니다.", {title: '알림'});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						if (index == 0){
+							$("#lblPartCompNM").text(rowData.VEND_NM);
+							$("#lblPlant").text(rowData.PLANT_NM);
+							$("#lblDocNumber").text(rowData.PUBLISH_NO);
+							$("#lblKindOrder").text(rowData.ORD_KIND);
+							m_stat_cd = rowData.STATUS;
+							m_ordr_no = rowData.ORDR_NO;
+							m_docType = rowData.ORD_KIND;
+						}
+						tag += template.replace(/\{\{ORDR_NO\}\}/, rowData.ORDR_NO)
+								.replace(/\{\{PART_NO\}\}/gi, rowData.PART_NO)
+								.replace(/\{\{PART_NM\}\}/gi, rowData.PART_NM)
+								.replace(/\{\{DELI_BOX\}\}/gi, rowData.DELI_BOX)
+								.replace(/\{\{DELI_EQ\}\}/gi, rowData.DELI_EQ)
+								.replace(/\{\{RCV_QTY\}\}/gi, rowData.RCV_QTY)
+								.replace(/\{\{SEQ\}\}/, index+1)
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+					$("#btnPrev").parent().removeClass("blind");
+					$("#btnNext").parent().removeClass("blind");
+					
+					if (m_stat_cd == "G") {
+						$("#btnProc01").parent().removeClass("blind");
+						$("#btnOK").parent().addClass("blind");
+						$("#btnProc02").parent().addClass("blind");
+					} else if (m_stat_cd == "S") {
+						$("#btnOK").parent().removeClass("blind");
+						$("#btnProc01").parent().addClass("blind");
+						$("#btnProc02").parent().addClass("blind");
+					} else if (m_stat_cd == "E") {
+						$("#btnProc02").parent().removeClass("blind");
+						$("#btnProc01").parent().addClass("blind");
+						$("#btnOK").parent().addClass("blind");
+					} else {
+						$("#btnProc01").parent().addClass("blind");
+						$("#btnProc02").parent().addClass("blind");
+						$("#btnOK").parent().addClass("blind");
+					}
+					
+					setBarcode(m_ordr_no);
+					$(".list_t_um28").html(tag);
+				}
+			}
+		 });
+	};
+	
+	// 바코드 출력
+	var setBarcode = function(value) {
+		var btype = "datamatrix";
+		var renderer = "css";
+		var quietZone = false;
+		var settings = {
+				output:renderer,
+				bgColor: "#FFFFFF",
+				color: "#000000",
+				barWidth : "1",
+				barHeight: "60",
+				moduleSize: "3",
+				addQuietZone: "0",
+				showHRI : false
+		};
+//		$("#barcodeArea").html("").qrcode({render: "canvas", Width: 64, height: 64, text: value});
+		$("#barcodeArea").html("").show().barcode(value, btype, settings);
+	};
+	
+	// 이전 데이터 호출
+	var moveToPrevPage = function() {
+		if (pageNo == 1) {
+			popupManager.alert("첫번째 페이지 입니다.", {title: '알림'});
+		} else {
+			pageNo -= 1;
+			getSelectList();
+		}
+	};
+	
+	// 다음 데이터 호출
+	var moveToNextPage = function() {
+		pageNo += 1;
+		getSelectList();
+	};
+	
+	var setProcStatChange01 = function() {
+		var ordr_no = $("#lblDocNumber").text();
+		var vend_cd = userManager.getVEND_CD();
+		if (userManager.getVEND_TP() == "C") {
+			popupManager.alert("HTS사용자는 사용할 수 없는 권한입니다.", {title: '알림'});
+		} else {
+			if (m_stat_cd == "S") {
+				popupManager.alert("입고가 완료된 납입문서는 카드수정을 할 수 없습니다.", {title: '알림'});
+			} else if (m_stat_cd == "E") {
+				popupManager.alert("검수적발이된 납입문서는 카드수정을 할 수 없습니다.", {title: '알림'});
+			} else if (m_stat_cd == "G") {
+				popupManager.alert('카드수정 요청 하시겠습니까?', {
+					title: '카드수정',
+					buttons: ['예', '아니오']
+				}, function(index) {
+					if (index == 0){
+						networkManager.httpSend({
+							path: '/api/Action_And_PushSend.do',
+							data: {
+								'QUERYID': "TLS.get_H_D_UM_027_Update_01",
+								"PACK_ORDR_NO": m_pack_ordr_no,
+								"PLANT_CD": m_plant_cd,
+								"LOC_CD": m_loc_cd,
+								"SEQ": pageNo,
+								"DRIV_ID": userManager.getDRIV_ID(),
+								"DRIV_NM": userManager.getDRIV_NM(),
+								"MODE": "21",
+								"ORDR_NO": ordr_no,
+								"VEND_CD": vend_cd,
+								"db_kind":dataManager.storage('saveUserDb')
+							},
+							success: function(receivedData, setting) {
+								popupManager.instance("요청 되었습니다.", {showtime:"SHORT"});
+								getSelectList();
+							},
+						});
+					}
+				});
+			}
+		}
+	};
+	
+	var setProcStatChange02 = function() {
+		var ordr_no = $("#lblDocNumber").text();
+		var vend_cd = userManager.getVEND_CD();
+		if (userManager.getVEND_TP() == "C") {
+			popupManager.alert("HTS사용자는 사용할 수 없는 권한입니다.", {title: '알림'});
+		} else {
+			if (m_stat_cd == "G") {
+				popupManager.alert("입고가 안된 납입문서는 카드수정을 해야합니다.", {title: '알림'});
+			} else if (m_stat_cd == "E") {
+				popupManager.alert('검수적발 요청 하시겠습니까?', {
+					title: '검수적발',
+					buttons: ['예', '아니오']
+				}, function(index) {
+					if (index == 0){
+						networkManager.httpSend({
+							path: '/api/Action_And_PushSend.do',
+							data: {
+								'QUERYID': "TLS.get_H_D_UM_027_Update_02",
+								"PACK_ORDR_NO": m_pack_ordr_no,
+								"PLANT_CD": m_plant_cd,
+								"LOC_CD": m_loc_cd,
+								"SEQ": pageNo,
+								"MODE": "31",
+								"ORDR_NO": ordr_no,
+								"VEND_CD": vend_cd,
+								"db_kind":dataManager.storage('saveUserDb')
+							},
+							success: function(receivedData, setting) {
+								popupManager.instance("요청 되었습니다.", {showtime:"SHORT"});
+								getSelectList();
+							},
+						});
+					}
+				});
+			}
+		} 
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

@@ -1,0 +1,303 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var ban_no, status, st_dt, plant, plant_nm, alloc_num, alloc_nm, car_n, driv_nm, driv_id;
+	var push_plant='', push_plant_nm='', push_alloc_nm='', push_kunnr='';
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		ban_no = dataManager.param('ban_no');
+		status = dataManager.param('status');
+		st_dt = dataManager.param("st_dt");
+		plant = dataManager.param("plant");
+		plant_nm = dataManager.param("plant_nm");
+		alloc_num = dataManager.param("alloc_num");
+		alloc_nm = dataManager.param("alloc_nm");
+		car_n = dataManager.param("car_n");
+		driv_nm = dataManager.param("driv_nm");
+		driv_id = userManager.getDRIV_ID();
+		
+		var pageId = dataManager.param("pageId");
+		if(pageId == 'H_D_UM_045.html'){
+			$('#btnSubmit').removeClass('blind');
+			$('#txt_title').text('상차확인');
+		}else if(pageId == 'H_D_UM_052.html'){
+			$('#btnSubmit1').removeClass('blind');
+			$('#txt_title').text('하차확인');
+		}else if(pageId == 'H_D_UM_055.html'){
+			$('#btnSubmit1').removeClass('blind');
+			$('#txt_title').text('출하이력조회');
+		}
+
+		$("#date_st").val(to_date_format(st_dt, '.'));
+		$("#selPlant").text(plant_nm);
+		$("#selAllocNum").text(alloc_nm);
+		$("#num_vehicle").text(car_n);
+		$("#carrier").text(driv_nm);
+		
+		getSearchData();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnSubmit").on("click", setSubmit);
+		$("#btnSubmit1").on("click", setSubmit1);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	// 확정 버튼 클릭 이벤트(스캔해야 하는 바코드가 어떤 바코드인지 확인 필요. 현재는 운전자ID 값이 담긴 바코드가 필요한것으로 보임.)
+	// 성연은 운전자 ID 값이 담긴 바코드를 스캔하는 방식 대신 로그인 한 사용자 ID로 정보를 조회하여 운영반인지 판단
+	var setSubmit = function() {
+//		if (wnIf.device == DT_ANDROID) {
+//			M.page.activity("SimpleScannerActivity");
+//		} else {
+//			M.execute("wn2PluginQrScan",{
+//				flash : false,
+//				fadeToggle : false,
+//				orientation : 'PORT',
+//				callback: M.response.on( function( result ) {
+//					if(result.status === "SUCCESS"){
+//						var barcode = result.text;
+//						setSubmitComplete(barcode);
+//					}else{
+//						//console.log(result.status);
+//					}
+//				}).toString()
+//			});
+//		}
+        setSubmitComplete(driv_id);
+	};
+	
+	// 하차 버튼 클릭 이벤트
+	var setSubmit1 = function() {
+		if (ban_no != undefined) {
+			screenManager.moveToPage('/www/html/H_D_UM_054.html', {
+				param: {
+					ban_no: M.sec.encrypt(ban_no.toString()).result,
+					status: M.sec.encrypt(status.toString()).result,
+					st_dt: M.sec.encrypt(st_dt.toString()).result,
+					plant: M.sec.encrypt(plant.toString()).result,
+					plant_nm: M.sec.encrypt(plant_nm.toString()).result,
+					alloc_num: M.sec.encrypt(alloc_num.toString()).result,
+					alloc_nm: M.sec.encrypt(alloc_nm.toString()).result,
+					car_n: M.sec.encrypt(car_n.toString()).result,
+					driv_nm: M.sec.encrypt(driv_nm.toString()).result,
+					push_plant: M.sec.encrypt(push_plant.toString()).result,
+					push_plant_nm: M.sec.encrypt(push_plant_nm.toString()).result,
+					push_alloc_nm: M.sec.encrypt(push_alloc_nm.toString()).result,
+					push_kunnr: M.sec.encrypt(push_kunnr.toString()).result
+				},
+				action: 'NEW_SCR'
+			});
+		}
+	};	
+	
+	// 바코드 인식 완료 callback(최종)
+	var setSubmitComplete = function(driv_id) {
+		var driv_id_chk= 0;
+		var apr_id= '';
+		var apr_nm= '';
+		
+		networkManager.httpSend({
+			path: '/api/COTLSListSelect.do',
+			data: {
+				'QUERYID': "COTLS.get_H_D_UM_045_Update_Chk",
+				"DRIV_ID": driv_id
+			},
+			success: function(receivedData, setting) {
+//				if (receivedData.ListCount == 0){
+//					driv_id_chk= 0;
+//					popupManager.alert("승인할 수 없는 사용자입니다.", {title: '알림'});
+//				} else {
+                $.each(receivedData.ListData, function(index,rowData){
+                    driv_id_chk= 1;
+                    apr_id= rowData.DRIV_ID;
+                    apr_nm= rowData.DRIV_NM;
+
+                    if(driv_id_chk != 0){
+                        popupManager.alert('반출정보를 전송합니다.', {
+                            title: '알림',
+                            buttons: ['아니오', '예']
+                        }, function(index) {
+                            switch(index) {
+                                case 0:
+                                    screenManager.moveToPage("/www/html/H_D_UM_045.html", {animation:"SLIDE_RIGHT", action: "CLEAR_TOP"});
+                                    break;
+                                case 1:
+                                    var today = new Date();
+                                    var dd = today.getDate();
+                                    var mm = today.getMonth() + 1;
+                                    var yyyy = today.getFullYear();
+                                    var hh= today.getHours();
+                                    var mm1= today.getMinutes();
+                                    var ss= today.getSeconds();
+
+                                    var if_date= yyyy + '-' + String(mm).lpad(2, 0) + '-' + String(dd).lpad(2, 0);
+                                    var if_time= String(hh).lpad(2, 0) + ':' + String(mm1).lpad(2, 0) + ':' + String(ss).lpad(2, 0);
+
+                                    networkManager.httpSend({
+                                        path: '/api/COTLSListSelect.do',
+                                        data: {
+                                            'QUERYID': "COTLS.get_H_D_UM_045_Update",
+                                            "BANNO": ban_no,
+                                            "ZCAR_SER": status,
+                                            "SHIP_CARRIAGE_DATE": if_date,
+                                            "SHIP_CARRIAGE_TIME": if_time,
+                                            "APR_ID": apr_id,
+                                            "APR_NM": apr_nm
+                                        },
+                                        success: function(receivedData, setting) {
+
+                                            //출하상태 인터페이스(상차확인)
+                                            networkManager.httpSend({
+                                                path: '/api/banShipTime.do',
+                                                data: {
+                                                    'ban_no':ban_no,
+                                                    'udt_stat':'1',
+                                                    'carriage_date': if_date,
+                                                    'carriage_time': if_time,
+                                                    'start_date': '',
+                                                    'start_time': '',
+                                                    'arr_date': '',
+                                                    'arr_time': '',
+                                                    'event':'상차확인(get_H_D_UM_045_Update)'
+                                                },
+                                                success: function(receivedData, setting) {
+                                                    popupManager.instance('반출정보가 전송 되었습니다.');
+                                                    screenManager.moveToPage("/www/html/H_D_UM_044.html", {animation:"SLIDE_RIGHT", action: "CLEAR_TOP"});
+                                                }
+                                            });
+
+                                        }
+                                     });
+                                    break;
+                                }
+                        });
+                    }else{
+                        popupManager.alert("승인할 수 없는 사용자입니다.", {title: '알림'});
+                    }
+                });
+//				}
+			}
+		 });
+	};
+	
+	//URL Get파라메타 추출
+	function getQuerystring(url, paramName){ 
+		var _tempArray= (url.slice(url.indexOf('?') + 1, url.length)).split('&');
+		for(var i = 0; _tempArray.length; i++) { 
+			var _keyValuePair = _tempArray[i].split('='); 
+			if(_keyValuePair[0] == paramName){ 
+				return _keyValuePair[1]; 
+			} 
+		} 
+	}		
+	
+	/*
+	 * yyyyMMdd 날짜문자열을 gubun으로 포맷을 변경
+	 */
+	function to_date_format(date_str, gubun)
+	{
+	    var yyyyMMdd = String(date_str);
+	    var sYear = yyyyMMdd.substring(0,4);
+	    var sMonth = yyyyMMdd.substring(4,6);
+	    var sDate = yyyyMMdd.substring(6,8);
+
+	    return sYear + gubun + sMonth + gubun + sDate;
+	}
+	
+	String.prototype.lpad = function(padLength, padString){
+	    var s = this;
+	    while(s.length < padLength)
+	        s = padString + s;
+	    return s;
+	}	
+
+	var getSearchData = function() {
+		networkManager.httpSend({
+			path: '/api/COTLSListSelect.do',
+			data: {
+				'QUERYID': "COTLS.get_H_D_UM_053_List",
+				"BANNO": ban_no,
+				"ZCAR_SER": status
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				var total= 0;
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += template.replace(/\{\{ID\}\}/, rowData.BANNO)
+								.replace(/\{\{NUM\}\}/, rowData.ROWNUM)
+								.replace(/\{\{MATNR\}\}/, rowData.MATNR)
+								.replace(/\{\{MENGE\}\}/, Number(rowData.MENGE))
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+						total += Number(rowData.MENGE);
+						
+						if(push_plant == '' && push_plant_nm == '' && push_alloc_nm == '' && push_kunnr == ''){
+							push_plant= rowData.WERKS;
+							push_plant_nm= rowData.WERKS_T;
+							push_alloc_nm= rowData.ZCAR_SER;
+							push_kunnr= rowData.KUNNR_T;
+						}
+					});
+					
+					//$("#divSearchAreaExpander").removeClass("expand");
+					//$("#divSearchArea").removeClass("expand");
+					
+				}
+				
+				$(".list_t_um53").html(tag);
+				
+				tag = "";
+				var footTemplate = $("#ListCountTemplate").html();
+					tag += footTemplate.replace(/\{\{TOTAL\}\}/gi, total)
+				$("#list_t_um53_foot").html(tag);
+				$("#contents").css("height", $("#contents").height() + $(".btn_area.fixedArea").height() + $("#header").height());
+			}
+		 });	
+	}
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent,
+		setSubmitComplete: setSubmitComplete
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});
+//function fnBarcodeCallback(data){
+//	var barcode = decodeURIComponent(data.result);
+//	page.setSubmitComplete(barcode);
+//}

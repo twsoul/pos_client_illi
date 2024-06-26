@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="028a8a6e-d4e5-43e5-b746-4bd28b67e8d9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/7.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.0/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.0/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.0/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/res/www/js/common/interfaceWrapper.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/res/www/js/common/interfaceWrapper.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[ce061606ccf55a3705]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="KEY_STORE_PATH" value="D:\JavaDev\hable_key.jks" />
+    <option name="KEY_ALIAS" value="hable_key" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
+    <option name="BUILD_TARGET_KEY" value="apk" />
+  </component>
+  <component name="ProjectId" id="1qocyFyCKvyZYQkFuVzJXMuwWXO" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ApkExportedModule" value="H_able_Client" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="1626040C84" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2021-11-09T11:05:23.442Z" />
+    <property name="ExportApk.ApkPath" value="D:\JavaDev\workspace3.0\H_able_Client" />
+    <property name="ExportApk.BuildVariants" value="release" />
+    <property name="ExportApk.SignV1" value="true" />
+    <property name="ExportApk.SignV2" value="true" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder5" value="5" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="149" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="149" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="150" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="151" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="150" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth5" value="150" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="151" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="151" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="152" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="152" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="152" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth5" value="151" />
+    <property name="ResourceManagerPrefKey.ResourceType" value="DRAWABLE" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$PROJECT_DIR$/../../android-sdk-windows" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../H_able_Client_NBJ" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="vcs.Subversion" />
+  </component>
+  <component name="PsdUISettings">
+    <option name="MODULE_TAB" value="Default Config" />
+    <option name="LAST_EDITED_SIGNING_CONFIG" value="debug" />
+    <option name="LAST_EDITED_BUILD_TYPE" value="release" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.hts.hable" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\JavaDev\workspace3.0\H_able_Client\assets\res\www\js\ui\JJ" />
+      <recent name="D:\JavaDev\workspace3.0\H_able_Client\assets\res\www\html\JJ" />
+      <recent name="D:\JavaDev\workspace3.0\H_able_Client\assets\res\www\js\ui\PD" />
+      <recent name="D:\JavaDev\workspace3.0\H_able_Client\assets\res\www\html\PD" />
+      <recent name="D:\JavaDev\workspace3.0\H_able_Client\assets\res\www\js\libs\custom" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="mcore.edu.app" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\JavaDev\workspace3.0\H_able_Client\assets\res\www\js" />
+      <recent name="D:\JavaDev\workspace3.0\H_able_Client\assets\res\www\js\common" />
+      <recent name="D:\JavaDev\workspace3.0\H_able_Client\assets\res\www\js\ui\common" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="H_able_Client" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="H_able_Client" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="H_able_Client" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="H_able_Client" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\GE000890\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\JavaDev\workspace3.0\H_able_Client" />
+          <option name="myCopyRoot" value="D:\JavaDev\workspace3.0\H_able_Client" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\JavaDev\workspace3.0\H_able_Client" />
+          <option name="myCopyRoot" value="D:\JavaDev\workspace3.0\H_able_Client" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="028a8a6e-d4e5-43e5-b746-4bd28b67e8d9" name="Default Changelist" comment="" />
+      <created>1617749635801</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1617749635801</updated>
+    </task>
+    <task id="LOCAL-00350">
+      <created>1634713464737</created>
+      <option name="number" value="00350" />
+      <option name="presentableId" value="LOCAL-00350" />
+      <option name="project" value="LOCAL" />
+      <updated>1634713464738</updated>
+    </task>
+    <task id="LOCAL-00351">
+      <created>1634729784052</created>
+      <option name="number" value="00351" />
+      <option name="presentableId" value="LOCAL-00351" />
+      <option name="project" value="LOCAL" />
+      <updated>1634729784054</updated>
+    </task>
+    <task id="LOCAL-00352">
+      <created>1634782759383</created>
+      <option name="number" value="00352" />
+      <option name="presentableId" value="LOCAL-00352" />
+      <option name="project" value="LOCAL" />
+      <updated>1634782759384</updated>
+    </task>
+    <task id="LOCAL-00353">
+      <created>1634785374922</created>
+      <option name="number" value="00353" />
+      <option name="presentableId" value="LOCAL-00353" />
+      <option name="project" value="LOCAL" />
+      <updated>1634785374923</updated>
+    </task>
+    <task id="LOCAL-00354">
+      <created>1634804562027</created>
+      <option name="number" value="00354" />
+      <option name="presentableId" value="LOCAL-00354" />
+      <option name="project" value="LOCAL" />
+      <updated>1634804562027</updated>
+    </task>
+    <task id="LOCAL-00355">
+      <created>1635046159538</created>
+      <option name="number" value="00355" />
+      <option name="presentableId" value="LOCAL-00355" />
+      <option name="project" value="LOCAL" />
+      <updated>1635046159538</updated>
+    </task>
+    <task id="LOCAL-00356">
+      <created>1635053483416</created>
+      <option name="number" value="00356" />
+      <option name="presentableId" value="LOCAL-00356" />
+      <option name="project" value="LOCAL" />
+      <updated>1635053483416</updated>
+    </task>
+    <task id="LOCAL-00357">
+      <created>1635059844144</created>
+      <option name="number" value="00357" />
+      <option name="presentableId" value="LOCAL-00357" />
+      <option name="project" value="LOCAL" />
+      <updated>1635059844144</updated>
+    </task>
+    <task id="LOCAL-00358">
+      <created>1635119300589</created>
+      <option name="number" value="00358" />
+      <option name="presentableId" value="LOCAL-00358" />
+      <option name="project" value="LOCAL" />
+      <updated>1635119300589</updated>
+    </task>
+    <task id="LOCAL-00359">
+      <created>1635231200365</created>
+      <option name="number" value="00359" />
+      <option name="presentableId" value="LOCAL-00359" />
+      <option name="project" value="LOCAL" />
+      <updated>1635231200365</updated>
+    </task>
+    <task id="LOCAL-00360">
+      <created>1635817398564</created>
+      <option name="number" value="00360" />
+      <option name="presentableId" value="LOCAL-00360" />
+      <option name="project" value="LOCAL" />
+      <updated>1635817398565</updated>
+    </task>
+    <task id="LOCAL-00361">
+      <created>1635999197398</created>
+      <option name="number" value="00361" />
+      <option name="presentableId" value="LOCAL-00361" />
+      <option name="project" value="LOCAL" />
+      <updated>1635999197417</updated>
+    </task>
+    <task id="LOCAL-00362">
+      <created>1636009390436</created>
+      <option name="number" value="00362" />
+      <option name="presentableId" value="LOCAL-00362" />
+      <option name="project" value="LOCAL" />
+      <updated>1636009390437</updated>
+    </task>
+    <task id="LOCAL-00363">
+      <created>1636009795959</created>
+      <option name="number" value="00363" />
+      <option name="presentableId" value="LOCAL-00363" />
+      <option name="project" value="LOCAL" />
+      <updated>1636009795959</updated>
+    </task>
+    <task id="LOCAL-00364">
+      <created>1636010941588</created>
+      <option name="number" value="00364" />
+      <option name="presentableId" value="LOCAL-00364" />
+      <option name="project" value="LOCAL" />
+      <updated>1636010941588</updated>
+    </task>
+    <task id="LOCAL-00365">
+      <created>1636012336605</created>
+      <option name="number" value="00365" />
+      <option name="presentableId" value="LOCAL-00365" />
+      <option name="project" value="LOCAL" />
+      <updated>1636012336605</updated>
+    </task>
+    <task id="LOCAL-00366">
+      <created>1636021072809</created>
+      <option name="number" value="00366" />
+      <option name="presentableId" value="LOCAL-00366" />
+      <option name="project" value="LOCAL" />
+      <updated>1636021072809</updated>
+    </task>
+    <task id="LOCAL-00367">
+      <created>1636078245626</created>
+      <option name="number" value="00367" />
+      <option name="presentableId" value="LOCAL-00367" />
+      <option name="project" value="LOCAL" />
+      <updated>1636078245626</updated>
+    </task>
+    <task id="LOCAL-00368">
+      <created>1636083695796</created>
+      <option name="number" value="00368" />
+      <option name="presentableId" value="LOCAL-00368" />
+      <option name="project" value="LOCAL" />
+      <updated>1636083695850</updated>
+    </task>
+    <task id="LOCAL-00369">
+      <created>1636258495158</created>
+      <option name="number" value="00369" />
+      <option name="presentableId" value="LOCAL-00369" />
+      <option name="project" value="LOCAL" />
+      <updated>1636258495189</updated>
+    </task>
+    <task id="LOCAL-00370">
+      <created>1636348110694</created>
+      <option name="number" value="00370" />
+      <option name="presentableId" value="LOCAL-00370" />
+      <option name="project" value="LOCAL" />
+      <updated>1636348110694</updated>
+    </task>
+    <task id="LOCAL-00371">
+      <created>1636357157473</created>
+      <option name="number" value="00371" />
+      <option name="presentableId" value="LOCAL-00371" />
+      <option name="project" value="LOCAL" />
+      <updated>1636357157473</updated>
+    </task>
+    <task id="LOCAL-00372">
+      <created>1636370712405</created>
+      <option name="number" value="00372" />
+      <option name="presentableId" value="LOCAL-00372" />
+      <option name="project" value="LOCAL" />
+      <updated>1636370712405</updated>
+    </task>
+    <task id="LOCAL-00373">
+      <created>1636370915364</created>
+      <option name="number" value="00373" />
+      <option name="presentableId" value="LOCAL-00373" />
+      <option name="project" value="LOCAL" />
+      <updated>1636370915364</updated>
+    </task>
+    <task id="LOCAL-00374">
+      <created>1636371222825</created>
+      <option name="number" value="00374" />
+      <option name="presentableId" value="LOCAL-00374" />
+      <option name="project" value="LOCAL" />
+      <updated>1636371222825</updated>
+    </task>
+    <task id="LOCAL-00375">
+      <created>1636413176301</created>
+      <option name="number" value="00375" />
+      <option name="presentableId" value="LOCAL-00375" />
+      <option name="project" value="LOCAL" />
+      <updated>1636413176301</updated>
+    </task>
+    <task id="LOCAL-00376">
+      <created>1636458085196</created>
+      <option name="number" value="00376" />
+      <option name="presentableId" value="LOCAL-00376" />
+      <option name="project" value="LOCAL" />
+      <updated>1636458085196</updated>
+    </task>
+    <task id="LOCAL-00377">
+      <created>1636681407945</created>
+      <option name="number" value="00377" />
+      <option name="presentableId" value="LOCAL-00377" />
+      <option name="project" value="LOCAL" />
+      <updated>1636681407946</updated>
+    </task>
+    <task id="LOCAL-00378">
+      <created>1636693079825</created>
+      <option name="number" value="00378" />
+      <option name="presentableId" value="LOCAL-00378" />
+      <option name="project" value="LOCAL" />
+      <updated>1636693079842</updated>
+    </task>
+    <task id="LOCAL-00379">
+      <created>1636977850035</created>
+      <option name="number" value="00379" />
+      <option name="presentableId" value="LOCAL-00379" />
+      <option name="project" value="LOCAL" />
+      <updated>1636977850049</updated>
+    </task>
+    <task id="LOCAL-00380">
+      <created>1637039547591</created>
+      <option name="number" value="00380" />
+      <option name="presentableId" value="LOCAL-00380" />
+      <option name="project" value="LOCAL" />
+      <updated>1637039547609</updated>
+    </task>
+    <task id="LOCAL-00381">
+      <created>1637052405683</created>
+      <option name="number" value="00381" />
+      <option name="presentableId" value="LOCAL-00381" />
+      <option name="project" value="LOCAL" />
+      <updated>1637052405684</updated>
+    </task>
+    <task id="LOCAL-00382">
+      <created>1637123116486</created>
+      <option name="number" value="00382" />
+      <option name="presentableId" value="LOCAL-00382" />
+      <option name="project" value="LOCAL" />
+      <updated>1637123116486</updated>
+    </task>
+    <task id="LOCAL-00383">
+      <created>1637126538286</created>
+      <option name="number" value="00383" />
+      <option name="presentableId" value="LOCAL-00383" />
+      <option name="project" value="LOCAL" />
+      <updated>1637126538286</updated>
+    </task>
+    <task id="LOCAL-00384">
+      <created>1637132419755</created>
+      <option name="number" value="00384" />
+      <option name="presentableId" value="LOCAL-00384" />
+      <option name="project" value="LOCAL" />
+      <updated>1637132419766</updated>
+    </task>
+    <task id="LOCAL-00385">
+      <created>1637291946824</created>
+      <option name="number" value="00385" />
+      <option name="presentableId" value="LOCAL-00385" />
+      <option name="project" value="LOCAL" />
+      <updated>1637291946873</updated>
+    </task>
+    <task id="LOCAL-00386">
+      <created>1637489399547</created>
+      <option name="number" value="00386" />
+      <option name="presentableId" value="LOCAL-00386" />
+      <option name="project" value="LOCAL" />
+      <updated>1637489399548</updated>
+    </task>
+    <task id="LOCAL-00387">
+      <created>1637540408352</created>
+      <option name="number" value="00387" />
+      <option name="presentableId" value="LOCAL-00387" />
+      <option name="project" value="LOCAL" />
+      <updated>1637540408364</updated>
+    </task>
+    <task id="LOCAL-00388">
+      <created>1637546013125</created>
+      <option name="number" value="00388" />
+      <option name="presentableId" value="LOCAL-00388" />
+      <option name="project" value="LOCAL" />
+      <updated>1637546013144</updated>
+    </task>
+    <task id="LOCAL-00389">
+      <created>1637729976512</created>
+      <option name="number" value="00389" />
+      <option name="presentableId" value="LOCAL-00389" />
+      <option name="project" value="LOCAL" />
+      <updated>1637729976513</updated>
+    </task>
+    <task id="LOCAL-00390">
+      <created>1637732683075</created>
+      <option name="number" value="00390" />
+      <option name="presentableId" value="LOCAL-00390" />
+      <option name="project" value="LOCAL" />
+      <updated>1637732683075</updated>
+    </task>
+    <task id="LOCAL-00391">
+      <created>1637840669871</created>
+      <option name="number" value="00391" />
+      <option name="presentableId" value="LOCAL-00391" />
+      <option name="project" value="LOCAL" />
+      <updated>1637840669872</updated>
+    </task>
+    <task id="LOCAL-00392">
+      <created>1637883507230</created>
+      <option name="number" value="00392" />
+      <option name="presentableId" value="LOCAL-00392" />
+      <option name="project" value="LOCAL" />
+      <updated>1637883507231</updated>
+    </task>
+    <task id="LOCAL-00393">
+      <created>1637888953925</created>
+      <option name="number" value="00393" />
+      <option name="presentableId" value="LOCAL-00393" />
+      <option name="project" value="LOCAL" />
+      <updated>1637888953925</updated>
+    </task>
+    <task id="LOCAL-00394">
+      <created>1637889579129</created>
+      <option name="number" value="00394" />
+      <option name="presentableId" value="LOCAL-00394" />
+      <option name="project" value="LOCAL" />
+      <updated>1637889579129</updated>
+    </task>
+    <task id="LOCAL-00395">
+      <created>1637902431889</created>
+      <option name="number" value="00395" />
+      <option name="presentableId" value="LOCAL-00395" />
+      <option name="project" value="LOCAL" />
+      <updated>1637902431889</updated>
+    </task>
+    <task id="LOCAL-00396">
+      <created>1637911971011</created>
+      <option name="number" value="00396" />
+      <option name="presentableId" value="LOCAL-00396" />
+      <option name="project" value="LOCAL" />
+      <updated>1637911971011</updated>
+    </task>
+    <task id="LOCAL-00397">
+      <created>1637916143430</created>
+      <option name="number" value="00397" />
+      <option name="presentableId" value="LOCAL-00397" />
+      <option name="project" value="LOCAL" />
+      <updated>1637916143430</updated>
+    </task>
+    <task id="LOCAL-00398">
+      <created>1637917805875</created>
+      <option name="number" value="00398" />
+      <option name="presentableId" value="LOCAL-00398" />
+      <option name="project" value="LOCAL" />
+      <updated>1637917805875</updated>
+    </task>
+    <option name="localTasksCounter" value="399" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="78" y="0" width="1564" height="996" key="CommitChangelistDialog2" timestamp="1637917800316">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="78" y="119" width="1668" height="828" key="CommitChangelistDialog2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634099964937" />
+    <state x="78" y="0" width="1746" height="1034" key="CommitChangelistDialog2/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637917800316" />
+    <state x="1998" y="40" width="1564" height="996" key="CommitChangelistDialog2/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1637912701099" />
+    <state x="178" y="131" width="1536" height="849" key="DiffContextDialog" timestamp="1637917574774">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="17" y="91" width="1536" height="860" key="DiffContextDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1630375626011" />
+    <state x="178" y="131" width="1536" height="849" key="DiffContextDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637917574774" />
+    <state x="1937" y="95" width="1536" height="894" maximized="true" key="DiffContextDialog/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1635807633552" />
+    <state x="456" y="283" key="FileChooserDialogImpl" timestamp="1637838753234">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="456" y="283" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1633060442922" />
+    <state x="456" y="283" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637838753234" />
+    <state x="2376" y="294" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1637628842380" />
+    <state width="1237" height="20" key="GridCell.Tab.0.bottom" timestamp="1637912474033">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="821" height="200" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1636271900237" />
+    <state width="1877" height="156" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1633653018186" />
+    <state width="1031" height="268" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637889151374" />
+    <state width="1237" height="20" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1637912474033" />
+    <state width="1237" height="20" key="GridCell.Tab.0.center" timestamp="1637912474033">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="821" height="200" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1636271900237" />
+    <state width="1877" height="156" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1633653018185" />
+    <state width="1031" height="268" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637889151374" />
+    <state width="1237" height="20" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1637912474033" />
+    <state width="1237" height="20" key="GridCell.Tab.0.left" timestamp="1637912474033">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="821" height="200" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1636271900237" />
+    <state width="1877" height="156" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1633653018185" />
+    <state width="1031" height="268" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637889151374" />
+    <state width="1237" height="20" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1637912474033" />
+    <state width="1237" height="20" key="GridCell.Tab.0.right" timestamp="1637912474033">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="821" height="200" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1636271900237" />
+    <state width="1877" height="156" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1633653018185" />
+    <state width="1031" height="268" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637889151374" />
+    <state width="1237" height="20" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1637912474033" />
+    <state x="540" y="263" key="IDE.errors.dialog" timestamp="1636018596136">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="540" y="263" key="IDE.errors.dialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1636018596136" />
+    <state x="598" y="280" key="MultipleFileMergeDialog" timestamp="1632964852869">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="598" y="280" key="MultipleFileMergeDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1632964852869" />
+    <state x="703" y="240" key="RollbackChangesDialog" timestamp="1637914654053">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="562" y="190" key="RollbackChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1636271927763" />
+    <state x="703" y="240" key="RollbackChangesDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1632966554613" />
+    <state x="703" y="240" key="RollbackChangesDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637914654053" />
+    <state x="2623" y="249" key="RollbackChangesDialog/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1637910509202" />
+    <state x="461" y="166" key="SettingsEditor" timestamp="1629697079024">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="166" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1629697079024" />
+    <state x="662" y="328" key="com.android.tools.idea.run.deployment.SelectMultipleDevicesDialog" timestamp="1631079603592">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="662" y="328" key="com.android.tools.idea.run.deployment.SelectMultipleDevicesDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1631079603592" />
+    <state x="176" y="0" width="1736" height="1047" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1635922400350">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="176" y="0" width="1736" height="1047" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1635922400350" />
+    <state x="495" y="130" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1631613272064">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="495" y="130" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1631613272064" />
+    <state x="612" y="254" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1634785325793">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="612" y="254" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1629770723715" />
+    <state x="612" y="254" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1634785325793" />
+    <state x="776" y="359" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1637917372808">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="621" y="284" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1636271889971" />
+    <state x="776" y="359" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634035516191" />
+    <state x="776" y="359" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637917372808" />
+    <state x="2696" y="373" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1637912656813" />
+    <state x="776" y="359" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1635393326488" />
+    <state x="0" y="0" width="1513" height="779" key="dock-window-1" timestamp="1632901136910">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="0" y="0" width="1513" height="779" key="dock-window-1/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1632901136910" />
+    <state x="426" y="128" width="1149" height="801" key="find.popup" timestamp="1637917775718">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="344" y="98" width="920" height="635" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1636271714234" />
+    <state x="430" y="124" width="1149" height="801" key="find.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634090666284" />
+    <state x="426" y="128" width="1149" height="801" key="find.popup/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1637917775718" />
+    <state x="465" y="109" width="1149" height="832" key="find.popup/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1637910497792" />
+    <state x="430" y="124" width="1149" height="801" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1635386111518" />
+    <state x="616" y="242" width="672" height="677" key="run.anything.popup" timestamp="1629697984485">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="242" width="672" height="677" key="run.anything.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1629697984485" />
+    <state x="894" y="174" width="672" height="678" key="search.everywhere.popup" timestamp="1636465354364">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="894" y="174" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1630564575040" />
+    <state x="894" y="174" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1636465354364" />
+    <state x="755" y="416" key="svn.passwordDialog" timestamp="1630288276237">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="755" y="416" key="svn.passwordDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1630288276237" />
+  </component>
+</project>

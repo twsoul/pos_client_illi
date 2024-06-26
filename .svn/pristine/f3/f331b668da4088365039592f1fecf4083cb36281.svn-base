@@ -1,0 +1,222 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var isFirstRun = true;
+	var objPartSelect, objPartNumSelect;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		setInitPlantList();
+		setModeForAccountState();
+		
+		// TODO : DEBUG - START
+		// getSearchList ==> 메인 조회. "부품구분"항목에 value값이 정해지지 않았으나 개발당시 "MAT_MST" 테이블의 "BKLAS" 컬럼을 사용하는걸로 내용 듣고 적용함.
+		// KD.get_H_T_UM_069_List  ==> "BKLAS"항목에 대해 정확히 확인 후 공통코드를 써서 표시를 할지.. 아님 현재 적용된 방법처럼 문구를 하드코딩 할지 판단 필요.
+		// TODO : DEBUG - END
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnSearch").on("click", getSearchList);
+		$("#selMainMenu").on("change", function(){
+			var page = $("#selMainMenu > option:selected").data("value");
+			screenManager.replaceToPage(page);
+		});
+		var vend_tp = userManager.getVEND_TP(); 
+		if (vend_tp == "C"){
+			$("#selMainMenu option").eq(2).show();
+			$("#selMainMenu option").eq(3).show();
+		} else {
+			$("#selMainMenu option").eq(2).hide();
+			$("#selMainMenu option").eq(3).hide();
+		}
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		$("#selMainMenu").val("0");
+	};
+	
+	// 계정상태에 따른 초기 화면 세팅
+	var setModeForAccountState = function() {
+		if (isFirstRun){
+			$("#btnPartNumSearch").on("click", setinitPartNumber);
+			objPartNumSelect = new SelectListPopup({ title: "품번 검색", id: "popPartNo", submitCallback: function(code, name){
+				$("#co_part_num").data("code", code).data("name", name).val(code);
+			}});
+			objPartNumSelect.init();
+			
+			var vend_tp = userManager.getVEND_TP(); 
+			if (vend_tp == "C"){
+				//부품사 선택 가능하게..
+				objPartSelect = new SelectListPopup({ title: "부품사명 선택", id: "popPart", submitCallback: function(code, name){
+					$("#co_parts").data("code", code).data("name", name).val(name);
+				}});
+				objPartSelect.init();
+				$("#btnPartSearch").on("click", setInitPartCompList);
+			} else if (vend_tp == "B") {
+				//부품사 선택 가능하게..
+				objPartSelect = new SelectListPopup({ title: "부품사명 선택", id: "popPart", submitCallback: function(code, name){
+					$("#co_parts").data("code", code).data("name", name).val(name);
+				}});
+				objPartSelect.init();
+				$("#btnPartSearch").on("click", setInitPartCompList);
+			} else {
+				$("#btnPartSearch").parent().hide();
+				var vend_cd = userManager.getVEND_CD();
+				var vend_nm = userManager.getVEND_NM();
+				$("#co_parts").data("code", vend_cd).data("name", vend_nm).attr("placeholder", vend_nm).attr("readonly",true);
+			}
+			isFirstRun = false;
+		}
+	}
+	
+	// 부품사명 SELECT BOX Initialize
+	var setInitPartCompList = function(){
+		var vend_nm = $("#co_parts").val();
+		var vend_tp = userManager.getVEND_TP();
+		var vend_cd = "";
+		if (vend_tp == "B") {
+			vend_cd = userManager.getVEND_CD();
+		}
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_vend_partCompList",
+				"VEND_NM": vend_nm,
+				"DIST_VEND_CD": vend_cd
+			},
+			success: function(receivedData, setting) {
+				objPartSelect.setDB(receivedData.ListData, "VEND_CD", "VEND_NM");
+				objPartSelect.show();
+			}
+		});
+	};
+	
+	// 공장 SELECT BOX Initialize
+	var setInitPlantList = function(){
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_plantList"
+			},
+			success: function(receivedData, setting) {
+				var tag = "<option value='ALL'>전체</option>";
+				$("#selPlant").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.PLANT_CD + "'>" + rowData.PLANT_NM + "</option>";
+				});
+				$("#selPlant").append(tag);
+			}
+		});
+	};
+	
+	// 품번 검색 Pop-up Initialize
+	var setinitPartNumber = function(){
+		var part_no = $("#co_part_num").val();
+		var plant_cd = $("#selPlant > option:selected").val();
+		var vend_cd = $("#co_parts").data("code");
+		
+		//if (vend_cd == undefined){
+		//	popupManager.alert("부품사를 먼저 선택하세요.", {title: '알림'});
+		//	return;
+		//}
+		
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_partNumber",
+				'PART_NO': part_no,
+				'PLANT_CD': plant_cd,
+				'VEND_CD': vend_cd
+			},
+			success: function(receivedData, setting) {
+				objPartNumSelect.setDB(receivedData.ListData, "PART_NO", "PART_NM");
+				objPartNumSelect.show();
+			}
+		});
+	};
+	
+	var getSearchList = function(){
+		var vend_cd = $("#co_parts").data("code") == undefined ? "" : $("#co_parts").val() == "" ? "" : $("#co_parts").data("code");
+		if ($("#co_parts").attr("readonly") == "readonly"){
+			vend_cd = $("#co_parts").data("code");
+		}
+		var plant_cd = $("#selPlant > option:selected").val();
+		var part_no = $("#co_part_num").val();
+		var partType = $("#selPartType > option:selected").val();
+		
+		//if (!searchValidation(vend_cd)){
+		//	return;
+		//}
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "KD.get_H_T_UM_069_List",
+				"VEND_CD": vend_cd,
+				"PLANT_CD" : plant_cd,
+				"PART_NO": part_no,
+				"PART_TYPE": partType
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0){
+					//tag = $("#ListNoDataTemplate").html();
+					popupManager.alert("조회된 데이터가 없습니다.", {title: "알림"});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					var bklas = 
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += template.replace(/\{\{PART_NO\}\}/gi, rowData.PART_NO)
+								.replace(/\{\{BKLAS\}\}/gi, rowData.BKLAS == "0" ? "LP" : rowData.BKLAS == "1" ? "KD사내" : "KD사외")
+								.replace(/\{\{LOC_NM\}\}/gi,  rowData.LOC_NM == undefined ? "" : rowData.LOC_NM)
+								.replace(/\{\{INV\}\}/gi, window.Utils.addCommas(rowData.INV))
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+				}
+				
+				$("#list_t_um33").html(tag);
+			}
+		 });
+	}
+	
+	var searchValidation = function(partComp) {
+		if (window.Utils.trim(partComp) == ""){
+			popupManager.alert("부품사명을 선택하세요", {title: "알림"});
+			return;
+		}
+		return true;
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

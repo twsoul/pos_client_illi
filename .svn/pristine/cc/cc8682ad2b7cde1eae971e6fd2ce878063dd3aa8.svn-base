@@ -1,0 +1,214 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+    var qr_result;
+	// 화면 초기화
+	var setInitScreen = function() {
+	    qr_result = dataManager.param('qr_result');
+	    $("#qr_result").text(qr_result);
+		getSearchList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		setTabNSwipe();
+	};
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+
+	};
+
+
+	// 메인 검색
+	var getSearchList = function(){
+				var tag = "";
+				var template = $("#ListTemplate").html();
+					tag += template.replace(/\{\{NUM\}\}/, "NUM1")
+							.replace(/\{\{PARTNO\}\}/, "GT700200702083015")
+							.replace(/\{\{PARTNM\}\}/, "기어웜드레서")
+							.replace(/\{\{STATUS\}\}/, "전체")
+							.replace(/\{\{EA\}\}/, "20")
+							.replace(/\{\{WON\}\}/, "24,000")
+							.replace(/\{\{MLINK\}\}/, "mLink");
+				$("#list_t_um40").html(tag);
+				setListRowEvent();
+
+
+	};
+
+	var getSearchList2 = function() {
+				var tag = "";
+                var template = $("#ListTemplate").html();
+                	tag += template.replace(/\{\{NUM\}\}/, "NUM2")
+                			.replace(/\{\{PARTNO\}\}/, "GT700200612110260")
+                			.replace(/\{\{PARTNM\}\}/, "인써트팁")
+                			.replace(/\{\{STATUS\}\}/, "미입고")
+                			.replace(/\{\{EA\}\}/, "1")
+                			.replace(/\{\{WON\}\}/, "53,000")
+                			.replace(/\{\{MLINK\}\}/, "mLink2");
+				$("#list_t_um42").html(tag);
+				setListRowEvent2();
+	};
+
+		var getSearchList3 = function() {
+    				var tag = "";
+                    var template = $("#ListTemplate").html();
+                    	tag += template.replace(/\{\{NUM\}\}/, "NUM3")
+                    			.replace(/\{\{PARTNO\}\}/, "GT700200612110260")
+                    			.replace(/\{\{PARTNM\}\}/, "인써트팁")
+                    			.replace(/\{\{STATUS\}\}/, "입고완료")
+                    			.replace(/\{\{EA\}\}/, "1")
+                    			.replace(/\{\{WON\}\}/, "53,000")
+                    			.replace(/\{\{MLINK\}\}/, "mLink3");
+    				$("#list_t_um43").html(tag);
+    				setListRowEvent3();
+    	};
+
+	// 리스트에 클릭 이벤트 등록
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("tr").removeClass("on");
+			}
+		})
+	};
+	// 리스트에 클릭 이벤트 등록
+	var setListRowEvent2 = function(){
+		$(".mLink2").off("click","**");
+		$(".mLink2").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("tr").removeClass("on");
+			}
+		})
+	};
+	// 리스트에 클릭 이벤트 등록
+	var setListRowEvent3 = function(){
+		$(".mLink3").off("click","**");
+		$(".mLink3").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("tr").removeClass("on");
+			}
+		})
+	};
+
+	var setTabNSwipe = function() {
+		$(".tabmenu > div > h5").on("click", function(){
+			$(this).addClass("on");
+			$(this).siblings("h5").removeClass("on");
+			var p = $(this).index();
+			if( p == 0 ){
+				$(".contents_inner").css("transform", "translateX(0%)");
+				$(".contents_inner").children(".form1").css("height", "auto");
+				$(".contents_inner").children(".form2").css("height", "0");
+				$(".contents_inner").children(".form3").css("height", "0");
+				getSearchList();
+			}else if ( p == 1){
+				$(".contents_inner").css("transform", "translateX(-33%)");
+				$(".contents_inner").children(".form1").css("height", "0");
+             	$(".contents_inner").children(".form2").css("height", "auto");
+           		$(".contents_inner").children(".form3").css("height", "0");
+				getSearchList2();
+			}else if ( p == 2){
+           		$(".contents_inner").css("transform", "translateX(-66%)");
+           		$(".contents_inner").children(".form1").css("height", "0");
+                $(".contents_inner").children(".form2").css("height", "0");
+                $(".contents_inner").children(".form3").css("height", "auto");
+           		getSearchList3();
+            };
+		});
+
+		if($(".tabmenu > div > h5").hasClass("on")){	// 초기화면 리셋
+			var p = $(".tabmenu > div > h5").index();
+			if( p == 0 ){
+				$(".contents_inner").css("transform", "translateX(0%)");
+				$(".contents_inner").children(".form1").css("height", "auto");
+                $(".contents_inner").children(".form2").css("height", "0");
+                $(".contents_inner").children(".form3").css("height", "0");
+			}else if ( p == 1){
+				$(".contents_inner").css("transform", "translateX(-33%)");
+				$(".contents_inner").children(".form1").css("height", "0");
+                $(".contents_inner").children(".form2").css("height", "auto");
+                $(".contents_inner").children(".form3").css("height", "0");
+			}else if ( p == 2){
+            	$(".contents_inner").css("transform", "translateX(-66%)");
+            	$(".contents_inner").children(".form1").css("height", "0");
+                $(".contents_inner").children(".form2").css("height", "0");
+                $(".contents_inner").children(".form3").css("height", "auto");
+           	};
+		}
+
+		// swipe
+		window.addEventListener('touchstart', function(event) {
+			var touch = event.touches[0];
+			touchstartX = touch.clientX;
+			touchstartY = touch.clientY;
+		}, false);
+
+		window.addEventListener('touchend', function(event) {
+		if(event.touches.length == 0) {
+			var touch = event.changedTouches[event.changedTouches.length - 1];
+			touchendX = touch.clientX;
+			touchendY = touch.clientY;
+
+			touchoffsetX = touchendX - touchstartX;
+			touchoffsetY = touchendY - touchstartY;
+
+		if(Math.abs(touchoffsetX) >= 20 && Math.abs(touchoffsetY) <= 10) {
+			if(touchoffsetX < 0)
+				$(".contents_inner").css("transform", "translateX(-50%)"),
+				$(".contents_inner").children("section").first().css("height", "0"),
+				$(".contents_inner").children("section").last().css("height", "auto"),
+				$(".tabmenu h5").last().addClass("on"),
+				$(".tabmenu h5").first().removeClass("on");
+			else
+				$(".contents_inner").css("transform", "translateX(0%)"),
+				$(".contents_inner").children("section").first().css("height", "auto"),
+				$(".contents_inner").children("section").last().css("height", "0"),
+				$(".tabmenu h5").first().addClass("on"),
+				$(".tabmenu h5").last().removeClass("on");
+				}
+			}
+		}, false);
+	};
+
+	var moveToPage = function() {
+		screenManager.moveToPage('bj_011.html');
+	};
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

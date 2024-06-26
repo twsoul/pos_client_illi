@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#ff000000</color>
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="listitem_div">#ffc2c7da</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="result_points">#c000ff00</color>
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="viewfinder_frame">#ff000000</color>
+    <color name="viewfinder_laser">#ffff0000</color>
+    <color name="viewfinder_mask">#20000000</color>
+    <color name="white">#ffffffff</color>
+    <item name="auto_focus" type="id"/>
+    <item name="decode" type="id"/>
+    <item name="decode_failed" type="id"/>
+    <item name="decode_succeeded" type="id"/>
+    <item name="launch_product_query" type="id"/>
+    <item name="quit" type="id"/>
+    <item name="restart_preview" type="id"/>
+    <item name="return_scan_result" type="id"/>
+    <item name="search_book_contents_failed" type="id"/>
+    <item name="search_book_contents_succeeded" type="id"/>
+    <string name="alert_title">위치 서비스 사용</string>
+    <string name="app_name">H·able</string>
+    <string name="app_package">com.hts.hable</string>
+    <string name="cancel">Cancel</string>
+    <string name="check_gps_alert_message">자동 위치정보전송을 동의하시겠습니까?</string>
+    <string name="confirm_button">확인</string>
+    <string name="gps_off">취소</string>
+    <string name="gps_on">설정하기</string>
+    <string name="hello">Hello World, HybridMobileApp!</string>
+    <string name="lib_name">Core</string>
+    <string name="mp_addon_audiorecoder_list">목록</string>
+    <string name="mp_addon_audiorecoder_recoding">Ready</string>
+    <string name="mp_addon_audiorecoder_save_complete">저장이 완료 되었습니다.</string>
+    <string name="mp_addon_audiorecoder_stop">Recoding</string>
+    <string name="mp_addon_file_reading_file">파일을 읽는 중 입니다.\n잠시만 기다려주세요.</string>
+    <string name="mp_addon_file_ready">준비중입니다.</string>
+    <string name="mp_addon_maxpicker">사진은 총 %d개까지만 첨부 가능합니다.</string>
+    <string name="mp_addon_media_please_wait">잠시만 기다려주세요.</string>
+    <string name="mp_addon_net_data_transgering_msg">데이터 송수신 중입니다.\n잠시만 기다려 주세요.</string>
+    <string name="mp_addon_net_error_msg_internal_network1">보내는 데이터 설정 중 오류가 발생하였습니다. 다시 시도해주세요.</string>
+    <string name="mp_addon_net_error_msg_internal_network2">보내는 데이터 설정 중 오류가 발생하였습니다. 다시 시도해주세요.</string>
+    <string name="mp_addon_net_error_msg_internal_network3">받은 데이터를 처리중에 에러가 발생하였습니다. 다시 시도해주세요.</string>
+    <string name="mp_addon_net_ext_fail_file_download">파일 다운로드에 실패하였습니다.</string>
+    <string name="mp_addon_net_ext_fail_file_upload">파일 업로드에 실패하였습니다.</string>
+    <string name="mp_addon_net_ext_ftp_read_list">목록을 읽어 옵니다.</string>
+    <string name="mp_addon_net_ext_resource_update_checking">리소스 업데이트 확인 중입니다.</string>
+    <string name="mp_addon_net_ext_start_file_download">파일 다운로드를 시작합니다.</string>
+    <string name="mp_addon_net_ext_start_file_upload">파일 업로드를 시작합니다.</string>
+    <string name="mp_addon_net_ext_success_file_download">파일 다운로드가 완료되었습니다.</string>
+    <string name="mp_addon_net_ext_success_file_upload">파일 업로드가 완료되었습니다.</string>
+    <string name="mp_addon_net_ext_transfer_type_incorrect">전송 Type 설정이 잘못되었습니다.</string>
+    <string name="mp_addon_popup_day">일</string>
+    <string name="mp_addon_popup_friday">(금)</string>
+    <string name="mp_addon_popup_monday">(월)</string>
+    <string name="mp_addon_popup_month">월</string>
+    <string name="mp_addon_popup_saturday">(토)</string>
+    <string name="mp_addon_popup_sunday">(일)</string>
+    <string name="mp_addon_popup_thursday">(목)</string>
+    <string name="mp_addon_popup_tuesday">(화)</string>
+    <string name="mp_addon_popup_wednesday">(수)</string>
+    <string name="mp_addon_popup_year">년</string>
+    <string name="mp_addon_zip_unzipping">압축 해제 중입니다.</string>
+    <string name="mp_back">뒤로</string>
+    <string name="mp_cancel">취소</string>
+    <string name="mp_cannot_find_server_name">설정파일에서 서버 이름을 찾을 수 없습니다.</string>
+    <string name="mp_cannot_found_zip_file">압축 대상의 파일을 찾을 수 없습니다.</string>
+    <string name="mp_check_zip_file_extension">압축 후 저장 파일명의 확장자를 확인하세요</string>
+    <string name="mp_detail_photo">상세 보기</string>
+    <string name="mp_error">오류</string>
+    <string name="mp_exit">종료</string>
+    <string name="mp_fail_ftp_read_list">목록을 읽어 오는데 실패했습니다.</string>
+    <string name="mp_file_send">파일 전송</string>
+    <string name="mp_file_sending">파일을 전송 중입니다.</string>
+    <string name="mp_license_broken">라이센스 파일이 원본과 다릅니다.</string>
+    <string name="mp_license_error">라이센스 파일 검사 중 오류가 발생하였습니다.</string>
+    <string name="mp_manifest_error">Manifest.xml 파일을 읽을 수 없습니다.</string>
+    <string name="mp_media_scanning">미디어 스캐닝 중...</string>
+    <string name="mp_network_connection_error">네트워크 연결에 실패하였습니다.</string>
+    <string name="mp_network_error">네트워크 통신 중 오류가 발생하였습니다.</string>
+    <string name="mp_network_timeout">응답 시간을 초과하였습니다.</string>
+    <string name="mp_network_url_error">네트워크 연결값이 잘못되었습니다.</string>
+    <string name="mp_no">아니오</string>
+    <string name="mp_notice">알림</string>
+    <string name="mp_notice_check_proxy">정보 보호를 위해, proxy가 설정된 기기에서는 프로그램을 실행 할 수 없습니다.</string>
+    <string name="mp_ok">확인</string>
+    <string name="mp_plugin_qrcode_button_cancel">Cancel</string>
+    <string name="mp_plugin_qrcode_button_off">Flash Off</string>
+    <string name="mp_plugin_qrcode_button_ok">OK</string>
+    <string name="mp_plugin_qrcode_button_on">Flash On</string>
+    <string name="mp_plugin_qrcode_msg_camera_framework_bug">Sorry, the Android camera encountered a problem. You may need to restart the device.</string>
+    <string name="mp_plugin_qrcode_msg_default_status">Please place the QR CODE in the box</string>
+    <string name="mp_plugin_qrcode_not_supported_flash">This device does not support Flash</string>
+    <string name="mp_regist_push_service">PUSH 서비스를 등록 중입니다.</string>
+    <string name="mp_resource_copy_is_completed">프로그램 초기화 완료.</string>
+    <string name="mp_resource_is_copying">프로그램 초기화 중입니다.</string>
+    <string name="mp_rooted_device">Rooting 된 단말기 입니다.</string>
+    <string name="mp_rooting_device_cannot_use">본 서비스 루팅된 단말기에서는 사용할수 없습니다.\n정상단말기에서 사용하시기 바랍니다.</string>
+    <string name="mp_select_all">전체 선택</string>
+    <string name="mp_select_folder">폴더 선택</string>
+    <string name="mp_select_photo">미디어 선택</string>
+    <string name="mp_select_video">동영상 선택</string>
+    <string name="mp_signature">6+MY2CIsSigh0y5tNmvsR5dtgsQ=</string>
+    <string name="mp_signature_error">앱 위변조가 감지되었습니다.</string>
+    <string name="mp_unselect_all">전체 선택 해제</string>
+    <string name="mp_yes">예</string>
+    <string name="nbutton1">통신테스트</string>
+    <string name="nbutton2">네이티브화면</string>
+    <string name="nbutton3">UI웹화면</string>
+    <string name="no_storage_card">No storage card</string>
+    <string name="not_enough_space">Not enough space</string>
+    <string name="not_use_alert_message">정확한\n위치정보 제공에 제약이 있을 수 있습니다.</string>
+    <string name="preparing_card">Preparing card</string>
+    <string name="report_body1"><![CDATA[
+        <body style="-webkit-text-size-adjust:none; -ms-text-size-adjust:none;">
+            <table style="width:100%;margin-top:1px;text-align:center;border-collapse:collapse;" border="1">
+                <tr>
+                    <td style="width:20%;">
+                        <img src="http://10.135.198.137:8080/images/logo_color.svg" style="width:80%;">
+                    </td>
+                    <td style="width:40%;background-color:rgb(0,45,114);color:white;">
+                        <p style="margin:2vh 0;">
+                            {{MOVETYPE}} 반출증 ({{MOVENM}})
+                        </p>
+                    </td>
+                    <td style="width:20%;">
+                    </td>
+                </tr>
+            <table>
+            <table style="width:100%;text-align:center;border-collapse:collapse;margin-top:1vh;font-size:1vh;vertical-align:middle;border-spacing:0;" border="1">
+                <tr>
+                    <td style="width:15%;">
+                        반출부서
+                    </td>
+                    <td style="width:40%;">
+
+                    </td>
+                    <td style="width:15%;background-color:rgb(0,45,114);color:white;">
+                        반출번호
+                    </td>
+                    <td>
+                        {{N1}}
+                    </td>
+                    <td>
+                        {{N2}}
+                    </td>
+                    <td>
+                        {{N3}}
+                    </td>
+                    <td>
+                        {{N4}}
+                    </td>
+                    <td>
+                        {{N5}}
+                    </td>
+                    <td>
+                        {{N6}}
+                    </td>
+                    <td>
+                        {{N7}}
+                    </td>
+                    <td>
+                        {{N8}}
+                    </td>
+                    <td>
+                        {{N9}}
+                    </td>
+                    <td>
+                        {{N10}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        반출사유
+                    </td>
+                    <td colspan="12">
+                        {{MOVEDESC}}
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%;text-align:center;border-collapse:collapse;font-size:1vh;vertical-align:middle;border-spacing:0;border-top:0;" border="1">
+                <tr>
+                    <td style="width:5%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        No
+                    </td>
+                    <td style="width:20%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        품번
+                    </td>
+                    <td style="width:20%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        품명
+                    </td>
+                    <td style="width:10%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        수량
+                    </td>
+                    <td style="width:10%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        단위
+                    </td>
+                    <td style="width:25%;border-top:0;background-color:rgb(0,45,114);color:white;">
+                        반출내용메모
+                    </td>
+                </tr>
+        ]]>
+	</string>
+    <string name="report_body2"><![CDATA[
+        </table>
+		<table style="width:100%;text-align:center;border-collapse:collapse;font-size:1vh;vertical-align:middle;border-spacing:0;border-top:0;" border="1">
+			<tr>
+				<td style="width:10%;border-top:0;">
+					반출처(업체)
+				</td>
+				<td style="width:15%;border-top:0;">
+					{{VENDOR_NM}}
+				</td>
+				<td style="width:15%;border-top:0;">
+					작성자(인계수량확인자)
+				</td>
+				<td style="width:5%;border-top:0;">
+					성명
+				</td>
+				<td style="width:10%;border-top:0;">
+					{{CREATE_NM}}
+				</td>
+				<td style="width:5%;border-top:0;">
+					날인
+				</td>
+				<td style="width:10%;border-top:0;">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					반출차량번호
+				</td>
+				<td>
+
+				</td>
+				<td>
+					반출자(인수수량확인자)
+				</td>
+				<td>
+					성명
+				</td>
+				<td>
+				</td>
+				<td>
+					날인
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					TOTAL
+				</td>
+				<td>
+					{{TOTAL}}
+				</td>
+				<td colspan="5" style="border:none;">
+				</td>
+			</tr>
+		</table>
+		<table style="width:100%;text-align:center;margin-bottom:1px;border-collapse:collapse;font-size:1vh;vertical-align:middle;border-spacing:0;border-top:0;" border="1">
+			<tr>
+				<td style="width:33.333%;height:2vh;border:none;">
+				</td>
+				<td style="width:33.333%;height:2vh;border:none;">
+				</td>
+				<td style="width:33.333%;height:2vh;border:none;">
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+				</td>
+
+			</tr>
+			<tr>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+					{{DT_YEAR}}년 {{DT_MONTH}}월 {{DT_DAY}}일 {{DT_HOUR}}시 {{DT_MINUTE}}분
+				</td>
+				<td rowspan="2" style="border:none;">
+					<p class="Bar128">*{{MOVENO}}*</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;">
+				</td>
+				<td style="border:none;">
+					상기 물품의 반출을 승인함
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;height:3vh;">
+				</td>
+				<td style="border:none;height:3vh;">
+				</td>
+				<td style="border:none;height:3vh;">
+				</td>
+			</tr>
+			<tr>
+				<td style="border:none;">
+					{{fmt_time}}
+				</td>
+				<td colspan="2" style="border:none;">
+					※반출규정위반 및 무단반출 적발시 당사 사규 및 관련법규에 의해 제재를 받을수 있습니다.
+				</td>
+			</tr>
+		</table>
+	</table>
+</table>
+</body>
+
+
+</html>
+]]>
+	</string>
+    <string name="report_head"><![CDATA[
+        <html style="width:100%;height:100%;">
+            <head>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+                <style>
+                    @font-face {
+                        font-family: "Free3of9";
+                        src: url("http://10.135.198.137:8080/fonts/Free3of9.woff");
+                    }
+                    .Bar128 {
+                        height: 0;
+                        padding-bottom: 4vh;
+                        font-family: "Free3of9";
+                        font-size: 4vh;
+                    }
+                </style>
+            </head>
+        ]]>
+	</string>
+    <string name="report_line"><![CDATA[
+        <table>
+            <tr>
+				<td style="border:none;font-size:0.75rem;color:white;">
+                    line
+				</td>
+			</tr>
+		</table>
+
+    ]]>
+	</string>
+    <string name="report_line2"><![CDATA[
+        <table>
+            <tr>
+				<td style="border:none;font-size:0.85rem;color:white;">
+                    line
+				</td>
+			</tr>
+		</table>
+
+    ]]>
+	</string>
+    <string name="report_line3"><![CDATA[
+        <table>
+            <tr>
+				<td style="border:none;font-size:1rem;color:white;">
+                    line
+				</td>
+			</tr>
+		</table>
+
+    ]]>
+	</string>
+    <string name="sTitle1">받은 파라메터 데이터</string>
+    <string name="sTitle2">Network error</string>
+    <string name="save">Save</string>
+    <string name="saving_image">Saving image</string>
+    <string name="searching_message">현재 위치를 찾는 중입니다.</string>
+    <string name="tps_report">TPS Report</string>
+    <style name="CropButton">
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/addon_media_crop_selector_crop_button</item>
+    </style>
+    <style name="newdialog">
+		<item name="android:windowFrame">@null</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:windowIsFloating">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+		<item name="android:windowTitleStyle">@null</item>
+		<item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+		<item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+		<item name="android:backgroundDimEnabled">false</item>
+		<item name="android:background">@android:color/transparent</item>
+	</style>
+</resources>

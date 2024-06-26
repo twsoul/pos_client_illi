@@ -1,0 +1,1 @@
+-keep class com.hts.hable_pos.implementation.ExtendApplication { <init>(); }

@@ -1,0 +1,672 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_scanMode = false;
+	var objPartNumSelect;
+	var objImageUploader01, objImageUploader02, objImageUploader03;
+	var m_ver_seq = "";
+	var m_PLANT_CD = "", m_LINE_CD = "", m_LINE_DT_CD = "", m_ISSUE_DT = "", m_ISSUE_TM = "", m_WORK_TP = "", m_WORK_LINE = ""
+		, m_PART_NO = "", m_PART_NM = "", m_VEND_CD = "", m_VEND_NM = "", m_REASON = "", m_REASON_ETC = "", m_REASON_CONT = ""
+		, m_FILE1 = "", m_FILE2 = "", m_FILE3 = "", m_HPT_EMP = "", m_VEND_EMP = "", m_REPAIR_BE_DT = "", m_REPAIR_COMPLETE_DT = ""
+		, m_REG_EMP = "", m_UPDT_EMP = "", m_PART_TP = "";
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_ver_seq = dataManager.param('VER_SEQ');
+		if (m_ver_seq == undefined)
+			m_ver_seq = "";
+		
+		
+		objPartNumSelect = new SelectListPopup({ title: "품번선택", id: "popPart", submitCallback: function(code, name, ext1){
+			$("#txtPART_NO").val(code);
+			$("#txtPART_NM").val(ext1);
+			getVENDList();
+		}});
+		objPartNumSelect.init();
+		
+		objImageUploader01 = new ImageUploadPopup({id: "popUpload01", objAreaID: "imgUploader01" });
+		objImageUploader02 = new ImageUploadPopup({id: "popUpload02", objAreaID: "imgUploader02" });
+		objImageUploader03 = new ImageUploadPopup({id: "popUpload03", objAreaID: "imgUploader03" });
+		
+		if (m_ver_seq != ""){
+			$("#btnDelete").parent().removeClass("blind");
+			setLoadData();
+		} else {
+			var today = window.Utils.getTodayFormat("yyyy.MM.dd");
+			$("#txtISSUE_DT").val(today);
+			$("#txtISSUE_TM").val(window.Utils.getTodayFormat("HH:mm"));
+			$("#txtREPAIR_BE_DT").val(today);
+			$("#txtREPAIR_COMPLETE_DT").val(today);
+			setInitFirstSelectbox();
+			
+			objImageUploader01.init();
+			objImageUploader02.init();
+			objImageUploader03.init();
+		}
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnPartNumSearch").on("click", getPartNoList);
+		
+		$("#txtISSUE_DT").on("click", function(){
+			window.Utils.getCalendar("txtISSUE_DT", null, null);
+		});
+		$("#txtISSUE_TM").on("click", function(){
+			M.pop.date({type:"HM24", initDate: $("#txtISSUE_TM").val().replace(":","")}, function(result){
+				if (result.status == "SUCCESS"){
+					$("#txtISSUE_TM").val(result.HH + ":" + result.mm);
+				}
+			});
+		});
+		$("#txtREPAIR_BE_DT").on("click", function(){
+			window.Utils.getCalendar("txtREPAIR_BE_DT", null, null);
+		});
+		$("#txtREPAIR_COMPLETE_DT").on("click", function(){
+			window.Utils.getCalendar("txtREPAIR_COMPLETE_DT", null, null);
+		});
+		$("#selLINE_CD").on("change", setLineDetailList);
+		$("#selVEND").on("change", function(){
+			if ($(this).val() == "K"){
+				$("#areaVEND_ETC").removeClass("blind");
+			} else {
+				if (!$("areaVEND_ETC").hasClass("blind"))
+					$("#areaVEND_ETC").addClass("blind");
+			}
+		});
+		$("#selREASON").on("change", function(){
+			if ($(this).val() == "9"){
+				$("#areaREASON_ETC").removeClass("blind");
+			} else {
+				if (!$("#areaREASON_ETC").hasClass("blind"))
+					$("#areaREASON_ETC").addClass("blind");
+			}
+		});
+		
+		$("#btnScan").on("click", getScanData);
+		$("#btnSave").on("click", setSave);
+		$("#btnDelete").on("click", setDelete);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	};
+	
+	var setInitFirstSelectbox = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListMultiSelect.do',
+			data: {
+				'QUERYIDS': "GCS.get_plantList;GCS.getWorkTPCode;GCS.get_lineList;GCS.getCommonCode;GCS.getCaughtList",
+				"LSC_CD": "WNGB"
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				$.each(receivedData.ListData0, function(index,rowData){
+					tag += "<option value='" + rowData.PLANT_CD + "'>" + rowData.PLANT_NM + "</option>";
+				});
+				$("#selPLANT_CD").html(tag);
+				if (m_PLANT_CD != ""){
+					$("#selPLANT_CD").val(m_PLANT_CD);
+				}
+				
+				tag = "";
+				$.each(receivedData.ListData1, function(index,rowData){
+					tag += "<option value='" + rowData.CD + "'>" + rowData.NM + "</option>";
+				});
+				$("#selWORK_LINE").html(tag);
+				if (m_WORK_LINE != ""){
+					$("#selWORK_LINE").val(m_WORK_LINE);
+				}
+				
+				tag = "";
+				$.each(receivedData.ListData2, function(index,rowData){
+					tag += "<option value='" + rowData.MSC_CD + "'>" + rowData.MSC_DESC + "</option>";
+				});
+				$("#selLINE_CD").html(tag);
+				if (receivedData.ListCount2 > 0){
+					if (m_LINE_CD != ""){
+						$("#selLINE_CD").val(m_LINE_CD);
+					}
+					setLineDetailList();
+				}
+				
+				tag = "";
+				$.each(receivedData.ListData3, function(index,rowData){
+					tag += "<option value='" + rowData.CD + "'>" + rowData.NM + "</option>";
+				});
+				$("#selWORK_TP").html(tag);
+				if (m_WORK_TP != ""){
+					$("#selWORK_TP").val(m_WORK_TP);
+				}
+				
+				tag = "";
+				$.each(receivedData.ListData4, function(index,rowData){
+					tag += "<option value='" + rowData.CD + "'>" + rowData.NM + "</option>";
+				});
+				$("#selREASON").html(tag);
+				if (m_REASON != ""){
+					$("#selREASON").val(m_REASON);	
+				}
+			},
+			error: function(){
+				popupManager.alert("오류가 발생하였습니다. 이전페이지로 이동합니다.", {title:"알림"});
+				moveToBack();
+			}
+		});
+	};
+	
+	var setLineDetailList = function() {
+		var case_grp = $("#selLINE_CD > option:selected").val();
+		
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_LineDTList",
+				"CASE_GRP": case_grp
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.MSC_CD + "'>" + rowData.MSC_DESC + "</option>";
+				});
+				$("#selLINE_DT_CD").html(tag);
+				if (m_LINE_DT_CD != ""){
+					$("#selLINE_DT_CD").val(m_LINE_DT_CD);
+				}
+			}
+		});
+
+	};
+	
+	var getPartNoList = function() {
+		var part_no = $("#txtPART_NO").val();
+		
+		if (window.Utils.trim(part_no) == ""){
+			popupManager.alert("한 글자 이상 입력 후 다시시도하세요.", {title:"확인"});
+			return;
+		}
+		
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_partNumber",
+				'PART_NO': part_no
+			},
+			success: function(receivedData, setting) {
+				objPartNumSelect.setDB(receivedData.ListData, "PART_NO", "PART_NM", "ONLY_PART_NM");
+				objPartNumSelect.show();
+			}
+		});
+	};
+	
+	var getVENDList = function() {
+		var part_no = $("#txtPART_NO").val();
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.getVenderListFromPartNo",
+				"PART_NO": part_no
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				$("#selVEND").html("");
+				if (receivedData.ListCount > 0){
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += "<option value='" + rowData.VEND_CD + "'>" + rowData.VEND_NM + "</option>";
+					});
+				}
+				tag += "<option value=\"K\">KEY IN</option>";
+				
+				$("#selVEND").append(tag);
+				
+				if (m_VEND_CD != "")
+					$("#selVEND").val(m_VEND_CD);
+			}
+		});
+	};
+	
+	var setPartNo2Info = function() {
+		var part_no = $("#txtPART_NO").val();
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_partInfo",
+				"PART_NO": part_no
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount > 0) {
+					var rowData = receivedData.ListData[0];
+					$("#txtPART_NM").val(rowData.PART_NM);
+					//$("#txtVEND_NM").val(rowData.VEND_NM);
+					//$("#txtVEND_NM").data("vend_cd", rowData.VEND_CD);
+					getVENDList();
+				}
+			}
+		});
+	};
+	
+	var getScanData = function() {
+		if (wnIf.device == DT_ANDROID) {
+			M.page.activity("SimpleScannerActivity");
+		} else {
+			M.execute("wn2PluginQrScan",{
+				flash : false,
+				fadeToggle : false,
+				orientation : 'PORT',
+				callback: M.response.on( function( result ) {
+					if(result.status === "SUCCESS"){
+						var barcode = result.text;
+						var startIndex = barcode.indexOf(":P");
+						var endIndex = barcode.indexOf(":5Q");
+						var part_no = barcode.substring(startIndex+2, endIndex);
+						
+						$("#txtPART_NO").val(part_no);
+						setPartNo2Info();
+					}else{
+						//console.log(result.status);
+					}
+				}).toString()
+			});
+		}
+	};
+	// 조회
+	var setLoadData = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "KD.get_H_T_UM_075_info",
+				"VER_SEQ": m_ver_seq
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount > 0) {
+					var rowData = receivedData.ListData[0];
+					m_PLANT_CD = rowData.PLANT_CD;
+					m_LINE_CD = rowData.LINE_CD
+					m_LINE_DT_CD = rowData.LINE_DT_CD;
+					m_ISSUE_DT = rowData.ISSUE_DT;
+					m_ISSUE_TM = rowData.ISSUE_TM;
+					m_WORK_TP = rowData.WORK_TP;
+					m_WORK_LINE = rowData.WORK_LINE;
+					m_PART_NO = rowData.PART_NO;
+					m_PART_NM = rowData.PART_NM;
+					m_VEND_CD = rowData.VEND_CD;
+					m_VEND_NM = rowData.VEND_NM;
+					m_REASON = rowData.REASON;
+					m_REASON_ETC = rowData.REASON_ETC;
+					m_REASON_CONT = rowData.REASON_CONT;
+					m_FILE1 = rowData.FILE1;
+					m_FILE2 = rowData.FILE2;
+					m_FILE3 = rowData.FILE3;
+					m_HPT_EMP = rowData.HPT_EMP;
+					m_VEND_EMP = rowData.VEND_EMP;
+					m_REPAIR_BE_DT = rowData.REPAIR_BE_DT;
+					m_REPAIR_COMPLETE_DT = rowData.REPAIR_COMPLETE_DT;
+					m_REG_EMP = rowData.REG_EMP;
+					m_UPDT_EMP = rowData.UPDT_EMP;
+					m_PART_TP = rowData.PART_TP;
+					
+					$("#txtISSUE_DT").val(window.Utils.getStrDateComma(m_ISSUE_DT));
+					$("#txtISSUE_TM").val(window.Utils.getStrTimeColon(m_ISSUE_TM));
+					$("#txtPART_NO").val(m_PART_NO);
+					$("#txtPART_NM").val(m_PART_NM);
+					if (m_VEND_CD == undefined){
+						m_VEND_CD = "K";
+						$("#txtVEND").val(m_VEND_NM);
+						$("#areaVEND_ETC").removeClass("blind");
+					}
+					if (m_REASON == "9"){
+						$("#txtREASON").val(m_REASON_ETC);
+						$("#areaREASON_ETC").removeClass("blind");
+					}
+					$("#txtREASON_CONT").val(m_REASON_CONT);
+					$("#txtREPAIR_BE_DT").val(window.Utils.getStrDateComma(m_REPAIR_BE_DT));
+					$("#txtREPAIR_COMPLETE_DT").val(window.Utils.getStrDateComma(m_REPAIR_COMPLETE_DT));
+					$("#txtHPT_EMP").val(m_HPT_EMP);
+					$("#txtVEND_EMP").val(m_VEND_EMP);
+					
+					if (m_FILE1 != "")
+						objImageUploader01.init(m_FILE1, CONSTANT.NETWORK.IMAGE_URL + m_FILE1);
+					else
+						objImageUploader01.init();
+					
+					if (m_FILE2 != "")
+						objImageUploader02.init(m_FILE2, CONSTANT.NETWORK.IMAGE_URL + m_FILE2);
+					else
+						objImageUploader02.init();
+					
+					if (m_FILE3 != "")
+						objImageUploader03.init(m_FILE3, CONSTANT.NETWORK.IMAGE_URL + m_FILE3);
+					else
+						objImageUploader03.init();
+					
+					setInitFirstSelectbox();
+					
+					setPartNo2Info();
+				}
+			}
+		});
+	}
+	  
+	// 저장
+	var setSave = function() {
+		var part_no = $("#txtPART_NO").val();								// 품번
+		var part_nm = $("#txtPART_NM").val();								// 품명
+		var vend_cd = $("#selVEND > option:selected").val();				// 업체코드
+		var vend_nm = $("#selVEND > option:selected").text();				// 업체명
+		var reason = $("#selREASON > option:selected").val();				// 적발사유 코드
+		var reason_etc = $("#txtREASON").val();								// 적발사유에서 기타 선택시에 입력
+		var reason_cont = $("#txtREASON_CONT").val();						// 적발내용
+		var hpt_emp = $("#txtHPT_EMP").val();								// HPT 담당자 명
+		var vend_emp = $("#txtVEND_EMP").val();								// 협력사 담당자 명
+		
+		if (vend_cd == "K")
+			vend_nm = $("#txtVEND").val();
+		
+		// check validation
+		if (!checkValidation(part_no, part_nm, vend_cd, vend_nm, reason, reason_etc, reason_cont, hpt_emp, vend_emp)){
+			return;
+		}
+		
+		// delete file check & delete call
+		if (objImageUploader01.getIsDelete() == true || objImageUploader03.getIsDelete() == true || objImageUploader03.getIsDelete() == true){
+			var delFile1 = objImageUploader01.getDelImageFileName();
+			var delFile2 = objImageUploader02.getDelImageFileName();
+			var delFile3 = objImageUploader03.getDelImageFileName();
+			var filelist = "";
+			
+			if (delFile1 != null && delFile1 != ""){
+				filelist += delFile1;
+			}
+			if (delFile2 != null && delFile2 != ""){
+				if (filelist != "")
+					filelist += ";";
+				filelist += delFile2;
+			}
+			if (delFile3 != null && delFile3 != ""){
+				if (filelist != "")
+					filelist += ";";
+				filelist = delFile3;
+			}
+			
+			networkManager.httpSend({
+				path: '/api/ImageFileDelete.do',
+				data: {
+					'FILE_LIST': filelist
+				},
+				success: function(receivedData, setting) {
+					setFileUpload();
+				}
+			});
+		} else {
+			setFileUpload();
+		}
+	};
+	
+	var setFileUpload = function() {
+		if (objImageUploader01.getIsChanged() == true || objImageUploader02.getIsChanged() == true || objImageUploader03.getIsChanged() == true) {
+			
+			var bodyFile = [];
+			
+			if (objImageUploader01.getIsChanged()){
+				bodyFile.push({name:"file1", content: objImageUploader01.getImagePathName(), type: "FILE"});
+			}
+			
+			if (objImageUploader02.getIsChanged()){
+				bodyFile.push({name:"file2", content: objImageUploader02.getImagePathName(), type: "FILE"});
+			}
+			
+			if (objImageUploader03.getIsChanged()){
+				bodyFile.push({name:"file3", content: objImageUploader03.getImagePathName(), type: "FILE"});
+			}
+			
+			M.net.http.upload({
+				url: CONSTANT.NETWORK.UPLOAD_URL,
+				header: {},
+				params: {},
+				body: bodyFile,
+				encoding : "UTF-8",
+				finish : function(statusCode, header, body, status, error) {
+					if (status == "SUCCESS"){
+						//popupManager.instance('이미지 파일 업로드가 완료되었습니다.');
+						setDatabaseMerge();
+					} else {
+						popupManager.instance('이미지 파일 업로드가 실패 하였습니다. 잠시 후 다시시도 하시기 바랍니다.\r\n' + error);
+					}
+				},
+				progress : function(total, current) {
+					//console.log(total, current);
+				}
+			});
+		} else {
+			setDatabaseMerge();
+		}
+	};
+	
+	var setDatabaseMerge = function() {
+		var plant_cd = $("#selPLANT_CD > option:selected").val();			// 공장
+		var line_cd = $("#selLINE_CD > option:selected").val();				// 발생라인
+		var line_dt_cd = $("#selLINE_DT_CD > option:selected").val();		// 발생라인(상세)
+		var issue_dt = window.Utils.replaceAll($("#txtISSUE_DT").val(),".","");// 발생일자
+		var issue_tm = window.Utils.replaceAll($("#txtISSUE_TM").val(),":","");// 발생시간
+		var work_tp = $("#selWORK_TP > option:selected").val();				// 주간/야간
+		var work_line = $("#selWORK_LINE > option:selected").val();			// 조립/가동
+		var part_no = $("#txtPART_NO").val();								// 품번
+		var part_nm = $("#txtPART_NM").val();								// 품명
+		var vend_cd = $("#selVEND > option:selected").val();				// 업체코드
+		var vend_nm = $("#selVEND > option:selected").text();				// 업체명
+		var reason = $("#selREASON > option:selected").val();				// 적발사유 코드
+		var reason_etc = $("#txtREASON").val();								// 적발사유에서 기타 선택시에 따로 입력....
+		var reason_cont = $("#txtREASON_CONT").val();						// 적발내용
+		
+		if (vend_cd == "K") {
+			vend_nm = $("#txtVEND").val();
+		}
+		
+		var file1 = objImageUploader01.getImageFileName();
+		var file2 = objImageUploader02.getImageFileName();
+		var file3 = objImageUploader03.getImageFileName();
+		
+		if (file1 == null) file1 = "";
+		if (file2 == null) file2 = "";
+		if (file3 == null) file3 = "";
+		
+		var hpt_emp = $("#txtHPT_EMP").val();								// HPT 담당자 명
+		var vend_emp = $("#txtVEND_EMP").val();								// 협력사 담당자 명
+		
+		var repair_be_dt = window.Utils.replaceAll($("#txtREPAIR_BE_DT").val(),".","");// 개선예정일
+		var repair_complete_dt = window.Utils.replaceAll($("#txtREPAIR_COMPLETE_DT").val(),".","");	// 개선완료일
+		
+		var driv_id = userManager.getDRIV_ID();		// 작성자 아이디
+		
+		networkManager.httpSend({
+			path: '/api/Action_And_PushSend.do',
+			data: {
+				'QUERYID': "KD.set_H_T_UM_075_Merge",
+				"VER_SEQ":				m_ver_seq,
+				"PLANT_CD":				plant_cd,
+				"LINE_CD":				line_cd,
+				"LINE_DT_CD":			line_dt_cd,
+				"ISSUE_DT":				issue_dt,
+				"ISSUE_TM":				issue_tm,
+				"WORK_TP":				work_tp,
+				"WORK_LINE":			work_line,
+				"PART_NO":				part_no,
+				"PART_NM":				part_nm,
+				"VEND_CD":				vend_cd,
+				"VEND_NM":				vend_nm,
+				"REASON":				reason,
+				"REASON_ETC":			reason_etc,
+				"REASON_CONT":			reason_cont,
+				"FILE1":				file1,
+				"FILE2":				file2,
+				"FILE3":				file3,
+				"HPT_EMP":				hpt_emp,
+				"VEND_EMP":				vend_emp,
+				"REPAIR_BE_DT": 		repair_be_dt,
+				"REPAIR_COMPLETE_DT":	repair_complete_dt,
+				"DRIV_ID":				driv_id,
+				"PART_TP":				"0",
+				"MODE": "41",
+                "db_kind":dataManager.storage('saveUserDb')
+			},
+			success: function(receivedData, setting) {
+				popupManager.instance("저장되었습니다");
+				moveToBack();
+			}
+		});
+	};
+	
+	// 삭제
+	var setDelete = function() {
+		popupManager.alert('삭제하시겠습니까?', {
+			title: '알림',
+			buttons: ['취소', '확인']
+		}, function(index) {
+			switch(index) {
+				case 0:
+					break;
+				case 1:
+					setDeleteProcessSP1();
+					break;
+			}
+		});
+	};
+	// 삭제 프로세스 01 - 파일 삭제
+	var setDeleteProcessSP1 = function() {
+		// file check & delete call
+		var file1 = objImageUploader01.getImageFileName();
+		var file2 = objImageUploader02.getImageFileName();
+		var file3 = objImageUploader03.getImageFileName();
+		var filelist = "";
+		
+		if (file1 != null && file1 != ""){
+			filelist += file1;
+		}
+		if (file2 != null && file2 != ""){
+			if (filelist != "")
+				filelist += ";";
+			filelist += file2;
+		}
+		if (file3 != null && file3 != ""){
+			if (filelist != "")
+				filelist += ";";
+			filelist = file3;
+		}
+		
+		if (filelist != ""){
+			networkManager.httpSend({
+				path: '/api/ImageFileDelete.do',
+				data: {
+					'FILE_LIST': filelist
+				},
+				success: function(receivedData, setting) {
+					setDeleteProcessSP2();
+				}
+			});
+		} else {
+			setDeleteProcessSP2();
+		}
+	};
+	// 삭제 프로세스 02 - 디비 삭제
+	var setDeleteProcessSP2 = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "KD.set_H_T_UM_075_Delete",
+				"VER_SEQ": m_ver_seq
+			},
+			success: function(receivedData, setting) {
+				popupManager.instance("삭제되었습니다");
+				moveToBack();
+			}
+		});
+	}
+	
+	var checkValidation = function(part_no, part_nm, vend_cd, vend_nm, reason, reason_etc, reason_cont, hpt_emp, vend_emp){
+		if (window.Utils.trim(part_no) == "") {
+			popupManager.alert("품번을 검색/선택하세요", {title: '알림'});
+			return;
+		}
+		
+		if (window.Utils.trim(part_nm) == "") {
+			popupManager.alert("품번을 검색/선택하세요", {title: '알림'});
+			return;
+		}
+		
+		if (window.Utils.trim(vend_cd) == "") {
+			popupManager.alert("귀책처를 선택하세요", {title: '알림'});
+			return;
+		}
+		
+		if (window.Utils.trim(vend_nm) == "") {
+			popupManager.alert("귀책처 KEY IN을 입력하세요", {title: "알림"});
+			return;
+		}
+		
+		if (reason == "9"){
+			if (window.Utils.trim(reason_etc) == "") {
+				popupManager.alert("기타 적발사유룰 입력하세요", {title: "알림"});
+				return;
+			}
+		}
+		
+		if (window.Utils.trim(reason_cont) == "") {
+			popupManager.alert("적발내용을 입력하세요", {title: '알림'});
+			return;
+		}
+		
+		if (window.Utils.trim(hpt_emp) == "") {
+			popupManager.alert("HTS담당자를 입력하세요", {title: '알림'});
+			return;
+		}
+		
+		if (window.Utils.trim(vend_emp) == "") {
+			popupManager.alert("협력사담당자를 입력하세요", {title: '알림'});
+			return;
+		}
+		
+		return true;
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent,
+		setPartNo2Info: setPartNo2Info
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});
+function fnBarcodeCallback(data){
+	var barcode = decodeURIComponent(data.result);
+	var startIndex = barcode.indexOf(":P");
+	var endIndex = barcode.indexOf(":5Q");
+	var part_no = barcode.substring(startIndex+2, endIndex);
+	
+	$("#txtPART_NO").val(part_no);
+	page.setPartNo2Info();
+}

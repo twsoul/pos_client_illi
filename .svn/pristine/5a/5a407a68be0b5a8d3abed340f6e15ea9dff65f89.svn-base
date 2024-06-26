@@ -1,0 +1,263 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var ordr_no;
+	var kind_page;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		ordr_no = dataManager.param('ORDR_NO');
+		kind_page = dataManager.param('KIND_PAGE');
+		setInitKindList();
+		//getSearchList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnUpdate").on("click", setUpdate);
+		
+/*		var updatePop = $('#updatePop');
+		updatePop.click(function() {
+			$(".layerPop").removeClass("blind");
+			$("main").addClass("popActive");
+		});	*/
+		
+		$(document).on("click", "#updatePop", function(e){
+			$("#updatePop").removeClass("on");
+			$(".layerPop").removeClass("blind");
+			$("main").addClass("popActive");
+		});			
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		getSearchList();
+	}
+	
+	//용도 SELECT BOX Initialize
+	var setInitKindList = function(){
+		networkManager.httpSend({
+			path: '/api/CKDListSelect.do',
+			data: {
+				'QUERYID': "CKD.getCommonCode",
+				"LSC_CD": "OKID"
+			},
+			success: function(receivedData, setting) {
+				var tag = "<option value=\"\">선택하세요</option>";
+				$("#selType").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.CD + "'>" + rowData.NM + "</option>";
+				});
+				$("#selType").append(tag);
+				
+				getSearchList();
+			}
+		 });
+	}
+	
+	var getSearchList = function() {
+		networkManager.httpSend({
+			path: '/api/CKDListMultiSelect.do',
+			data: {
+				'QUERYIDS': "CKD.get_H_T_UM_084_List;CKD.get_H_T_UM_084_info",
+				"ORDRNO": ordr_no
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount0 == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					//직대여부에 따른 케이스번호 출력
+					var zpack= '';
+					$.each(receivedData.ListData0, function(index,rowData){
+						if(zpack == ''){
+							zpack= rowData.ZPACK;
+						}
+					});
+					
+					if(zpack == '' || zpack == undefined){
+						tag = $("#ListHeadTemplate").html();
+						var template = $("#ListTemplate").html();
+						$.each(receivedData.ListData0, function(index,rowData){
+							tag += template.replace(/\{\{PART_NO\}\}/gi, rowData.PART_NO)
+									.replace(/\{\{PART_NM\}\}/, rowData.PART_NM)
+									.replace(/\{\{DELI_EQ\}\}/, rowData.DELI_EQ)
+									.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+						});
+					}else{
+						tag = $("#ListHeadTemplate1").html();
+						var template = $("#ListTemplate1").html();
+						$.each(receivedData.ListData0, function(index,rowData){
+							tag += template.replace(/\{\{PART_NO\}\}/gi, rowData.PART_NO)
+									.replace(/\{\{PART_NM\}\}/, rowData.PART_NM)
+									.replace(/\{\{EXIDV\}\}/, rowData.EXIDV)
+									.replace(/\{\{DELI_EQ\}\}/, rowData.DELI_EQ)
+									.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+						});
+					}
+				}
+				$(".list_t_um15").html(tag);
+				
+				if (receivedData.ListCount1 > 0){
+					var rowData = receivedData.ListData1[0];
+					if (rowData != null){
+						var status= rowData.STATUS;
+						if(status != 'S' || kind_page == 'H_T_UM_081.html'){// 입고완료상태가 아닐때 용도등록 버튼 출력
+							$('#updatePop1').html('<button type="button" id="updatePop">용도등록</button>');
+						}
+						
+						var ord_kind = rowData.ORD_KIND;
+						var ord_eono = rowData.ORD_EONO;
+						var ord_his = rowData.ORD_HIS;
+						$("#selType").val(ord_kind);
+						$("#useTxt").text($("#selType option:selected").text());
+						$("#eoNoTxt").text(ord_eono);
+						$("#eoNoInput").val(ord_eono);
+						$("#modifTxt").text(ord_his);
+						$("#modifInput").val(ord_his);
+					}
+				}
+			}
+		});
+	}
+	
+	var setValidate = function(ord_kind, eoNoInput, modifInput) {
+		if (window.Utils.trim(ord_kind) == "") {
+			popupManager.alert("용도를 선택하세요", {
+				title: '알림'
+			}, function() {
+				$(".layerPop").removeClass("blind");
+				$("main").addClass("popActive");
+			});
+			return;
+		}	
+		
+		if(eoNoInput.length > 20){
+			popupManager.alert("EO NO가 20자리 초과 입력되었습니다.(현재" + eoNoInput.length + "자리)", {
+				title: '알림'
+			}, function() {
+				$(".layerPop").removeClass("blind");
+				$("main").addClass("popActive");
+				$("#eoNoInput").focus();
+			});
+			return;
+		}
+		
+		if(modifInput.length > 50){
+			popupManager.alert("변경내역이 50자리 초과 입력되었습니다.(현재" + modifInput.length + "자리)", {
+				title: '알림'
+			}, function() {
+				$(".layerPop").removeClass("blind");
+				$("main").addClass("popActive");
+				$("#modifInput").focus();
+			});
+			return;
+		}
+		
+/*		if (window.Utils.trim(eoNoInput) == "") {
+			popupManager.alert("EO NO을 입력하세요", {
+				title: '알림'
+			}, function() {
+				$(".layerPop").removeClass("blind");
+				$("main").addClass("popActive");
+				$("#eoNoInput").val("");
+				$("#eoNoInput").focus();
+			});
+			return;
+		}
+		
+		if (window.Utils.trim(modifInput) == "") {
+			popupManager.alert("변경 내역을 입력하세요", {
+				title: '알림'
+			}, function() {
+				$(".layerPop").removeClass("blind");
+				$("main").addClass("popActive");
+				$("#modifInput").val("");
+				$("#modifInput").focus();
+			});
+			return;
+		}*/
+		return true;
+	}	
+	
+	var setUpdate = function() {
+		var ord_kind, eoNoInput, modifInput;
+		ord_kind = $("#selType > option:selected").val();
+		eoNoInput = $("#eoNoInput").val();
+		modifInput = $("#modifInput").val();
+		
+		ord_eono = $("#eoNoTxt").val();
+		ord_his = $("#modifTxt").val();
+		
+		if (!setValidate(ord_kind, eoNoInput, modifInput)) {
+		 	return;
+		 }		
+			
+		networkManager.httpSend({
+			path: '/api/CKDListSelect.do',
+			data: {
+				'QUERYID': "CKD.get_H_T_UM_084_Update",
+				"ORDR_NO": ordr_no,
+				"ORD_KIND": ord_kind,
+				"ORD_EONO": eoNoInput,
+				"ORD_HIS": modifInput
+			},
+			success: function(receivedData, setting) {
+				popupManager.instance("등록되었습니다.", {showtime:"SHORT"});
+				//배차상태 인터페이스(납입문서용도)
+				networkManager.httpSend({
+					path: '/api/carInfo.do',
+					data: {
+						'ordr_no':ordr_no,
+						'udt_stat':'3',
+						'status':'',
+						'statcd':'',
+						'ordkind':ord_kind,
+						'statvend':'',
+						'ordeono':eoNoInput,
+						'drdhis':modifInput,
+						'zdrivnm':'',
+						'zdrivtel':'',
+						'zcarn':'',
+						'statsns':'',
+						'cancel':'',
+						'event':'용도등록(get_H_T_UM_084_Update)'
+					},
+					success: function(receivedData, setting) {
+						//moveToBack();
+						getSearchList();
+					}
+				});
+			}
+		});
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

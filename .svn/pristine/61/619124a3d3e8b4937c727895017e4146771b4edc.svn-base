@@ -1,0 +1,286 @@
+/**
+ * Custom Image Upload Popup
+ */
+function ImageUploadPopup(opts){
+	var _templateEmptyPop	= "<section class=\"popup_area upImage blind\" id=\"{{ID}}\">"
+								+ "<div class=\"container\">"
+									+ "<div class=\"pop_cont\">"
+										+ "<span class=\"btn_popClose\" id=\"{{ID}}_popClose\"><img src=\"../images/btn_del.png\" alt=\"창 닫기\"></span>"
+										+ "<p class=\"pop_cont_head\"><span>이미지 등록</span></p>"
+										+ "<div class=\"apArea_image\">"
+											+ "<p class=\"comment_for\" id=\"{{ID}}_comment\">이미지를 업로드 해주세요.</p>"
+											+ "<span id=\"{{ID}}_imgArea\"></span>"
+										+ "</div>"
+										+ "<div class=\"btn_area\">"
+											+ "<p class=\"classicalBtn adjColor nonClose\"><button type=\"button\" id=\"{{ID}}_btnCamera\">카메라</button></p>"
+											+ "<!--<p class=\"classicalBtn adjColor nonClose\"><button type=\"button\" id=\"{{ID}}_btnGallery\">갤러리</button></p>-->"
+											+ "<p class=\"classicalBtn\"><button type=\"button\" id=\"{{ID}}_btnClose\">등록</button></p>"
+										+ "</div>"
+									+ "</div>"
+								+ "</div>"
+							+ "</section>";
+	var _templateImagePop	= "<section class=\"popup_area upImage blind\" id=\"{{ID}}\">"
+								+ "<div class=\"container\">"
+									+ "<div class=\"pop_cont\">"
+										+ "<span class=\"btn_popClose\" id=\"{{ID}}_popClose\"><img src=\"../images/btn_del.png\" alt=\"창 닫기\"></span>"
+										+ "<p class=\"pop_cont_head\"><span class=\"haveItem\">이미지 삭제</span></p>"
+										+ "<div class=\"apArea_image\">"
+											+ "<span><img src=\"{{IMAGE_PATH_NAME}}\" alt=\"{{IMAGE_ALT}}\" class=\"rotateRight{{ROTATE}}\"></span>"
+										+ "</div>"
+										+ "<div class=\"btn_area\">"
+											+ "<p class=\"classicalBtn adjColor haveItem nonClose\"><button type=\"button\" id=\"{{ID}}_btnDelete\">삭제</button></p>"
+											+ "<p class=\"classicalBtn haveItem\"><button type=\"button\" id=\"{{ID}}_btnClose\">닫기</button></p>"
+										+ "</div>"
+									+ "</div>"
+								+ "</div>"
+							+ "</section>";
+	var thisObj = this;
+	var _today = new Date();
+	_id = opts.id == undefined ? "uploadPop" + today.getMilliseconds() : opts.id;
+	var _objThumbArea = opts.objAreaID;
+	var _imageFileName = opts.imageFileName;
+	var _imagePathName = opts.imagePathName;
+	var _isDelete = false;
+	var _isChanged = false;
+	var _delImageFileName = "";
+	var goBottom = opts.goBottom == undefined ? true : opts.goBottom;
+	
+	this.setImage = function(imageFileName, imagePathName){
+		_imageFileName = imageFileName;
+		_imagePathName = imagePathName;
+	};
+	
+	this.getImagePathName = function(){
+		return _imagePathName;
+	};
+	this.getImageFileName = function(){
+		return _imageFileName;
+	};
+	this.getDelImageFileName = function(){
+		return _delImageFileName;
+	};
+	this.getIsDelete = function() {
+		return _isDelete;
+	};
+	this.getIsChanged = function() {
+		return _isChanged;
+	};
+	
+	this.init = function(imageFileName, imagePathName){
+		if (imageFileName != undefined){
+			_imageFileName = imageFileName;
+			_imagePathName = imagePathName;
+		}
+		
+		$("#" + _objThumbArea).on("click", function(){
+			thisObj.show();
+		});
+		thisObj.setThumbnail();
+	};
+	
+	this.setThumbnail = function(){
+		var tag = "";
+		var modeClass = "";
+		var removeClass = "";
+		if (_imagePathName != undefined && _imagePathName != null){
+			modeClass = "haveImg";
+			removeClass = "nonImg";
+			var mInfo = M.media.get(_imagePathName);
+			var rotate = mInfo.orientation;
+			tag = "<span class=\"rotateRight" + rotate + "\"><img src=\"" + thisObj.changeURL(_imagePathName) + "\" alt=\"" + _imageFileName + "\"></span>";
+		} else {
+			modeClass = "nonImg";
+			removeClass = "haveImg";
+			tag = "<span><img src=\"../images/nonImg.jpg\" alt=\"이미지를 업로드하세요\"></span>";
+		}
+		$("#" + _objThumbArea).html(tag).addClass(modeClass).removeClass(removeClass);
+	};
+	
+	this.show = function() {
+		var tag = "";
+		if (_imagePathName != undefined && _imagePathName != null){
+			var mInfo = M.media.get(_imagePathName);
+			var rotate = mInfo.orientation;
+			tag = _templateImagePop.replace(/\{\{\ID\}\}/gi, _id)
+					.replace(/\{\{\IMAGE_PATH_NAME\}\}/, thisObj.changeURL(_imagePathName))
+					.replace(/\{\{\IMAGE_ALT\}\}/, _imageFileName)
+					.replace(/\{\{\ROTATE\}\}/, rotate);
+			$("body").append(tag);
+			$("#" + _id).on("click", "#"+_id + "_btnDelete", function(){
+				//삭제
+				thisObj.fileDelete();
+			});
+			$("#" + _id).on("click", "#"+_id + "_btnClose", function(){
+				//확인 동작
+				thisObj.close();
+			});
+			
+		} else {
+			tag = _templateEmptyPop.replace(/\{\{\ID\}\}/gi, _id);
+			$("body").append(tag);
+			$("#" + _id).on("click", "#"+_id + "_btnCamera", function(){
+				//카메라 동작
+				thisObj.getCamPicture();
+			});
+			$("#" + _id).on("click", "#"+_id + "_btnGallery", function(){
+				//갤러리 동작
+				thisObj.getGalleryPicture();
+			});
+			$("#" + _id).on("click", "#"+_id + "_btnClose", function(){
+				//등록
+				thisObj.setRegist();
+			});
+		}
+		$("#" + _id).on("click", "#"+_id + "_popClose", function(){
+			thisObj.close();
+		});
+		$("#" + _id).removeClass("blind");
+		$("main").addClass("popActive");
+	};
+	
+	this.close = function() {
+		$("main").removeClass("popActive");
+		$("#" + _id).remove();
+		if (goBottom)
+			$(window).scrollTop($(window).height());
+	};
+	
+	this.fileDelete = function() {
+		_delImageFileName = _imageFileName;
+		_isDelete = true;
+		_imageFileName = null;
+		_imagePathName = null;
+		thisObj.close();
+		thisObj.setThumbnail();
+	};
+	
+	this.getCamPicture = function() {
+		console.log("btnTakePicture ");
+		var result = M.execute("exWNTakePicture");
+		console.log(result);
+		//M.media.camera({
+		//	path: "/PHOTOa",
+		//	mediaType: "PHOTO",
+		//	allowEdit: false,
+		//	callback: function(status, result, option) {
+		//		if (status == 'SUCCESS') {
+		//			var filename = result.name;
+		//			var filepath = result.path;
+		//			var mInfo = M.media.get(filepath);
+		//			var rotate = mInfo.orientation;
+		//			
+		//			$("#" + _id + "_comment").addClass("blind");
+		//			$("#" + _id + "_imgArea").html("<img src=\"" + filepath + "\" alt=\"" + filename + "\" class=\"rotateRight" + rotate + "\">");
+		//			
+					// resize
+					/*M.media.optimize({
+						'source': filepath,
+						'destination': filepath,
+						'overwrite': true,
+						'dimension': { width:800 },
+						'callback': function( result ) {
+							if ( result.error ) {
+								popupManager.instance('사진 촬영에 오류가 발생하였습니다.');
+								return;
+							}
+							alert("패스~");
+							$("#" + _id + "_comment").addClass("blind");
+							$("#" + _id + "_imgArea").html("<img src=\"" + filepath + "\" alt=\"" + filename + "\" class=\"rotateRight" + rotate + "\">");
+						}
+					});*/
+		//		} else {
+		//			popupManager.instance('사진 촬영이 취소 되었습니다...');
+		//		}
+		//	}
+		//});
+	};
+	
+	this.getGalleryPicture = function() {
+		M.media.picker({
+			mode: "SINGLE",
+			media: "PHOTO",
+			callback: function( status, result ) {
+				if (status == "SUCCESS"){
+					var filename = result.name;
+					var filepath = result.path;
+					var mInfo = M.media.get(filepath);
+					var rotate = mInfo.orientation;
+					// resize
+					$("#" + _id + "_comment").addClass("blind");
+					$("#" + _id + "_imgArea").html("<img src=\"" + filepath + "\" alt=\"" + filename + "\" class=\"rotateRight" + rotate + "\">");
+					/*M.media.optimize({
+						'source': filepath,
+						'destination': filepath,
+						'overwrite': true,
+						'dimension': { width:800 },
+						'callback': function( result ) {
+							if ( result.error ) {
+								popupManager.instance('사진 촬영에 오류가 발생하였습니다.');
+								return;
+							}
+							$("#" + _id + "_comment").addClass("blind");
+							$("#" + _id + "_imgArea").html("<img src=\"" + filepath + "\" alt=\"" + filename + "\" class=\"rotateRight" + rotate + "\">");
+						}
+					});*/
+				} else {
+					popupManager.instance('이미지 선택이 취소 되었습니다.');
+				}
+				
+			}
+		});
+	};
+	
+	this.setRegist = function() {
+		var obj = $("#" + _id + "_imgArea > img")
+		var imagePathName = obj.attr("src");
+		var imageFileName = obj.attr("alt");
+		if (imagePathName != undefined){
+			_imageFileName = imageFileName;
+			_imagePathName = imagePathName;
+			_isChanged = true;
+			this.close();
+			this.setThumbnail();
+		} else {
+			popupManager.alert("이미지를 선택해 주세요.", {title:"알림"});
+		}
+	};
+	
+	this.changeURL = function(fullpath) {
+		if (fullpath.indexOf("http://") > -1 || fullpath.indexOf("https://") > -1) {
+			return fullpath.replace(".jpg","");
+		} else {
+			return fullpath;
+		}
+	};
+}
+function onTakePictureComplete(imageFilePath){
+	console.log("[image]onTakePictureComplete(imageFilePath)");
+	console.log("[image]imageFilePath = " + imageFilePath);
+	var filename = imageFilePath.replace("file:/storage/emulated/0/Android/data/com.hpt.tms/files/Pictures/","");
+	var filepath = imageFilePath.replace("file:", "");
+	var mInfo = M.media.get(filepath);
+	var rotate = mInfo.orientation;
+	
+	$("#" + _id + "_comment").addClass("blind");
+	$("#" + _id + "_imgArea").html("<img src=\"" + filepath + "\" alt=\"" + filename + "\" class=\"rotateRight" + rotate + "\">");
+	
+	// resize
+	/*M.media.optimize({
+		'source': filepath,
+		'destination': filepath,
+		'overwrite': true,
+		'dimension': { width:800 },
+		'callback': function( result ) {
+			if ( result.error ) {
+				popupManager.instance('사진 촬영에 오류가 발생하였습니다.');
+				return;
+			}
+			alert("패스~");
+			$("#" + _id + "_comment").addClass("blind");
+			$("#" + _id + "_imgArea").html("<img src=\"" + filepath + "\" alt=\"" + filename + "\" class=\"rotateRight" + rotate + "\">");
+		}
+	});*/
+};
+function onTakePictureCancel(){
+	popupManager.instance('사진 촬영이 취소 되었습니다...');
+};

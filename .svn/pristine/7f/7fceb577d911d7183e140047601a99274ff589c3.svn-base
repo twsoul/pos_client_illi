@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>예방점검</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000011"></h2><!--예방점검-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="swipeScreen adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand" id="divSearchArea">
+							<div class="opt_date clearfix"><!--점검일자-->
+								<p class="lineHead moreArea2" data-lng="LB.0000000128" style="width:40%;"></p><p style="text-align:end;width:60%;"><span><input type="text" id="date_st" readonly></span><span class="blind"><input type="text" id="date_ed" readonly></span></p>
+							</div>
+							<div class="opt_input blind"><!--설비-->
+								<p class="lineHead moreArea2" data-lng="LB.0000000130"></p><p class="inputBox"><span><input type="text" id="inputScan" onClick="this.select();"><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:2px;">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:60%;">
+										<col style="width:auto;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000265"></span></th><!--조회기간-->
+											<th><span data-lng="LB.0000000135"></span></th><!--작업자-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtDATE"></span></td>
+											<td><span id="txtNM"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:60%;">
+										<col style="width:auto;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000136"></span></th><!--부서-->
+											<th><span data-lng="LB.0000000028"></span></th><!--작업장-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtDEPT"></span></td>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selARBPL" id="selARBPL"></select></p></td>
+											<!--<td><span id="txtARBPL"></span></td>-->
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000138"></span></th><!--전체-->
+											<th><span data-lng="LB.0000000139"></span></th><!--완료-->
+											<th><span data-lng="LB.0000000140"></span></th><!--미완료-->
+											<th><span data-lng="LB.0000000141"></span></th><!--전송-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtSUM">0</span></td>
+											<td><span id="txtDONE">0</span></td>
+											<td><span style="color:red;" id="txtUNDONE">0</span></td>
+											<td><span id="txtTRAN">0</span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand" id="divSearchAreaExpander"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+
+			<header class="page_header tabmenu blind">
+				<div class="container"><!--전체--><!--미완료--><!--완료-->
+					<h5 class="on" data-lng="LB.0000000138"></h5><h5 data-lng="LB.0000000140"></h5><h5 data-lng="LB.0000000139"></h5>
+				</div>
+			</header>
+			<div class="contents_inner tripleTab blind">
+				<!-- H_T_UM040 -->
+				<section class="form1">
+					<div class="container">
+						<article class="tableList tapPosible">
+							<div class="list_inner list_bj_040_1 adjFix">
+								<ul class="updown_list" id="list_bj_040_1">
+								</ul>
+							</div>
+						</article>
+					</div>
+				</section>
+				<section class="form2">
+					<div class="container">
+						<article class="tableList tapPosible">
+							<div class="list_inner list_bj_040_2 adjFix">
+								<ul class="updown_list" id="list_bj_040_2">
+								</ul>
+							</div>
+						</article>
+					</div>
+				</section>
+				<section class="form3">
+					<div class="container">
+						<article class="tableList tapPosible">
+							<div class="list_inner list_bj_040_2 adjFix">
+								<ul class="updown_list" id="list_bj_040_3">
+								</ul>
+							</div>
+						</article>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor"><button type="button" id="btnSearch" data-lng="LB.0000000144"></button></p><!--조회-->
+			<p class="classicalBtn adjColor btn_ins blind"><button type="button" id="btnSend" data-lng="LB.0000000141"></button></p><!--전송-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000176">기간</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000147">설비 바코드가 정상적으로 인식되지 못했습니다. 다시 스캔 해주세요.</span>
+<span class="blind" data-lng="MSG.0000000148">ERP로 부터 점검단위 정보를 수신하지 못했습니다.</span>
+<span class="blind" data-lng="MSG.0000000151">해당 설비의 예방점검 항목이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000152">해당 점검일자의 예방점검 항목이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000159">예방점검 결과를 ERP로 전송하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000160">예방점검 결과가 ERP에 전송되지 않았습니다. 재전송하세요</span>
+<span class="blind" data-lng="MSG.0000000196">데이터 베이스 생성에 실패하였습니다, 프로그램 종료합니다</span>
+</body>
+<script type="text/template" id="ListTemplateLi" class="none">
+	<li data-instance-class="accordion-handler" onclick="page.accordionEvent(this);" data-date="{{DATE}}"><span class="DATEN">{{DATE}} ( {{COUNT}} )</span>
+		<ul class="papers_list animated" data-instance-class="accordion-content" style="height:0">
+			{{CONTENT}}
+		</ul>
+	</li>
+</script>
+<script type="text/template" id="ListTemplateAll" class="none">
+	<li>
+		<span>
+			<div class="tableCont {{MLINK}}" data-datel="{{DATEL}}" data-index="{{INDEX}}" data-id="{{EQUNR}}" data-tplnr="{{PART_LOC}}">
+				<div class="multiple_cate">
+					<p class="harf_cell">
+						<span class="DATE">{{DATE}}</span>
+						<span class="EQ_NO">{{EQ_NO}}</span>
+						<span class="STATUS">{{STATUS}}</span>
+					</p>
+					<p class="KTEXT">{{CHECK_LIST}}</p>
+					<p class="TPLNR">{{PART_LOC}}</p>
+					<p class="EQKTX">{{PART_NM}}</p>
+				</div>
+			</div>
+		</span>
+	</li>
+</script>
+<script type="text/template" id="ListTemplate" class="none">
+	<li>
+		<span>
+			<div class="tableCont {{MLINK}}" data-datel="{{DATEL}}">
+				<div class="multiple_cate">
+					<p class="harf_cell">
+						<span class="DATE">{{DATE}}</span>
+						<span class="STATUS blind">{{STATUS}}</span>
+						<span class="EQ_NO">{{EQ_NO}}</span>
+					</p>
+					<p class="KTEXT">{{CHECK_LIST}}</p>
+					<p class="TPLNR">{{PART_LOC}}</p>
+					<p class="EQKTX">{{PART_NM}}</p>
+				</div>
+			</div>
+		</span>
+	</li>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customSelectPopup.js"></script>
+<script type="text/javascript" src="../../js/ui/BJ/BJ_040.js"></script>
+</html>

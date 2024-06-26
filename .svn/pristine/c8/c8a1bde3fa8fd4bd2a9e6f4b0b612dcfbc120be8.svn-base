@@ -1,0 +1,152 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_PACK_NO, m_PLANT, m_LOC, m_ORDR_NO;
+	var pageNo = 1;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_PACK_NO = dataManager.param('packNo');
+		m_PLANT = dataManager.param("plantCD");
+		m_LOC = dataManager.param("locCD");
+		m_ORDR_NO = dataManager.param("ordrCD");
+		getSelectList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnPrev").on("click", moveToPrevPage);
+		$("#btnNext").on("click", moveToNextPage);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}
+	
+	// 리스트 정보
+	var getSelectList = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "GCS.get_H_T_UM_028_List",
+				"PACK_ORDR_NO": m_PACK_NO,
+				"PLANT": m_PLANT,
+				"LOC": m_LOC,
+				"ORDR_NO" : m_ORDR_NO,
+				"SEQ":pageNo
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0 && pageNo == 1){
+					tag = $("#ListNoDataTemplate").html();
+					$("#frmBarcode").html("");
+					$(".list_t_um28").html(tag);
+				} else if (receivedData.ListCount == 0) {
+					pageNo -= 1;
+					popupManager.alert("마지막 페이지 입니다.", {title: '알림'});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						if (index == 0) {
+							$("#lblPartCompNM").html(rowData.VEND_NM);
+							$("#lblPlant").html(rowData.PLANT_NM);
+							$("#lblDocNumber").html(rowData.ORDR_NO);
+							stat_cd = rowData.STAT_CD;
+							ordr_no = rowData.ORDR_NO;
+						}
+							
+						tag += template.replace(/\{\{PART_NO\}\}/gi, rowData.PART_NO)
+								.replace(/\{\{PART_NM\}\}/, rowData.PART_NM)
+								.replace(/\{\{DELI_EQ\}\}/, rowData.DELI_EQ)
+								.replace(/\{\{RCV_QTY\}\}/, rowData.RCV_QTY)
+								.replace(/\{\{SEQ\}\}/, index+1)
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+					//if (stat_cd != "D"){
+						setBarcode(ordr_no);
+					//}
+					$(".list_t_um28").html(tag);
+					setListRowEvent();
+				}
+			}
+		});
+	}
+	
+	// 리스트에 클릭 이벤트 등록  
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("div").removeClass("on");
+			}
+		})
+	};
+	
+	// 바코드 출력
+	var setBarcode = function(value) {
+        var btype = "code128";
+        var renderer = "css";
+		var quietZone = false;
+        var settings = {
+          output:renderer,
+		  bgColor: "#FFFFFF",
+          color: "#000000",
+		  barWidth : "2",
+          barHeight: "60",
+          moduleSize: "5",
+          addQuietZone: "0"
+        };
+		$("#barcodeArea").html("").show().barcode(value, btype, settings);
+	};
+	
+	// 이전 데이터 호출
+	var moveToPrevPage = function() {
+		if (pageNo == 1) {
+			popupManager.alert("첫번째 페이지 입니다.", {title: '알림'});
+		} else {
+			pageNo -= 1;
+			getSelectList();
+		}
+	};
+	
+	// 다음 데이터 호출
+	var moveToNextPage = function() {
+		pageNo += 1;
+		getSelectList();
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\JavaDev\\workspace3.0\\H_able_Client\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ko\\values-ko.xml",
+            "map": [
+                {
+                    "source": "D:\\JavaDev\\workspace3.0\\H_able_Client\\res\\values-ko\\plugin_location_strings.xml",
+                    "from": {
+                        "startLines": "2,8,3,5,4,7,6",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,371,105,191,151,292,230",
+                        "endColumns": "49,72,45,38,39,78,61",
+                        "endOffsets": "100,439,146,225,186,366,287"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,105,178,224,263,303,382",
+                        "endColumns": "49,72,45,38,39,78,61",
+                        "endOffsets": "100,173,219,258,298,377,439"
+                    }
+                }
+            ]
+        }
+    ]
+}

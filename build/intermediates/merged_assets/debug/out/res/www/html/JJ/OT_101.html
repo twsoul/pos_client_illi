@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>출고지시(자동창고)</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000087"></h2><!--출고지시(자동창고)-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:20%;">
+										<col style="width:30%;">
+										<col style="width:25%;">
+										<col style="width:25%;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+											<td colspan="3"><span id="txtPLANT_CD"></span></td>
+										</tr>
+										<tr>
+											<th><span data-lng="LB.0000000038"></span></th><!--품번-->
+											<td colspan="3"><span id="txtPART_NO"></span></td>
+										</tr>
+										<tr>
+											<th><span data-lng="LB.0000000040"></span></th><!--품명-->
+											<td colspan="3"><span id="txtPART_NM"></span></td>
+										</tr>
+										<tr>
+											<th><span data-lng="LB.0000000189"></span></th><!--적입수량-->
+											<td><span id="txtINV_QTY"></span></td>
+											<th rowspan="2"><span data-lng="LB.0000000190"></span></th><!--박스수량-->
+											<td rowspan="2"><span id="txtSCAN_BOX_CNT"></span></td>
+										</tr>
+										<tr>
+											<th><span data-lng="LB.0000000191"></span></th><!--보유재고-->
+											<td><span id="txtTOT_QTY"></span></td>
+											<th class="blind" style="border:none;"></th>
+											<td class="blind" style="border:none;"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="list_area adjForm btn_area fixedArea2" style="margin-bottom:3rem;">
+			<table class="table_area">
+				<thead>
+					<tr>
+						<th colspan="2" style="border-top:1px solid #999;"><span data-lng="LB.0000000192" style="font-size:3rem;padding:1rem 0;"></span></th><!--출고지시-->
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><span data-lng="LB.0000000193" style="font-size:3rem;padding:1rem 0;"></span></td><!--출고박스수량-->
+						<td class="unsearched"><span id="txtOTBox_cnt" style="font-size:3rem;padding:1rem 0;">0</span></td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table_area plsBtn">
+				<tbody>
+					<tr>
+						<td><p>+1</p></td>
+						<td><p>+3</p></td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table_area plsBtn">
+				<tbody>
+					<tr>
+						<td><p>+5</p></td>
+						<td><p>+10</p></td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table_area minusBtn">
+				<tbody>
+					<tr>
+						<td><p>-1</p></td>
+						<td><p>-3</p></td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table_area minusBtn">
+				<tbody>
+					<tr>
+						<td><p>-5</p></td>
+						<td><p>-10</p></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p><!--초기화-->
+			<p class="classicalBtn adjColor"><button type="button" id="btnSave" data-lng="LB.0000000127"></button></p><!--저장-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000259">출고 BOX 수량이 0 이상이어야 합니다</span>
+<span class="blind" data-lng="MSG.0000000260">출고 BOX 수량이 재고BOX수량보다 큽니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+</body>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/OT_101.js"></script>
+</html>

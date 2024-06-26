@@ -1,0 +1,86 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+		getCarList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		$("#selCar").on("change", function(){
+			var car_n = $("#selCar > option:selected").val();
+			if (car_n != ""){
+				dataManager.storage("CAR_N", car_n);
+				screenManager.moveToPage('/www/html/H_D_UM_002.html', { action: 'CLEAR_TOP' });
+			}
+		});
+		
+		$(".onSelect").on("click", function(){
+			$(this).siblings("ul").css({
+				"height" : "auto",
+				"padding" : "1.82vmax 2.396vmax"
+			});
+		});
+	};
+	
+	// 차량목록 조회
+	var getCarList = function() {
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_car_number",
+				"VEND_CD": userManager.getVEND_CD(),
+				"DRIV_ID": userManager.getDRIV_ID()
+			},
+			success: function(receivedData, setting) {
+				$("ul").html("");
+				var tag = "";
+				var template = $("#ListTemplate").html();
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += template.replace(/\{\{CAR_N\}\}/gi, rowData.CAR_N);
+				});
+				$("ul").append(tag);
+				$("li").on("click", moveToPage);
+			}
+		});
+	}
+	
+	var moveToPage = function() {
+		var car_n = $(this).data("value");
+		if (car_n != ""){
+			dataManager.storage("CAR_N", car_n);
+			screenManager.moveToPage('/www/html/H_D_UM_002.html', { action: 'CLEAR_TOP' });
+		}
+	}
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

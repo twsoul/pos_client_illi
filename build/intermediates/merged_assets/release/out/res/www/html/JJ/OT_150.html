@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>DOCK IN/OUT</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000595"></h2><!--DOCK IN/OUT-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area adjForm">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+											<th><span data-lng="LB.0000000031"></span></th><!--저장위치-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selPLANT" id="selPLANT"></select></p></td>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selLOCTP" id="selLOCTP"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="opt_input"><!--METRO-->
+								<p class="lineHead" data-lng="LB.0000000710"></p><p class="adjLayout"><span><input type="text" id="txtMETRO" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--YARD-->
+								<p class="lineHead" data-lng="LB.0000000711"></p><p class="adjLayout"><span><input type="text" id="txtYARD" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--QTY-->
+								<p class="lineHead" data-lng="LB.0000000712"></p><p class="adjLayout"><span><input type="text" id="txtQTY" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--SPEC-->
+								<p class="lineHead" data-lng="LB.0000000713"></p><p class="adjLayout"><span><input type="text" id="txtSPEC" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--REMARK-->
+								<p class="lineHead" data-lng="LB.0000000714"></p><p class="adjLayout"><span><input type="text" id="txtREMARK" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--STATUS-->
+								<p class="lineHead" data-lng="LB.0000000715"></p><p class="adjLayout"><span><input type="text" id="txtSTATUS" readonly></span></p>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p><!--초기화-->
+			<p class="classicalBtn adjColor"><button type="button" id="btnSave" data-lng="LB.0000000709"></button></p><!--OUT-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오.</span>
+<span class="blind" data-lng="MSG.0000000117">저장위치를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000510">이미 스캔하셨습니다</span>
+<span class="blind" data-lng="MSG.0000000716">존재하지 않는 METRO NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000302">타 저장위치 바코드입니다</span>
+<span class="blind" data-lng="MSG.0000000717">사용할 수 없는 메트로입니다</span>
+<span class="blind" data-lng="MSG.0000000137">스캔하신 내역이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000373">저장에 실패하였습니다</span>
+</body>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/OT_150.js"></script>
+<script type="text/javascript" src="../../js/common/qrManager.js"></script>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>재고파악(결품시점관리)</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000092"></h2><!--재고파악(결품시점관리)-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner adjFix expand">
+							<div class="list_area">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:30%;">
+										<col style="width:35%;">
+										<col style="width:35%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+											<th><span data-lng="LB.0000000031"></span></th><!--저장위치-->
+											<th><span data-lng="LB.0000000195"></span></th><!--라인-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selPLANT" id="selPLANT"></select></p></td>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selLOCTP" id="selLOCTP"></select></p></td>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selLINE" id="selLINE"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area" style="margin-top:2px;">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:20%;">
+										<col style="width:40%;">
+										<col style="width:40%;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th><span data-lng="LB.0000000198"></span></th><!--스캔유무-->
+											<td style="border-right:none;">
+												<input type="radio" id="radioSCAN" name="radioSEL" value="SCAN" checked style="vertical-align:text-bottom;-webkit-appearance:radio;height:auto; width:auto;">
+												<label for="radioSCAN" style="font-size:2.5rem">스캔</label>
+											</td>
+											<td>
+												<input type="radio" id="radioMANUAL" name="radioSEL" value="MANUAL" style="vertical-align:text-bottom;-webkit-appearance:radio;height:auto;width:auto;">
+												<label for="radioMANUAL" style="font-size:2.5rem">매뉴얼</label>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:20%;">
+										<col style="width:80%;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th><span data-lng="LB.0000000038"></span></th><!--품번-->
+											<td><span><input type="text" id="txtPART_CD" readonly onClick="this.select();"></span></td>
+										</tr>
+										<tr>
+											<th><span data-lng="LB.0000000110"></span></th><!--업체명-->
+											<td class="deepCell"><p class="FoldselectBox"><select name="selVENDOR" id="selVENDOR" tabindex="-1"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000199"></span></th><!--입하재고-->
+											<th><span data-lng="LB.0000000200"></span></th><!--창고재고-->
+											<th><span data-lng="LB.0000000201"></span></th><!--라인재고-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span class="unsearched"><input style="text-align:center;" type="number" id="ORG_BAR_QTY" min="0" max="99999" maxlength="5" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" onchange="page.inputEvent(this);" onkeyup="page.inputEvent(this);" onClick="this.select();" oninput="window.Utils.maxLengthCheck(this);event.target.value = event.target.value.replace(/[^0-9]*/g,'');" value="0"  tabindex="-1"></span></td>
+											<td><span class="unsearched"><input style="text-align:center;" type="number" id="BAR_QTY" min="0" max="99999" maxlength="5" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" onchange="page.inputEvent(this);" onkeyup="page.inputEvent(this);" onClick="this.select();" oninput="window.Utils.maxLengthCheck(this);event.target.value = event.target.value.replace(/[^0-9]*/g,'');" value="0"  tabindex="-1"></span></td>
+											<td><span class="unsearched"><input style="text-align:center;" type="number" id="LINE_QTY" min="0" max="99999" maxlength="5" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" onchange="page.inputEvent(this);" onkeyup="page.inputEvent(this);" onClick="this.select();" oninput="window.Utils.maxLengthCheck(this);event.target.value = event.target.value.replace(/[^0-9]*/g,'');" value="0"  tabindex="-1"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:33.3333%;">
+										<col style="width:33.3333%;">
+										<col style="width:33.3333%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000202"></span></th><!--공정-->
+											<th><span data-lng="LB.0000000492"></span></th><!--기종-->
+											<th><span data-lng="LB.0000000203"></span></th><!--U/S-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selPROC" id="selPROC" tabindex="-1"></select></p></td>
+											<td align="center" class="unsearched"><span><input style="text-align:center;" type="text" id="TM_TYPE" maxlength="12" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" tabindex="-1"></span></td>
+											<td align="center" class="unsearched"><span><input style="text-align:center;" type="number" min="0" maxlength="12" id="USE_QTY" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" onchange="page.inputEvent(this);" onkeyup="page.inputEvent(this);" onClick="this.select();" oninput="window.Utils.maxLengthCheck(this);event.target.value = event.target.value.replace(/[^0-9]*/g,'');" value="0" tabindex="-1"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:50%;">
+										<col style="width:50%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000204"></span></th><!--파악시점 T/M NO-->
+											<th><span data-lng="LB.0000000205"></span></th><!--계획차수-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td align="center"><span class="unsearched"><input style="text-align:center;" type="text" id="TM_SEQ" maxlength="12" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" tabindex="-1"></span></td>
+											<td align="center"><span class="unsearched"><input style="text-align:center;" type="number" id="PLAN_SEQ" maxlength="2" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" onchange="page.inputEvent(this);" onkeyup="page.inputEvent(this);" onClick="this.select();" oninput="window.Utils.maxLengthCheck(this);event.target.value = event.target.value.replace(/[^0-9]*/g,'');" tabindex="-1"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:50%;">
+										<col style="width:50%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000206"></span></th><!--과부족-->
+											<th><span data-lng="LB.0000000207"></span></th><!--결품시점 T/M NO-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td align="center"><span class="unsearched"><input style="text-align:center;" type="number" id="OVER_QTY" min="0" max="99999" maxlength="5" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" onchange="page.inputEvent(this);" onkeyup="page.inputEvent(this);" onClick="this.select();" oninput="window.Utils.maxLengthCheck(this);event.target.value = event.target.value.replace(/[^0-9]*/g,'');" value="0" tabindex="-1"></span></td>
+											<td align="center"><span class="unsearched"><input style="text-align:center;" type="text" id="SHORT_POINT" maxlength="20" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" tabindex="-1"></span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p><!--초기화-->
+			<p class="classicalBtn adjColor"><button type="button" id="btnSave" data-lng="LB.0000000127"></button></p><!--저장-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000117">저장위치를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000348">매뉴얼 선택 시 스캔 할 수 없습니다</span>
+<span class="blind" data-lng="MSG.0000000494">현재 플랜트에 존재하는 품번이 아닙니다</span>
+<span class="blind" data-lng="MSG.0000000279">라인 정보가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000137">스캔하신 내역이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000349">라인 정보가 일치하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000504">라인정보를 입력해야 저장이 가능합니다</span>
+<span class="blind" data-lng="MSG.0000000332">공정을 먼저 선택해 주십시오</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000373">저장에 실패하였습니다</span>
+<span class="blind" data-lng="MSG.0000000493">입력값을 확인해주십시오</span>
+<!--qrManagerLangPack-->
+<span class="blind" data-lng="MSG.0000000226">올바르지 않은 바코드 구성입니다</span>
+<span class="blind" data-lng="MSG.0000000227">바코드에 BOX NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000228">바코드에 PART NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000229">바코드에 BOX 수량이 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000230">바코드에 업체코드가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000231">바코드에 LOT NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000232">바코드에 BOX Sequence가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000233">바코드에 출력유형이 존재하지 않습니다</span>
+</body>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/ST_010.js"></script>
+<script type="text/javascript" src="../../js/common/qrManager.js"></script>
+</html>

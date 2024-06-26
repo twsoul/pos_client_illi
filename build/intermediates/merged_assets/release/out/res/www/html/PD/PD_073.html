@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>창고출고</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000417"></h2><!--창고출고-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="opt_input" style="margin-top:2px;"><!--플랜트-->
+								<p class="lineHead" data-lng="LB.0000000030"></p><p class="selectBox"><select name="selPLANT" id="selPLANT"></select></p>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--출하구분-->
+								<p class="lineHead" data-lng="LB.0000000520"></p><p class="selectBox"><select name="selGUBUN" id="selGUBUN"></select></p>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="opt_select2 doubleDep" style="margin-top:2px;"><!--출하일시-->
+								<p class="lineHead" data-lng="LB.0000000579"></p><p class="inputBox"><span><input type="date" id="txtDate"></span></p><p class="inputBox"><span><input type="time" id="txtTime" step="1"></span></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:2px;">
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span data-lng="LB.0000000427"></span></th><!--TM-->
+										<th><span data-lng="LB.0000000534"></span></th><!--전체선택-->
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td align="center"><span id="txtTMTAG">0</span></td>
+										<td style="text-align:-webkit-center;">
+											<div class="checkBox_list">
+													<span class="check_select">
+														<label>
+															<input id="chk_All" value="check" type="checkbox">
+															<span></span>
+														</label>
+													</span>
+											</div>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+
+			<section>
+				<div class="container">
+					<article class="tableList tapPosible">
+						<div class="list_inner list_pd_073" id="list_pd_073_head">
+							<div class="tableHead">
+								<div>
+									<p data-lng="LB.0000000426"></p><!--TM No-->
+								</div>
+								<div>
+									<p data-lng="LB.0000000038"></p><!--품번-->
+								</div>
+							</div>
+						</div>
+						<div class="list_inner list_pd_073 adjFix" id="list_pd_073">
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor" style="width:30%;"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p><!--초기화-->
+			<p class="classicalBtn adjColor" style="width:30%;"><button type="button" id="btnDel" data-lng="LB.0000000533"></button></p><!--삭제-->
+			<p class="classicalBtn adjColor" style="width:30%;"><button type="button" id="btnSave" data-lng="LB.0000000127"></button></p><!--저장-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000011">시스템 설정에 필요한 정보를 ERP로 부터 받아오지 못했습니다</span>
+<span class="blind" data-lng="MSG.0000000226">올바르지 않은 바코드 구성입니다</span>
+<span class="blind" data-lng="MSG.0000000432">TM_NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000454">보류 상태의 TM입니다</span>
+<span class="blind" data-lng="MSG.0000000488">이미 불출된 TM입니다</span>
+<span class="blind" data-lng="MSG.0000000450">이미 스캔한 TM입니다</span>
+<span class="blind" data-lng="MSG.0000000522">출하구분을 선택해 주십시오</span>
+<span class="blind" data-lng="MSG.0000000524">출하용도코드 : </span>
+<span class="blind" data-lng="MSG.0000000525">출하데이터확인</span>
+<span class="blind" data-lng="MSG.0000000523">보류된 TM이 포함되어 있으며, MES-출하관리 화면에서 보류해제 후 상태 변경이 가능합니다</span>
+<span class="blind" data-lng="MSG.0000000559">새로운 유형의 코드입니다. 기준정보 등록 후 스캔해주십시오</span>
+<span class="blind" data-lng="MSG.0000000137">스캔하신 내역이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000373">저장에 실패하였습니다</span>
+<span class="blind" data-lng="MSG.0000000580">출하일자를 선택해 주십시오</span>
+<span class="blind" data-lng="MSG.0000000581">출하시간을 선택해 주십시오</span>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont" onclick="page.clickEvent(this);" data-coperatecd="{{COPORATE_CD}}" data-vendorcd="{{VENDOR_CD}}" data-tmno="{{TM_NO}}" data-serialno="{{SERIAL_NO}}" data-saveloc="{{SAVE_LOC}}" data-partcd="{{PART_CD}}" data-holdflag="{{HOLD_FLAG}}">
+		<div>
+			<p class="TM_NO">{{TM_NO}}</p>
+		</div>
+		<div>
+			<p class="PART_CD">{{PART_CD}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/PD/PD_073.js"></script>
+</html>

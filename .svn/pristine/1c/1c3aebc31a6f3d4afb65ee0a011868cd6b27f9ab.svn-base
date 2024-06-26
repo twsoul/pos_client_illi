@@ -1,0 +1,81 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+		getSearchList();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#inputScan").on('keypress', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+               $("#txtINVOICE_NO").text($(this).val());
+               $("#txtINVOICE_NO").closest("td").removeClass("unsearched");
+               $(this).val("");
+               $(this).blur();
+            }
+        });
+	};
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+
+	};
+
+	// 메인 검색
+	var getSearchList = function(){
+	    var tag = "";
+	    var template = $("#ListTemplate").html();
+	    	tag += template.replace(/\{\{NUM\}\}/, "NUM1")
+	    	.replace(/\{\{PART_NO\}\}/, "GT700200702083015")
+	    	.replace(/\{\{PART_NM\}\}/, "기어웜드레서")
+	    	.replace(/\{\{QTY\}\}/, "20")
+	    	.replace(/\{\{IMSI\}\}/, "2")
+	    	.replace(/\{\{DIFF\}\}/, "-2")
+	    	.replace(/\{\{CNT\}\}/, "18")
+	    	.replace(/\{\{MLINK\}\}/, "mLink");
+	    $("#list_bj_037").html(tag);
+	};
+
+	// 리스트에 클릭 이벤트 등록
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var id = $(this).data("id");
+			if (id != undefined) {
+				$(this).addClass("on");
+				$(this).siblings("tr").removeClass("on");
+			}
+		})
+	};
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

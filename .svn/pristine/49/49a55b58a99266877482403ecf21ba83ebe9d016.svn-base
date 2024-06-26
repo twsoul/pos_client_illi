@@ -1,0 +1,145 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var m_KEY_ID, m_STATCD, m_VENDCHK;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		m_KEY_ID = dataManager.param("KEY_ID");
+		m_STATCD = dataManager.param("STATCD");
+		m_VENDCHK = dataManager.param("VENDCHK");
+		getInfo();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnSave").on("click", setSave);
+		$("#btnSubmit").on("click", setSubmit);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	};
+	
+	var getInfo = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListMultiSelect.do',
+			data: {
+				'QUERYIDS': "KD.get_H_T_UM_072_info;KD.get_H_T_UM_072_info2;KD.set_H_T_UM_072_Update",
+				"KEY_ID": m_KEY_ID
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount0 > 0) {
+					var rowData = receivedData.ListData0[0];
+					$("#lblLINE").html(rowData.LINE);						//라인
+					$("#lblVEND").html(rowData.VEND);						//부품사
+					$("#lblVEND").data("code", rowData.VEND_CD);			//부품사CD
+					$("#lblPART_NO").html(rowData.PART_NO);					//품번
+					$("#lblPART_NM").html(rowData.PARTNM);					//품명
+					$("#lblINV").html(rowData.INV);							//창고
+					$("#lblL_INV").html(rowData.L_INV);						//라인재고
+					$("#lblO_INV").html(rowData.O_INV);						//과부족
+					$("#lblPRO_CESS").html(rowData.PRO_CESS);				//공정
+					$("#lblMODEL").html(rowData.MODEL);						//기종
+					$("#lblSHORT_POINT").html(rowData.SHORT_POINT);			//파악시점
+					$("#lblUSAGE").html(rowData.USAGE);						//U/S
+					$("#lblPLAN_SEQ").html(rowData.PLAN_SEQ);				//계획차수
+					$("#lblTM_NO").html(rowData.TM_NO);						//TM_NO
+					$("#lblREG_DT").html(rowData.REG_DT);					//작성일
+					$("#lblREG_EMP_NM").html(rowData.REG_EMP_NM);			//등록자
+					$("#lblREPAIR_COMMENT").html(rowData.REPAIR_COMMENT);	//비고
+					$("#lblREPAIR_MEMO").html(rowData.MEMO);		//메모
+					//rowData.VEND_CHK	//협력사 리딩값
+					//rowData.STAT		//상태값
+				}
+				
+				if (receivedData.ListCount1 > 0){
+					var tag = "";
+					var template = $("#ListTemplate").html();
+					var driv_id = userManager.getDRIV_ID();
+					$.each(receivedData.ListData1, function(index,rowData){
+						tag += template.replace(/\{\{TARGET\}\}/, rowData.REG_EMP == driv_id ? "mine" : "someone")
+								.replace(/\{\{EMP_NM\}\}/, rowData.REG)
+								.replace(/\{\{REG_DATE\}\}/, "")
+								.replace(/\{\{COMMENT\}\}/, rowData.COM_MENT);
+					});
+					$("#lstComment").html(tag);
+					$("#lstComment").removeClass("blind");
+				} else {
+					$("#lstComment").html("");
+					$("#lstComment").addClass("blind");
+				}
+			}
+		});
+	};
+	
+	var setSave = function() {
+		var comment = $("#txtComment").val();
+		
+		if (comment == ""){
+			popupManager.alert("코멘트를 입력하세요", {title:"알림"});
+			return;
+		}
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "KD.set_H_T_UM_072_Update_Save",
+				"KEY_ID": m_KEY_ID,
+				"COMMENT": comment,
+				"DRIV_ID": userManager.getDRIV_ID(),
+				"VEND_NM": userManager.getVEND_NM(),
+				"DRIV_NM": userManager.getDRIV_NM()
+			},
+			success: function(receivedData, setting) {
+				popupManager.instance('결품시트내용이 등록되었습니다.');
+				moveToBack();
+			}
+		});
+	};
+	
+	var setSubmit = function() {
+		networkManager.httpSend({
+			path: '/api/GCSListSelect.do',
+			data: {
+				'QUERYID': "KD.set_H_T_UM_072_Update_Submit",
+				"KEY_ID": m_KEY_ID
+			},
+			success: function(receivedData, setting) {
+				popupManager.instance('완료되었습니다.');
+				moveToBack();
+			}
+		});
+	};
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

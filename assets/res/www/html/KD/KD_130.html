@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>세척완료</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="screenNG" style="height:100%;width:100%;background-color:red;position:fixed;display:none;z-index:9999;"><p style="color:white;font-size:300em;text-align:center;margin-top:50%;">NG</p></div>
+<div id="screenOK" style="height:100%;width:100%;background-color:limegreen;position:fixed;display:none;z-index:9999;"><p style="color:white;font-size:300em;text-align:center;margin-top:50%;">OK</p></div>
+<div id="wrapper">
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000605"></h2><!--세척완료-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner adjFix expand">
+							<div class="list_area adjForm">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+											<th><span data-lng="LB.0000000631"></span></th><!--사외창고-->
+											<th><span data-lng="LB.0000000642"></span></th><!--기존포장-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selPLANT" id="selPLANT"></select></p></td>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selLOGI" id="selLOGI"></select></p></td>
+											<td style="text-align:-webkit-center;">
+												<div class="checkBox_list">
+													<span class="check_select">
+														<label>
+															<input id="chk_Info" value="check" type="checkbox">
+															<span></span>
+														</label>
+													</span>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="opt_select clearfix"><!--세척기-->
+								<p class="lineHead" data-lng="LB.0000000634"></p><p class="selectBox"><select name="selOT_PROC" id="selOT_PROC"></select></p>
+							</div>
+							<div class="opt_select clearfix"><!--품번-->
+								<p class="lineHead" data-lng="LB.0000000038"></p><p class="selectBox"><select name="selPART_CD" id="selPART_CD"></select></p>
+							</div>
+							<div class="opt_input"><!--BOX-->
+								<p class="lineHead" data-lng="LB.0000000216"></p><p class="adjLayout"><span><input type="text" id="txtBOX_NO" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--케이스-->
+								<p class="lineHead" data-lng="LB.0000000635"></p><p class="adjLayout"><span><input type="text" id="txtCASE_NO" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--수량-->
+								<p class="lineHead" data-lng="LB.0000000019"></p><p class="adjLayout"><span><input type="text" id="txtCASE_QTY" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--포장수량-->
+								<p class="lineHead" data-lng="LB.0000000643"></p><p class="adjLayout"><span><input type="text" id="txtBOX_QTY" style="text-align:center;font-size:5em;" readonly></span></p>
+							</div>
+							<div class="opt_input"><!--스캔수량-->
+								<p class="lineHead" data-lng="LB.0000000150"></p><p class="adjLayout"><span><input type="text" id="txtSCAN_QTY" style="text-align:center;font-size:5em;color:red;"readonly></span></p>
+							</div>
+							<div class="opt_input opt_complex clearfix"><!--불량수량-->
+								<p class="lineHead" data-lng="LB.0000000646"></p><p class="adjLayout unsearched"><span><input type="number" id="txtBAD_QTY" min="1" max="99999" maxlength="5" onClick="this.select();" onkeyup="page.inputEvent(this);" onkeydown="if(event.keyCode == 13) this.blur();" onkeypress="if(event.key==='.'){event.preventDefault();}" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" value="1"></span></p>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer_kd_130">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor btn_sec1"><button type="button" id="btnBad" data-lng="LB.0000000644"></button></p><!--불량등록-->
+			<p class="classicalBtn adjColor btn_sec2"><button type="button" id="btnSave" data-lng="LB.0000000645"></button></p><!--작업완료-->
+		</div>
+		<ul>
+			<li><button type="button" class="chk_btn" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" class="chk_btn" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000686">작업완료를 먼저 하십시오</span>
+<span class="blind" data-lng="MSG.0000000688">작업내역이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000632">사외창고 조회정보가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000637">세척설비 조회정보가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000647">품번 조회정보가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오.</span>
+<span class="blind" data-lng="MSG.0000000633">사외창고를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000638">세척설비를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000652">조회정보가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000648">BOX NO이 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000371">품번이 다릅니다</span>
+<span class="blind" data-lng="MSG.0000000692">세척기 정보가 다릅니다</span>
+<span class="blind" data-lng="MSG.0000000689">작업 완료된 박스입니다</span>
+<span class="blind" data-lng="MSG.0000000687">세척투입된 케이스가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000653">포장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000691">품번이 변경되어 작업 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000690">품번이 변경되었습니다</span>
+<span class="blind" data-lng="MSG.0000000649">잘못된 Serial No 입니다</span>
+<span class="blind" data-lng="MSG.0000000651">불량등록 되었습니다</span>
+<span class="blind" data-lng="MSG.0000000650">불량등록에 실패하였습니다</span>
+<span class="blind" data-lng="MSG.0000000654">박스 작업이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000373">저장에 실패하였습니다</span>
+<span class="blind" data-lng="MSG.0000000749">개를 불량 등록하시겠습니까?</span>
+</body>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/KD/KD_130.js"></script>
+<script type="text/javascript" src="../../js/common/qrManager.js"></script>
+</html>

@@ -1,0 +1,190 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+	    if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+            screenManager.moveToPage('../common/login.html', { action: 'CLEAR_TOP' });
+        }
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+	    $("#inputScan").on('keypress', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                var inputScan = $(this).val();
+                $(this).val("");
+                $(this).blur();
+                $("tbody tr td span").each(function(){$(this).text("");});
+                $("#txtPART_NO").closest("td").addClass("unsearched");
+                $(".btn_area").addClass("blind");
+                if(inputScan != ""){
+                    MaterialInfoReq(inputScan);
+                }else{
+                    popupManager.alert("NO INPUT", {title: '알림'});
+                }
+            }
+        });
+
+        objMoveInput = new InSPopup({ title: "재고이동", id: "popMove", label: "수량", type: "number", phr: "이동수량을 입력하세요.", label2: "이동위치", goBottom: true, submitCallback: function(val, code){
+            MoveStockReq(val,code);
+        }});
+        objMoveInput.init();
+
+        objChangeInput = new InputPopup({ title: "BIN변경", id: "popChange", type: "text", label: "변경BIN", phr: "대상BIN을 입력하세요.", goBottom: true, submitCallback: function(val){
+            ModifyBinReq(val);
+        }});
+        objChangeInput.init();
+
+        objPrintInput = new InputPopup({ title: "라벨 인쇄", id: "popPrint", type: "number", label: "인쇄 매수", phr: "매수를 입력하세요.", goBottom: true, submitCallback: function(code){
+            if(code == null || code == undefined || code == "" || code < 1){
+                popupManager.alert("인쇄 매수 오류", {title: '알림'});
+                return;
+            }
+            var MATNR=$("#txtPART_NO").text();
+            var MAKTX=$("#txtMAKTX").text();
+            var GROES=$("#txtGROES").text();
+            var LGPBE=$("#txtLGPBE").text();
+            var ZSIGD=$("#txtZSIGD").text();
+            if(ZSIGD.trim() == ""){
+                ZSIGD = window.Utils.getTodayFormat("yyyy.MM.dd");
+            }
+            exWNPrintLabel(optionManager.getZPROC(), optionManager.getLNG(), MATNR, MAKTX, GROES, LGPBE, ZSIGD.replace(/\-/g, "."), code);
+        }});
+        objPrintInput.init();
+
+        $("#btnMove").on("click", function() {
+            objMoveInput.show();
+        });
+        $("#btnChange").on("click", function() {
+            objChangeInput.show();
+        });
+        $("#btnPrint").on("click", function() {
+            objPrintInput.show();
+        });
+	};
+
+	// 메인 검색
+    var MaterialInfoReq = function(inputScan){
+        networkManager.httpSend({
+            path: 'api/MaterialInfoReq.do',
+            data: {
+            	'bukrs':userManager.getCOMP_CD(),
+                'werks':optionManager.getWERKS(),
+                'lgort':optionManager.getLGORT(),
+                'matnr':inputScan,
+                'event':'품번 조회 수신'
+            },
+            success: function(receivedData, setting) {
+                if (receivedData.MaterialInfoReqCount == 0){
+                	popupManager.alert(receivedData.MaterialInfoReqMsg, {title: '알림'});
+                } else {
+                    var rowData = receivedData.MaterialInfoReqList[0];
+                    $("#txtLAEDA").text(rowData.LAEDA)
+                    $("#txtMAKTX").text(rowData.MAKTX)
+                    $("#txtPART_NO").text(rowData.MATNR)
+                    $("#txtGROES").text(rowData.GROES)
+                    $("#txtZCOST").text(rowData.ZCOST)
+                    $("#txtLABST").text(rowData.LABST)
+                    $("#txtZTEMP").text(rowData.ZTEMP)
+                    $("#txtLGPBE").text(rowData.LGPBE)
+                    $("#txtPART_NO").closest("td").removeClass("unsearched");
+                    StorageLocationReq();
+                }
+            }
+        });
+    };
+
+    var StorageLocationReq = function() {
+    	 networkManager.httpSend({
+    		path: 'api/StorageLocationReq.do',
+    		data: {
+    			'bukrs':userManager.getCOMP_CD(),
+    			'tplnr':optionManager.getTPLNR(),
+    			'werks':optionManager.getWERKS(),
+    			'zproc':optionManager.getZPROC(),
+                'event':'저장위치정보 전송'
+    		},
+    		success: function(receivedData, setting) {
+    		    objMoveInput.setDB(receivedData.StorageLocationReqList, "LGORT", "LGOBE");
+    			$.each(receivedData.StorageLocationReqList, function(index,rowData){
+    				if(rowData.LGORT == optionManager.getLGORT()){
+    				    $("#txtLGORT").text(rowData.LGOBE);
+    				}
+    			});
+    			$(".btn_area").removeClass("blind");
+    		}
+    	});
+    };
+
+    var MoveStockReq = function(val, code) {
+        networkManager.httpSend({
+        	path: 'api/MoveStockReq.do',
+        	data: {
+        		'bukrs': userManager.getCOMP_CD(),
+        		'matnr': $("#txtPART_NO").text(),
+        		'werks_f': optionManager.getWERKS(),
+        		'lgort_f': optionManager.getLGORT(),
+        		'werks_t': optionManager.getWERKS(),
+                'lgort_t': code,
+                'menge': val,
+                'event':'창고재고 이동 수신'
+        	},
+        	success: function(receivedData, setting) {
+        	    popupManager.alert(receivedData.MoveStockReqMsg, {title: '알림'});
+        	}
+        });
+    };
+
+    var ModifyBinReq = function(val) {
+        networkManager.httpSend({
+        	path: 'api/ModifyBinReq.do',
+        	data: {
+        		'bukrs': userManager.getCOMP_CD(),
+        		'werks': optionManager.getWERKS(),
+        		'lgort_t': optionManager.getLGORT(),
+                'lgpbe': val,
+                'event':'BIN 변경 수신'
+        	},
+        	success: function(receivedData, setting) {
+        	    popupManager.alert(receivedData.ModifyBinReqMsg, {title: '알림'});
+        	     $("#inputScan").val($("#txtPART_NO").text());
+
+
+        	}
+        });
+    };
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+
+	};
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

@@ -1,0 +1,433 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var MEAS="";
+	var setInitScreen = function() {
+	    if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+            screenManager.moveToPage('../common/login.html', { action: 'CLEAR_TOP' });
+        }
+	    $("#date_st").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+	    $("#date_ed").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+	    $("#txtDATE").text(window.Utils.getTodayFormat("yyyy.MM.dd HH:mm:ss"));
+	    $("#txtNM").text(userManager.getDRIV_NM());
+	    $("#txtARBPL").text(optionManager.getARBPL());
+	    /*PersonInfo();*/
+	    createTABLE();
+	    ProcTypeReq();
+	    MeasureUnit();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+	    $("#inputScan").on('keypress', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                var inputScan = $(this).val();
+                $(this).val("");
+                $(this).blur();
+                if(inputScan != ""){
+                    clickList(inputScan);
+                }else{
+                    popupManager.alert("NO INPUT", {title: '알림'});
+                }
+            }
+        });
+	    setTabNSwipe();
+	    $("#date_st").on("click", function(){
+    		window.Utils.getCalendar("date_st", null, "date_ed");
+    	});
+    	$("#date_ed").on("click", function(){
+    		window.Utils.getCalendar("date_ed", "date_st", null);
+    	});
+    	$("#btnSearch").on("click", function(){
+    	    var arri_dtst;
+            arri_dtst = window.Utils.replaceAll($("#date_st").val(),".", "");
+
+    	    PreventionReqHead(arri_dtst);
+
+    	    var query = 'SELECT * FROM PVNT WHERE WERKS = "'+optionManager.getWERKS()+'" AND GSTRP = "'+arri_dtst+'" AND ARBPL = "'+optionManager.getARBPL()+'" AND ZPROC = "'+optionManager.getZPROC()+'"';
+            M.db.execute(userManager.getDRIV_ID(), query, function(status, result,  name) {
+                alert(query);
+                alert(status+" / "+JSON.stringify(result)+" / "+name);
+                query = 'SELECT * FROM MEAS';
+                M.db.execute({
+                    path:userManager.getDRIV_ID(),
+                    sql:query,
+                    callback: function(status, result, name) {
+                        alert("insertDB : "+status+" / "+JSON.stringify(result)+" / "+name);
+                    }
+                })
+                if(status == "FAIL") {
+                    popupManager.instance("저장된 예방 점검 데이터가 없습니다.", {showtime:"SHORT"});
+                    createTABLE();
+                } else {
+                    if(result.row_count < 1) {
+                        popupManager.instance("저장된 예방 점검 데이터가 없습니다.", {showtime:"SHORT"});
+                        PreventionReqItem(arri_dtst);
+                        return;
+                    }
+                    popupManager.instance("저장된 예방 점검 데이터를 불러옵니다.", {showtime:"SHORT"});
+                    selectTABLE(result);
+                }
+            });
+    	    /*PreventionReqItem();*/
+    	});
+    };
+
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+
+	};
+
+	var createTABLE = function() {
+        var query = 'CREATE TABLE IF NOT EXISTS PVNT (WERKS TEXT NOT NULL, GSTRP TEXT NOT NULL, GLTRP TEXT NOT NULL, ARBPL TEXT NOT NULL, ZPROC TEXT NOT NULL, AUFNR TEXT NOT NULL, VORNR TEXT NOT NULL, STEUS TEXT NOT NULL, LTXA1 TEXT, USR00 TEXT, USR04 TEXT, USR05 TEXT, USE04 TEXT, USEYN TEXT NOT NULL, USR01 TEXT, READC TEXT, OK TEXT, PRIMARY KEY(WERKS, GSTRP, ARBPL, ZPROC, AUFNR, VORNR, STEUS));CREATE TABLE IF NOT EXISTS MEAS (SPRAS TEXT NOT NULL, MSEHI TEXT NOT NULL, DIMID TEXT NOT NULL, ISCODE TEXT, MSEH6 TEXT NOT NULL, PRIMARY KEY(SPRAS, MSEHI, MSEH6))';
+        M.db.execute({
+            path:userManager.getDRIV_ID(),
+            sql:query,
+            multiple: true,
+            callback: function(status, result, name) {
+                alert("createDB : "+status+" / "+JSON.stringify(result)+" / "+name);
+            }
+        });
+    };
+
+    var ProcTypeReq = function() {
+    	 networkManager.httpSend({
+    		path: 'api/ProcTypeReq.do',
+    		data: {
+    			'bukrs': userManager.getCOMP_CD(),
+                'event':'설비관리 업무 구분 전송'
+    		},
+    		success: function(receivedData, setting) {
+    			$.each(receivedData.ProcTypeReqList, function(index,rowData){
+    			    if(rowData.ZPROC == optionManager.getZPROC()){
+                        PlantReq(rowData.ZDESC);
+    			    }
+    			});
+    		}
+    	});
+    };
+
+    var PlantReq = function(ZDESC) {
+    	 networkManager.httpSend({
+    		path: 'api/PlantReq.do',
+    		data: {
+    			'bukrs': userManager.getCOMP_CD(),
+    			'tplnr': optionManager.getTPLNR(),
+    			'werks': userManager.getPLANT_CD(),
+    			'zproc': optionManager.getZPROC(),
+                'event':'플랜트정보 전송'
+    		},
+    		success: function(receivedData, setting) {
+    			$.each(receivedData.PlantReqList, function(index,rowData){
+    			    if(rowData.WERKS == optionManager.getWERKS()){
+    			        $("#txtDEPT").text(rowData.NAME1+" "+ZDESC)
+    			    }
+    			});
+    		}
+    	});
+    };
+
+    var PersonInfo = function() {
+        networkManager.httpSend({
+            path: 'api/PersonInfo.do',
+            data: {
+                'bukrs': userManager.getCOMP_CD(),
+                'werks': optionManager.getWERKS(),
+                'user_id': userManager.getDRIV_ID(),
+                'user_nm': userManager.getDRIV_NM(),
+                'use_flag': userManager.getUSE_FLAG(),
+                'event':'ERP 인원정보 (모바일 사용자)'
+            },
+        	success: function(receivedData, setting) {
+        		popupManager.alert(receivedData.StockInspectionReqMsg, {title: '알림'});
+            }
+        });
+    };
+
+    var MeasureUnit = function() {
+    	networkManager.httpSend({
+    		path: 'api/MeasureUnit.do',
+    		data: {
+    			'spras': optionManager.getLNG(),
+                'event':'단위정보'
+    		},
+    		success: function(receivedData, setting) {
+    		    if (receivedData.MeasureUnitCount == 0){
+                    popupManager.alert("조회된 데이터가 없습니다.", {title: "알림"});
+                } else {
+    		        var querytag= "";
+    		        var tag = "";
+    			    $.each(receivedData.MeasureUnitList, function(index,rowData){
+    			        var query = 'INSERT OR REPLACE INTO MEAS (SPRAS, MSEHI, DIMID, ISCODE, MSEH6) values ("'+rowData.SPRAS+'","'+rowData.MSEHI+'","'+rowData.DIMID+'","'+rowData.ISCODE+'","'+rowData.MSEH6+'");';
+    			        tag += "<option value='" + rowData.ISOCODE + "'>" + rowData.MSEH6 + "</option>";
+    			        querytag += query;
+    			    });
+    			    M.db.execute({
+                        path:userManager.getDRIV_ID(),
+                        sql:querytag,
+                        multiple: true,
+                        callback: function(status, result, name) {
+                        }
+                    })
+                    MEAS = tag;
+    		    }
+    		}
+    	});
+    };
+
+    var clickList = function(inputScan) {
+
+    };
+
+	var PreventionReqHead = function(arri_dtst) {
+	    networkManager.httpSend({
+        	path: 'api/PreventionReqHead.do',
+        	data: {
+        		'bukrs':userManager.getCOMP_CD(),
+                'werks':optionManager.getWERKS(),
+                'gstrp':arri_dtst,
+                'arbpl':optionManager.getARBPL(),
+                'zproc':optionManager.getZPROC(),
+                'abrho':'',
+                'event':'예방점검 오더(Header)'
+        	},
+        	success: function(receivedData, setting) {
+        		var tag = "";
+        		$("#list_bj_040_1").html("");
+        		if (receivedData.PreventionReqHeadCount == 0){
+        		    popupManager.alert("조회된 데이터가 없습니다.", {title: "알림"});
+                } else {
+        	    	var template = $("#ListTemplateAll").html();
+        		    $.each(receivedData.PreventionReqHeadList, function(index,rowData){
+                        tag += template.replace(/\{\{PACK_ORDR_NO\}\}/gi, index)
+                                       .replace(/\{\{DATE\}\}/gi, rowData.GSTRP)
+                                       .replace(/\{\{DATEL\}\}/gi, rowData.GLTRP)
+                                       .replace(/\{\{EQ_NO\}\}/gi, rowData.AUFNR)
+                                       .replace(/\{\{CHECK_LIST\}\}/, rowData.KTEXT)
+                                       .replace(/\{\{PART_LOC\}\}/, rowData.TPLNR)
+                                       .replace(/\{\{PART_NM\}\}/, rowData.EQKTX)
+                                       .replace(/\{\{STATUS\}\}/, "상태값")
+                                       .replace(/\{\{MLINK\}\}/, "mLink");
+                    });
+        	    	$("#list_bj_040_1").append(tag);
+        	    	setListRowEvent();
+        	    	if(optionManager.getSCAN() == 0){
+        	    	    $("#inputScan").closest("div").removeClass("blind");
+        	    	}
+        	    	$(".page_header, .contents_inner").removeClass("blind");
+        	    	$("#txtSUM").text(receivedData.PreventionReqHeadCount);
+            	}
+            }
+        })
+    };
+
+	var PreventionReqItem = function(arri_dtst){
+	    networkManager.httpSend({
+        	path: 'api/PreventionReqItem.do',
+        	data: {
+        		'bukrs':userManager.getCOMP_CD(),
+                'werks':optionManager.getWERKS(),
+                'gstrp':arri_dtst,
+                'arbpl':optionManager.getARBPL(),
+                'zproc':optionManager.getZPROC(),
+                'abrho':'',
+                'event':'예방점검 항목(Item)'
+        	},
+        	success: function(receivedData, setting) {
+        		if (receivedData.PreventionReqItemCount == 0){
+        		    popupManager.alert("조회된 데이터가 없습니다.", {title: "알림"});
+                } else {
+                    var querytag= "";
+        		    $.each(receivedData.PreventionReqItemList, function(index,rowData){
+        		        var query = 'INSERT OR REPLACE INTO PVNT (WERKS, GSTRP, ARBPL, ZPROC, AUFNR, VORNR, STEUS, LTXA1, USR00, USR04, USR05, USE04, USEYN, USR01, READC, OK) values ("'+optionManager.getWERKS()+'","'+arri_dtst+'","'+optionManager.getARBPL()+'","'+optionManager.getZPROC()+'","'+rowData.AUFNR+'","'+rowData.VORNR+'","'+rowData.STEUS+'","'+rowData.LTXA1+'","'+rowData.USR00+'","'+rowData.USR04+'","'+rowData.USR05+'","'+rowData.USE04+'","'+rowData.USE04+'","'+rowData.USR01+'","'+rowData.READC+'","'+rowData.OK+'");';
+                        querytag += query;
+                    });
+                    alert(querytag);
+                    M.db.execute({
+                        path:userManager.getDRIV_ID(),
+                        sql:querytag,
+                        multiple: true,
+                        callback: function(status, result, name) {
+                            alert("insertDB : "+status+" / "+JSON.stringify(result)+" / "+name);
+                        }
+                    });
+            	}
+            }
+        })
+    };
+
+/*	// 메인 검색
+	var getSearchList = function(){
+    	var tag = "";
+    	var template = $("#ListTemplateAll").html();
+    		tag += template.replace(/\{\{PACK_ORDR_NO\}\}/gi, "1")
+    				       .replace(/\{\{DATE\}\}/gi, "03.12(금)")
+    				       .replace(/\{\{EQ_NO\}\}/gi, "70692390")
+    				       .replace(/\{\{CHECK_LIST\}\}/, "중대형 머시닝센터 제어부 예방점검 (M1)")
+    				       .replace(/\{\{PART_LOC\}\}/, "HTS1-1020-01")
+    				       .replace(/\{\{PART_NM\}\}/, "AB41A-10-2 고속MCC")
+    				       .replace(/\{\{STATUS\}\}/, "미완료")
+    				       .replace(/\{\{STAT_CD\}\}/, "")
+    				       .replace(/\{\{MLINK\}\}/, "mLink");
+    	$("#list_bj_040_1").html(tag);
+    	setListRowEvent()
+	};*/
+
+	var getSearchList2 = function(){
+    	var tag = "";
+    	var template = $("#ListTemplate").html();
+    		tag += template.replace(/\{\{PACK_ORDR_NO\}\}/gi, "1")
+                		   .replace(/\{\{DATE\}\}/gi, "03.12(금)")
+                		   .replace(/\{\{EQ_NO\}\}/gi, "70692391")
+                		   .replace(/\{\{CHECK_LIST\}\}/, "컨베어 에어 상태 점검")
+                		   .replace(/\{\{PART_LOC\}\}/, "1공장(DN8/IG) RR A")
+                           .replace(/\{\{PART_NM\}\}/, "벨트 컨베어")
+                		   .replace(/\{\{STAT_CD\}\}/, "")
+                		   .replace(/\{\{MLINK\}\}/, "mLink2");
+    	$("#list_bj_040_2").html(tag);
+    	setListRowEvent2()
+    };
+
+    var getSearchList3 = function(){
+    	var tag = "";
+    	var template = $("#ListTemplate").html();
+    		tag += template.replace(/\{\{PACK_ORDR_NO\}\}/gi, "1")
+                		   .replace(/\{\{DATE\}\}/gi, "03.12(금)")
+                		   .replace(/\{\{EQ_NO\}\}/gi, "70692392")
+                		   .replace(/\{\{CHECK_LIST\}\}/, "몰드 카셋트 (캐리어) 점검")
+                		   .replace(/\{\{PART_LOC\}\}/, "2공장(RJ/CK) 자동창")
+                           .replace(/\{\{PART_NM\}\}/, "1백프레임 이재기 B")
+                		   .replace(/\{\{STAT_CD\}\}/, "")
+                		   .replace(/\{\{MLINK\}\}/, "mLink3");
+    	$("#list_bj_040_3").html(tag);
+    	setListRowEvent3()
+    };
+
+	// 리스트에 클릭 이벤트 등록
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			var code = $(this).data("code");
+			if (code != undefined) {
+				$(this).addClass("on");
+				$(this).siblings().removeClass("on");
+			}
+			screenManager.moveToPage("bj_041.html", {
+                param: {
+                    EQ_NO: M.sec.encrypt($(this).data("code")).result,
+                    STATUS: M.sec.encrypt($(this).find(".STATUS")).result,
+                    DATE: M.sec.encrypt($(this).data("date")).result,
+                    DATEL: M.sec.encrypt($(this).find("datel")).result,
+                    CHECK_LIST: M.sec.encrypt($(this).find(".KTEXT")).result,
+                    PART_LOC: M.sec.encrypt($(this).find(".TPLNR")).result,
+                    PART_NM: M.sec.encrypt($(this).find(".EQKTX")).result,
+                    MEASURE: M.sec.encrypt(MEAS).result
+                }
+            });
+		})
+	};
+	// 리스트에 클릭 이벤트 등록
+	var setListRowEvent2 = function(){
+		$(".mLink2").off("click","**");
+		$(".mLink2").on("click", function(){
+			var code = $(this).data("code");
+			if (code != undefined) {
+				$(this).addClass("on");
+				$(this).siblings().removeClass("on");
+				screenManager.moveToPage("bj_041.html");
+			}
+		})
+	};
+	// 리스트에 클릭 이벤트 등록
+	var setListRowEvent3 = function(){
+		$(".mLink3").off("click","**");
+		$(".mLink3").on("click", function(){
+			var code = $(this).data("code");
+			if (code != undefined) {
+				$(this).addClass("on");
+				$(this).siblings().removeClass("on");
+				screenManager.moveToPage("bj_041.html");
+			}
+		})
+	};
+
+	var setTabNSwipe = function() {
+    		$(".tabmenu > div > h5").on("click", function(){
+    			$(this).addClass("on");
+    			$(this).siblings("h5").removeClass("on");
+    			var p = $(this).index();
+    			if( p == 0 ){
+    				$(".contents_inner").css("transform", "translateX(0%)");
+    				$(".contents_inner").children(".form1").css("height", "auto");
+    				$(".contents_inner").children(".form2").css("height", "0");
+    				$(".contents_inner").children(".form3").css("height", "0");
+    				$(".btn_ins").addClass("blind");
+    			}else if ( p == 1){
+    				$(".contents_inner").css("transform", "translateX(calc(-100% / 3))");
+    				$(".contents_inner").children(".form1").css("height", "0");
+                 	$(".contents_inner").children(".form2").css("height", "auto");
+               		$(".contents_inner").children(".form3").css("height", "0");
+               		$(".btn_ins").addClass("blind");
+    			}else if ( p == 2){
+               		$(".contents_inner").css("transform", "translateX(calc(-100% / 1.5))");
+               		$(".contents_inner").children(".form1").css("height", "0");
+                    $(".contents_inner").children(".form2").css("height", "0");
+                    $(".contents_inner").children(".form3").css("height", "auto");
+                    $(".btn_ins").removeClass("blind");
+                };
+    		});
+
+    		if($(".tabmenu > div > h5").hasClass("on")){	// 초기화면 리셋
+    			var p = $(".tabmenu > div > h5").index();
+    			if( p == 0 ){
+    				$(".contents_inner").css("transform", "translateX(0%)");
+    				$(".contents_inner").children(".form1").css("height", "auto");
+                    $(".contents_inner").children(".form2").css("height", "0");
+                    $(".contents_inner").children(".form3").css("height", "0");
+                    $(".btn_ins").addClass("blind");
+    			}else if ( p == 1){
+    				$(".contents_inner").css("transform", "translateX(calc(-100% / 3))");
+    				$(".contents_inner").children(".form1").css("height", "0");
+                    $(".contents_inner").children(".form2").css("height", "auto");
+                    $(".contents_inner").children(".form3").css("height", "0");
+                    $(".btn_ins").addClass("blind");
+    			}else if ( p == 2){
+                	$(".contents_inner").css("transform", "translateX(calc(-100% / 1.5))");
+                	$(".contents_inner").children(".form1").css("height", "0");
+                    $(".contents_inner").children(".form2").css("height", "0");
+                    $(".contents_inner").children(".form3").css("height", "auto");
+                    $(".btn_ins").removeClass("blind");
+               	};
+    		}
+    	};
+
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

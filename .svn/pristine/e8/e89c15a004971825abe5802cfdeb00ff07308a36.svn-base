@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>자재입고</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000006"></h2><!--자재입고-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area adjForm">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th class="selPHASE02 blind"><span data-lng="LB.0000000012"></span></th><!--파트장-->
+											<th><span data-lng="LB.0000000013"></span></th><!--부서장-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="deepCell selPHASE02 blind"><p class="FoldselectBox"><select name="selPHASE02" id="selPHASE02"></select></p></td>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selPHASE03" id="selPHASE03"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--송장번호-->
+								<p class="lineHead moreArea2" data-lng="LB.0000000014"></p><p class="inputBox"><span><input type="text" id="inputScan" onClick="this.select();"><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:2px;">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000014"></span></th><!--송장번호-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="unsearched"><span id="txtINVOICE_NO"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:70%;">
+										<col style="width:30%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000015"></span></th><!--금액-->
+											<th><span data-lng="LB.0000000016"></span></th><!--항목-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtTOTAL"></span></td>
+											<td><span id="txtCNT"></span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+			<section>
+				<div class="container">
+					<article class="tableList">
+						<div class="list_inner list_bj_010 adjFix" id="list_bj_010">
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea blind">
+			<p class="classicalBtn adjColor"><button type="button" id="btnInsert" data-lng="LB.0000000017">입고</button></p>
+			<p class="classicalBtn adjColor"><button type="button" id="btnPrint" data-lng="LB.0000000018">라벨인쇄</button></p>
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000019">수량</span>
+<span class="blind" data-lng="LB.0000000020">인쇄매수 확인</span>
+<span class="blind" data-lng="LB.0000000021">인쇄매수</span>
+<span class="blind" data-lng="MSG.0000000006">입고결재선 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000007">송장번호를 입력하세요</span>
+<span class="blind" data-lng="MSG.0000000008">송장 조회 데이터가 없습니다</span>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont" data-id="{{INDEX}}" data-groes="{{GROES}}" data-lgpbe="{{LGPBE}}" data-zsigd="{{ZSIGD}}" data-budat="{{BUDAT}}">
+		<div class="multiple_cate">
+			<p class="harf_cell">
+				<span class="MATNR">{{PART_NO}}</span>
+				<span>{{STATUS}}</span>
+			</p>
+			<p class="MAKTX">{{PART_NM}}</p>
+			<p class="harf_cell">
+				<span>{{LB0000000019}}</span><span>{{QTY}}</span>
+				<span>{{LB0000000015}}</span><span>{{PRICE}}</span>
+			</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/BJ/BJ_010.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customInputPopupEA.js"></script>
+</html>

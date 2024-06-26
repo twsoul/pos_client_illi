@@ -1,0 +1,467 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var isFirstRun = true;
+	var objDistSelect, objPartSelect, objCarNSelect, objDrivSelect;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		var today = new Date();
+		var dd = today.getDate()-1;
+		var mm = today.getMonth() + 1;
+		var yyyy = today.getFullYear();
+		var hh= today.getHours();
+
+        var init_date;
+		if(dd == 0){
+		    init_date= yyyy + '.' + String(mm-1).lpad(2, 0) + '.' + String(new Date(yyyy, mm-1, 0).getDate()).lpad(2, 0);
+		}else{
+		    init_date= yyyy + '.' + String(mm).lpad(2, 0) + '.' + String(dd).lpad(2, 0);
+		}
+		
+		if(parseInt(hh) >= parseInt('06') && parseInt(hh) <= parseInt('24')){
+			$("#date_st").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+			$("#date_ed").val(window.Utils.getTodayFormat("yyyy.MM.dd"));
+		}else{
+			$("#date_st").val(init_date);
+			$("#date_ed").val(init_date);	
+		}
+		
+		setInitPlantList();
+		setInitCarSerList();
+		setInitKunnrList();
+		
+		setModeForAccountState();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#date_st").on("click", function(){
+			getCalendar("date_st", null, null);
+		});
+		$("#date_ed").on("click", function(){
+			window.Utils.getCalendar("date_ed", null, null);
+		});
+		$("#btnSearch").on("click", getSearchList);
+		$("#divSearchAreaExpander").on("click", function(){
+			$(this).toggleClass("expand");
+			$("#divSearchArea").toggleClass("expand");
+		});
+		
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		getSearchList();
+	};
+	
+	// 계정상태에 따른 초기 화면 세팅
+	var setModeForAccountState = function() {
+		if (isFirstRun){
+			var vend_tp = userManager.getVEND_TP();
+			if (vend_tp == "C"){
+				setSelectPop();
+				$("#num_vehicle").on("click", setInitCarNumber);
+				$("#carrier").on("click", setInitDriver);
+			} else {
+				var car_n = dataManager.storage("CAR_N");
+				var driv_id = userManager.getDRIV_ID();
+				var driv_nm = userManager.getDRIV_NM();
+				var vend_cd = userManager.getVEND_CD();
+				var vend_nm = userManager.getVEND_NM();
+				
+				if (userManager.getRD_CD() == "D") {
+					$("#num_vehicle").data("code", driv_id).data("name", car_n).html(car_n);
+					$("#carrier").data("code", driv_id).data("name", driv_nm).html(driv_nm);
+				} else {
+					setSelectPop();
+					$("#num_vehicle").on("click", setInitCarNumber);
+					$("#carrier").on("click", setInitDriver);
+					//P_VEND_CD set
+					//P_VEND_NM set
+//					if (car_n != undefined){
+//						$("#num_vehicle").data("code", driv_id).data("name", car_n).html(car_n);
+//						$("#carrier").data("code", driv_id).data("name", driv_nm).html(driv_nm);
+//					}
+				}
+			}
+			isFirstRun = false;
+		}
+	};
+	
+	var getCalendar= function(target, prev_inputID, next_inputID) {
+		var inputID = target != null ? target : $(this).data("target");
+		if (inputID != "" && inputID != undefined){
+			var objInput = $("#" + inputID);
+			var objPrev = $("#" + prev_inputID);
+			var objNext = $("#" + next_inputID);
+			popupManager.date({
+			    initDate  : objInput.val() == "" ? moment().format("YYYYMMDD") : objInput.val().split(".").join(""),
+			    startDate : prev_inputID == null ? "19000101" : objPrev.val().split(".").join(""),
+			    endDate   : next_inputID == null ? "29991231" : objNext.val().split(".").join("")}, 
+			    function(result, setting) {
+			    	if (result.status == "SUCCESS") {
+			    		objInput.val(result.yyyy + "." + result.MM + "." + result.dd);
+			    		setInitPlantList();
+			    		setInitCarSerList();
+			    		setInitKunnrList();
+			    	}
+			    }
+			);
+		}
+	}		
+	
+	// 출하공장 SELECT BOX Initialize
+	var setInitPlantList = function(){
+		var st_dt = window.Utils.replaceAll($("#date_st").val(),".", "");
+		var ed_dt = window.Utils.replaceAll($("#date_ed").val(),".", "");
+		var zcarno= dataManager.storage("CAR_N");
+		var vend_tp = userManager.getVEND_TP();
+		var tag = '<option value="ALL">전체</option>';
+		if (vend_tp == "C"){
+			zcarno= 'ALL';
+		}
+		
+		networkManager.httpSend({
+			path: '/api/COTLSListSelect.do',
+			data: {
+				'QUERYID': "COTLS.get_plantList1",
+				'BDATE': st_dt,
+				'BDATE1': ed_dt,
+				'ZCARNO': zcarno
+			},
+			success: function(receivedData, setting) {
+				$("#selPlant").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.WERKS + "'>" + rowData.WERKS_T + "</option>";
+				});
+				$("#selPlant").append(tag);
+			}
+		 });
+	};
+
+	// 배차순번 SELECT BOX Initialize
+	var setInitCarSerList = function(){
+		var st_dt = window.Utils.replaceAll($("#date_st").val(),".", "");
+		var ed_dt = window.Utils.replaceAll($("#date_ed").val(),".", "");
+		var zcarno= dataManager.storage("CAR_N");
+		var vend_tp = userManager.getVEND_TP();
+		var tag = '<option value="ALL">전체</option>';
+		if (vend_tp == "C"){
+			zcarno= 'ALL';
+		}
+		
+		networkManager.httpSend({
+			path: '/api/COTLSListSelect.do',
+			data: {
+				'QUERYID': "COTLS.get_carSerList1",
+				'BDATE': st_dt,
+				'BDATE1': ed_dt,
+				'ZCARNO': zcarno
+			},
+			success: function(receivedData, setting) {
+				$("#selAllocNum").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.CAR_SER_ID + "'>" + rowData.ZCAR_SER + "</option>";
+				});
+				$("#selAllocNum").append(tag);
+			}
+		 });
+	};		
+	
+	// 고객사 SELECT BOX Initialize
+	var setInitKunnrList = function(){
+		var st_dt = window.Utils.replaceAll($("#date_st").val(),".", "");
+		var ed_dt = window.Utils.replaceAll($("#date_ed").val(),".", "");
+		var zcarno= dataManager.storage("CAR_N");
+		var vend_tp = userManager.getVEND_TP();
+		var tag = '<option value="ALL">전체</option>';
+		if (vend_tp == "C"){
+			zcarno= 'ALL';
+		}
+		
+		networkManager.httpSend({
+			path: '/api/COTLSListSelect.do',
+			data: {
+				'QUERYID': "COTLS.get_vendList1",
+				'BDATE': st_dt,
+				'BDATE1': ed_dt,
+				'ZCARNO': zcarno
+			},
+			success: function(receivedData, setting) {
+				$("#selVend").html("");
+				$.each(receivedData.ListData, function(index,rowData){
+					tag += "<option value='" + rowData.KUNNR + "'>" + rowData.KUNNR_T + "</option>";
+				});
+				$("#selVend").append(tag);
+			}
+		 });
+	};		
+	
+	// 차량번호 SELECT BOX Initialize
+	var setInitCarNumber = function(){
+		var vend_cd = "VA170";	// 차량번호 검색 조건 확인 필요...
+		
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_car_number",
+				"VEND_CD": vend_cd,
+				"DIST_VEND_CD": ''
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조건에 맞는 차량리스트가 없습니다.", {title: '알림'});
+				} else {
+					objCarNSelect.setDB(receivedData.ListData, "DRIV_ID", "CAR_N", "DRIV_NM");
+					objCarNSelect.show();
+				}
+			}
+		 });
+	};
+	
+	// 운전자 셀렉트박스 초기화
+	var setInitDriver = function(){
+		var vend_cd = "VA170";	// 운전자 검색 조건 확인 필요..
+		var carnFromDrivID = $("#num_vehicle").data("code");
+
+		networkManager.httpSend({
+			path: '/api/TLSListSelect.do',
+			data: {
+				'QUERYID': "TLS.get_driver",
+				"VEND_CD": vend_cd,
+				"DIST_VEND_CD": ''
+			},
+			success: function(receivedData, setting) {
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조건에 맞는 운전자 리스트가 없습니다.", {title: '알림'});
+				} else {
+					objDrivSelect.setDB(receivedData.ListData, "DRIV_ID", "DRIV_NM");
+					objDrivSelect.setSelectCode(carnFromDrivID);
+					objDrivSelect.show();
+				}
+			}
+		 });
+	};
+	
+	// 조회 버튼 클릭 이벤트
+	var getSearchList = function() {
+		var st_dt = window.Utils.replaceAll($("#date_st").val(),".", "");
+		var ed_dt = window.Utils.replaceAll($("#date_ed").val(),".", "");
+		var plant = $("#selPlant > option:selected").val();
+		var alloc_num = $("#selAllocNum > option:selected").val();
+		var vend_num = $("#selVend > option:selected").val();
+		var state = $("#selState > option:selected").val();
+		var car_n = $("#num_vehicle").data("name") == undefined ? "" : $("#num_vehicle").data("name");
+		var driver = $("#carrier").data("name") == undefined ? "" : $("#carrier").data("name");
+		
+/*		if (!searchValidation(car_n, driver)){
+			return;
+		}*/
+		
+		networkManager.httpSend({
+			path: '/api/COTLSListSelect.do',
+			data: {
+				'QUERYID': "COTLS.get_H_D_UM_055_List",
+				"BDATE": st_dt,
+				"BDATE1": ed_dt,
+				"WERKS": plant,
+				"SHIP_STATE": state,
+				"ZCAR_SER": alloc_num,
+				"ZCARNO": car_n,
+				"KUNNR": vend_num, 
+				"ZFRENM": driver
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						var m_ship_state;
+						switch (Number(rowData.SHIP_STATE)) {
+						case 1:
+							m_ship_state= '상차대기';
+							break;
+						case 2:
+							m_ship_state= '상차완료';
+							break;
+						case 3:
+							m_ship_state= '반출완료';
+							break;
+						case 4:
+							m_ship_state= '하차완료';
+							break;									
+						default:
+							m_ship_state= '';
+							break;
+						}
+						
+						if(rowData.RE_BANNO != undefined && rowData.RE_BANNO != "" && rowData.RE_BANNO != null){
+							m_ship_state += '<BR/>(재발행)';
+						}
+						
+						var memo_leng= rowData.SHIP_MEMO == undefined ? '' : rowData.SHIP_MEMO;
+						
+						tag += template.replace(/\{\{ID\}\}/, rowData.BANNO)
+								.replace(/\{\{RE_BANNO\}\}/, rowData.RE_BANNO)
+								.replace(/\{\{CAR_N\}\}/, rowData.ZCARNO)
+								.replace(/\{\{DRIV_NM\}\}/, rowData.ZFRENM)
+								.replace(/\{\{PLANT_NM\}\}/, rowData.WERKS_T)
+								.replace(/\{\{NUM\}\}/, rowData.ZCAR_SER)
+								.replace(/\{\{STATUS\}\}/, rowData.ZCAR_SER)
+								.replace(/\{\{STATUS1\}\}/, rowData.SHIP_STATE)
+								.replace(/\{\{BDATE\}\}/, rowData.BDATE)
+								.replace(/\{\{SHIP_STATE\}\}/, m_ship_state)
+								.replace(/\{\{MEMO_CHK\}\}/, memo_leng.length != 0 ? "ap_color1" : "")
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+					});
+					
+					//$("#divSearchAreaExpander").removeClass("expand");
+					//$("#divSearchArea").removeClass("expand");
+				}
+				
+				$(".list_t_um45").html(tag);
+				$("#contents").css("height", $("#contents").height() + $(".btn_area.fixedArea").height() + $("#header").height() + 30);
+				setListRowEvent();
+			}
+		 });		
+	};
+	
+	var setListRowEvent = function(){
+		$(".mLink").off("click","**");
+		$(".mLink").on("click", function(){
+			$(this).addClass("on");
+			var ban_no = $(this).data("id");
+			var status = $(this).data("status");
+			var status1 = $(this).data("status1");
+			var re_banno = $(this).data("rebanno");
+			var st_dt = window.Utils.replaceAll($("#date_st").val(),".", "");
+			var plant = $("#selPlant > option:selected").val();
+			var plant_nm= $("#selPlant > option:selected").text();
+			var alloc_num = $("#selAllocNum > option:selected").val();
+			var alloc_nm = $("#selAllocNum > option:selected").text();
+			var car_n = $("#num_vehicle").data("name") == undefined ? "" : $("#num_vehicle").data("name");
+			var driver = $("#carrier").data("name") == undefined ? "" : $("#carrier").data("name");
+			
+			var pageId= M.page.info("filename");
+			//if(status1 == '3' || status1 == '4'){
+/*				if (ban_no != undefined) {
+					screenManager.moveToPage('/www/html/H_D_UM_048.html', {
+						param: {
+							ban_no: ban_no,
+							status: status,
+							pageId: pageId
+						},
+						action: 'NEW_SCR'
+					});
+				}*/
+			//}else{
+				if (re_banno != undefined && re_banno != "undefined") {
+					networkManager.httpSend({
+						path: '/api/COTLSListSelect.do',
+						data: {
+							'QUERYID': "COTLS.get_H_D_UM_055_memo_Update",
+							"BANNO": ban_no,
+							"REBANNO" : re_banno
+						},
+						success: function(receivedData, setting) {
+						}
+					 });
+				}
+				
+					
+				if (ban_no != undefined) {
+					screenManager.moveToPage('/www/html/H_D_UM_056.html', {
+						param: {
+							ban_no: M.sec.encrypt(ban_no.toString()).result,
+							status: M.sec.encrypt(status.toString()).result,
+							st_dt: M.sec.encrypt(st_dt.toString()).result,
+							plant: M.sec.encrypt(plant.toString()).result,
+							plant_nm: M.sec.encrypt(plant_nm.toString()).result,
+							alloc_num: M.sec.encrypt(alloc_num.toString()).result,
+							alloc_nm: M.sec.encrypt(alloc_nm.toString()).result,
+							car_n: M.sec.encrypt(car_n.toString()).result,
+							driv_nm: M.sec.encrypt(driver.toString()).result,
+							pageId: M.sec.encrypt(pageId.toString()).result
+						},
+						action: 'NEW_SCR'
+					});
+				}
+			//}
+
+		})
+	}	
+	
+	// validation....
+	var searchValidation = function(car_n, driver) {
+		if (window.Utils.trim(car_n) == ""){
+			popupManager.alert("차량번호를 선택하세요", {title: '알림'});
+			return;
+		}
+		if (window.Utils.trim(driver) == ""){
+			popupManager.alert("운전자명을 선택하세요", {title: '알림'});
+			return;
+		}
+		return true;
+	};
+	
+	// 검색 팝업 초기화
+	var setSelectPop = function() {
+		objCarNSelect = new SelectListPopup({ title: "차량번호 선택", id: "popCarN", submitCallback: function(code, name, ext1){
+			if (code != undefined){
+				$("#num_vehicle").data("code", code).data("name", name).html(name).addClass("typeValue");
+				$("#carrier").data("code", code).data("name", ext1).html(ext1).addClass("typeValue");
+			} else {
+				$("#carrier").removeData("code").removeData("name").html("선택하세요").removeClass("typeValue");
+			}
+		}});
+		objCarNSelect.init();
+		objDrivSelect = new SelectListPopup({ title: "운전자명 선택", id : "popDriv", submitCallback: function(code, name){
+			if (code != undefined){
+				$("#carrier").data("code", code).data("name", name).html(name).addClass("typeValue");
+			}
+		}});
+		objDrivSelect.init();
+	};
+	
+	String.prototype.lpad = function(padLength, padString){
+	    var s = this;
+	    while(s.length < padLength)
+	        s = padString + s;
+	    return s;
+	}		
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

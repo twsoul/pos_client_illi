@@ -1,0 +1,133 @@
+/*******************************************************************
+*	페이지 로직
+*******************************************************************/
+
+var page = (function(window, document, $, M, undefined) {
+	var ban_no, status, st_dt, plant, plant_nm, alloc_num, alloc_nm, car_n, driv_nm;
+	var apr_id, apr_nm;
+	// 화면 초기화
+	var setInitScreen = function() {
+		if (userManager.getDRIV_NM() == "" || userManager.getDRIV_NM() == "undefined" || userManager.getDRIV_NM() == undefined) {
+			screenManager.moveToPage('/www/html/H_T_UM_000.html', { action: 'CLEAR_TOP' });
+		}
+		ban_no = dataManager.param('ban_no');
+		status = dataManager.param('status');
+		st_dt = dataManager.param("st_dt");
+		plant = dataManager.param("plant");
+		plant_nm = dataManager.param("plant_nm");
+		alloc_num = dataManager.param("alloc_num");
+		alloc_nm = dataManager.param("alloc_nm");
+		car_n = dataManager.param("car_n");
+		driv_nm = dataManager.param("driv_nm");
+		apr_id = dataManager.param("apr_id");
+		apr_nm = dataManager.param("apr_nm");
+		
+		$("#date_st").val(to_date_format(st_dt, '.'));
+		$("#selPlant").text(plant_nm);
+		$("#selAllocNum").text(alloc_nm);
+		$("#num_vehicle").text(car_n);
+		$("#carrier").text(driv_nm);
+		$("#apr_nm").text(apr_nm);
+		
+		getSearchData();
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#btnSubmit").on("click", setSubmit);
+		$("#btnSubmit1").on("click", setSubmit1);
+	};
+	
+	// 자식창에 갔다가 돌아왔을때 리로드용
+	var setReloadEvent = function() {
+		
+	}	
+	
+	/*
+	 * yyyyMMdd 날짜문자열을 gubun으로 포맷을 변경
+	 */
+	function to_date_format(date_str, gubun)
+	{
+	    var yyyyMMdd = String(date_str);
+	    var sYear = yyyyMMdd.substring(0,4);
+	    var sMonth = yyyyMMdd.substring(4,6);
+	    var sDate = yyyyMMdd.substring(6,8);
+
+	    return sYear + gubun + sMonth + gubun + sDate;
+	}
+	
+	String.prototype.lpad = function(padLength, padString){
+	    var s = this;
+	    while(s.length < padLength)
+	        s = padString + s;
+	    return s;
+	}	
+
+	var getSearchData = function() {
+		networkManager.httpSend({
+			path: '/api/COTLSListSelect.do',
+			data: {
+				'QUERYID': "COTLS.get_H_D_UM_053_List",
+				"BANNO": ban_no,
+				"ZCAR_SER": status
+			},
+			success: function(receivedData, setting) {
+				var tag = "";
+				var total= 0;
+				if (receivedData.ListCount == 0){
+					popupManager.alert("조회된 데이터가 없습니다.", {title: '알림'});
+				} else {
+					tag = $("#ListHeadTemplate").html();
+					var template = $("#ListTemplate").html();
+					$.each(receivedData.ListData, function(index,rowData){
+						tag += template.replace(/\{\{ID\}\}/, rowData.BANNO)
+								.replace(/\{\{NUM\}\}/, rowData.ROWNUM)
+								.replace(/\{\{MATNR\}\}/, rowData.MATNR)
+								.replace(/\{\{MENGE\}\}/, Number(rowData.MENGE))
+								.replace(/\{\{FIRST_ROW\}\}/, index == 0 ? "order1" : "");
+						total += Number(rowData.MENGE);
+					});
+					
+					//$("#divSearchAreaExpander").removeClass("expand");
+					//$("#divSearchArea").removeClass("expand");
+					
+				}
+				
+				$(".list_t_um53").html(tag);
+				
+				tag = "";
+				var footTemplate = $("#ListCountTemplate").html();
+					tag += footTemplate.replace(/\{\{TOTAL\}\}/gi, total)
+				$("#list_t_um53_foot").html(tag);
+				$("#contents").css("height", $("#contents").height() + $(".btn_area.fixedArea").height() + $("#header").height());
+			}
+		 });	
+	}
+	
+	var moveToBack = function() {
+		screenManager.moveToBack();
+	};
+
+	// Public Method
+	return {
+		setInitScreen: setInitScreen,
+		setInitEvent: setInitEvent,
+		moveToBack: moveToBack,
+		setReloadEvent: setReloadEvent
+	};
+})(window, document, $, M);
+
+/*******************************************************************
+*	MCore Common Events
+*******************************************************************/
+M.onReady(function(e) {
+	page.setInitScreen();
+	page.setInitEvent();
+}).onHide(function(e){
+	// 화면 이동 전에 호출
+}).onRestore(function(e) {
+	// 해당화면으로 다시 돌아왔을때 호출
+	page.setReloadEvent();
+}).onBack(function() {
+	// 안드로이드 뒤로가기 버튼 클릭시 호출
+	page.moveToBack();
+});

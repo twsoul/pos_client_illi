@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>3rd Shipping(IL)</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000074" id="test">Barcode Scan List</h2>
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+<!--					<article class="optionBox addfunc">-->
+<!--						<div class="box_inner expand">-->
+<!--							<div class="opt_input" style="margin-top:2px;">&lt;!&ndash;스캔&ndash;&gt;-->
+<!--								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="moreArea expand"><p><i></i></p></div>-->
+<!--					</article>-->
+<!--					<div class="box_inner expand">-->
+
+					<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+						<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+					</div>
+					<div class="barcodeMode" style="margin-top:2px;" >
+						<select id="barcode_mode_LR">
+							<option value="LLRR" selected >LL-RR Mode</option>
+							<option value="LRLR">LR-LR Mode</option>
+						</select>
+					</div>
+
+<!--					</div>-->
+				</div>
+			</section>
+
+			<section>
+				<div class="container">
+					<!-- Master -->
+					<div id="palletHeader">
+						<div class="pallet_pos"><input type="text" id="pallet_pos" readonly></div>
+						<div class="pallet_type"><input type="text" id="pallet_type" readonly></div>
+						<div class="num_5j"><input type="text" id="num_5j" readonly></div>
+						<div class="scan_YN blind"><input type="text" id="scan_YN" ></div>
+					</div>
+					<article class="tableList tapPosible">
+						<!--		헤더	BH		-->
+						<div class="list_inner list_SEAT_003_BH blind" id="list_SEAT_003_BH_head">
+							<div class="tableHead">
+								<div class="multiple_cate2 INDEX" id="SEAT_003_HEADER_INDEX_BH">
+									<p data-lng="LB.0000000110"></p><!--index-->
+								</div>
+								<div class="multiple_cate2 CH_COLOR" id="SEAT_003_HEADER_BH_COLOR">
+									<p data-lng="LB.0000000110">Color</p><!--COLOR-->
+								</div>
+								<div class="multiple_cate">
+									<p data-lng="LB.0000000113">LH</p><!--납입문서NO-->
+								</div>
+								<div class="multiple_cate">
+									<p data-lng="LB.0000000110">RH</p><!--업체명-->
+								</div>
+							</div>
+						</div>
+						<!--			리스트 BH			 -->
+						<div class="list_inner list_SEAT_003_BH adjFix blind" id="list_SEAT_003_BH"></div>
+<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+						<!--		헤더 CH		-->
+						<div class="list_inner list_SEAT_003_CH blind" id="list_SEAT_003_CH_head">
+							<div class="tableHead">
+								<div class="multiple_cate2 INDEX" id="SEAT_003_HEADER_INDEX_CH">
+									<p data-lng="LB.0000000110"></p><!--index-->
+								</div>
+								<div class="multiple_cate2 CH_COLOR" id="SEAT_003_HEADER_CH_COLOR">
+									<p data-lng="LB.0000000110">Color</p><!--COLOR-->
+								</div>
+								<div class="multiple_cate">
+									<p data-lng="LB.0000000113">Rivian Part CD</p><!--납입문서NO-->
+								</div>
+
+							</div>
+						</div>
+						<!--			리스트 CH			 -->
+						<div class="list_inner list_SEAT_003_CH adjFix" id="list_SEAT_003_CH"></div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000115">타 공장 바코드입니다, 그래도 진행 하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000116">납입문서번호를 먼저 스캔하십시오</span>
+<span class="blind" data-lng="MSG.0000000129">납입카드 번호가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000117">저장위치를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000268">이미 리스트에 존재하는 납입카드 NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000314">올바르지않은 납입문서입니다</span>
+<span class="blind" data-lng="MSG.0000000297">타 공장 바코드입니다</span>
+<span class="blind" data-lng="MSG.0000000356">이미 스캔한 납입문서입니다</span>
+<!--qrManagerLangPack-->
+<span class="blind" data-lng="MSG.0000000226">올바르지 않은 바코드 구성입니다</span>
+<span class="blind" data-lng="MSG.0000000227">바코드에 BOX NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000228">바코드에 PART NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000229">바코드에 BOX 수량이 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000230">바코드에 업체코드가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000231">바코드에 LOT NO가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000232">바코드에 BOX Sequence가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000233">바코드에 출력유형이 존재하지 않습니다</span>
+</body>
+<script type="text/template" id="ListTemplate_CH" class="none">
+	<div class="tableCont SEAT_003_CH {{MLINK}}" id="" data-status="{{STATUS}}" data-vendcd="{{VEND_CD}}" data-delibarno="{{DELI_BAR_NO}}" data-ordkind="{{ORD_KIND}}">
+		<div class="multiple_cate INDEX">
+			<p class="INDEX_CONT">{{INDEX_CNT}}</p>
+		</div>
+		<div class="multiple_cate CH_COLOR">
+			<p class="COLOR_NM">{{COLOR_NM}}</p>
+		</div>
+		<div class="multiple_cate Scan_{{SCAN_CHK}} " id="INDEX{{INDEX}}">
+			<p class="RIVIAN RIVIAN_PART">{{RIVIAN}}</p>
+			<p class="index blind" >{{INDEX}}</p>
+		</div>
+		<!--Blind-->
+		<div class="multiple_cate blind">
+			<p class="PO_NUM">{{PO_NUM}}</p>
+			<p class="PO_SEL">{{PO_SEL}}</p>
+			<p class="PO_SEQ">{{PO_SEQ}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListTemplate_BH" class="none">
+	<div class="tableCont SEAT_003_BH {{MLINK}}" id="outDiv{{OUT_DIV}}" data-status="{{STATUS}}" data-vendcd="{{VEND_CD}}" data-delibarno="{{DELI_BAR_NO}}" data-ordkind="{{ORD_KIND}}">
+		<div class="multiple_cate INDEX">
+			<p class="INDEX_CONT">{{INDEX_CNT}}</p>
+		</div>
+		<div class="multiple_cate BH_COLOR">
+			<p class="LH_COLOR_NM">{{LH_COLOR_NM}}</p>
+		</div>
+		<div class="multiple_cate Scan_{{LH_SCAN_CHK}} RIVIAN_PART_DIV"  id="INDEX{{LH_INDEX}}" >
+			<p class="LH_RIVIAN RIVIAN_PART">{{LH_RIVIAN}}</p>
+			<p class="index blind">{{LH_INDEX}}</p>
+		</div>
+		<div class="multiple_cate Scan_{{RH_SCAN_CHK}} RIVIAN_PART_DIV" id="INDEX{{RH_INDEX}}">
+			<p class="RH_RIVIAN RIVIAN_PART">{{RH_RIVIAN}}</p>
+			<p class="index blind" >{{RH_INDEX}}</p>
+		</div>
+		<!--Blind-->
+		<div class="multiple_cate blind">
+			<p class="PO_NUM">{{PO_NUM}}</p>
+			<p class="PO_SEL">{{PO_SEL}}</p>
+			<p class="PO_SEQ">{{PO_SEQ}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/seat/SEAT_003.js"></script>
+<!--<script type="text/javascript" src="../../js/ui/JJ/IN_010.js"></script>-->
+<!--<script type="text/javascript" src="../../js/common/qrManager.js"></script>-->
+</html>

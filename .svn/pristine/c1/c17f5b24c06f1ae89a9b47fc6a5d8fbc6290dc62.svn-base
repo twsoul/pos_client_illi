@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>Login</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper" class="fullscreen login">
+	<!-- header -->
+	<header id="header" class="blind"></header>
+
+	<!-- contents -->
+	<div id="contents">
+		<main id="main" class="login">
+			<section>
+				<div class="version"><input type="text" id="txtVersion" readonly></div>
+				<h1 style="text-align:center;font-weight:bold;text-shadow:3px 3px 3px #aaa;"><p style="display:inline-block;font-size:13rem;font-style:italic;color:#002D72;">H</p><p style="display:inline-block;font-size:8rem;text-transform:none;font-style:italic;color:#002D72;">·</p><p style="display:inline-block;font-size:8rem;text-transform:none;color:#0085CA;">able</p></h1>
+				<div class="login_contents">
+					<div class="line_typing" name="HPT">
+						<p>
+							<select name="complist_" id="comp" style="color:#ccc; font-size:3rem;">
+                        	<option value="HPT">Korea</option>
+                        	<option value="PTA">USA</option>
+                        	<option value="PTM">Mexico</option>
+							<option value="PTI">Indonesia</option>
+							<option value="PTC">China</option>
+							</select>
+						</p>
+					</div>
+					<div class="line_typing order1"><p><input type="text" placeholder="User name" id="txtLogID" onClick="this.select();"></p></div>
+					<div class="line_typing order2"><p><input type="Password" placeholder="Password" id="txtLogPW" onClick="this.select();"></p></div>
+					<div class="line_checker"><p class="checkBox" checked="checked"><input type="checkbox" id="chk_holdInfo"><label for="chk_holdInfo"></label></p><span>Save ID</span></div>
+					<div class="btn_login" id="btn_login"><p><span>Sign In</span></p></div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer blind">
+	</footer>
+</div>
+<span class="blind" data-lng="confirm"></span>
+<span class="blind" data-lng="cancel"></span>
+<span class="blind" data-lng="alert"></span>
+<span class="blind" data-lng="update"></span>
+<span class="blind" data-lng="nopw"></span>
+<span class="blind" data-lng="noid"></span>
+<span class="blind" data-lng="nouser"></span>
+<span class="blind" data-lng="chgpw"></span>
+<span class="blind" data-lng="noco"></span>
+<span class="blind" data-lng="noserver"></span>
+<span class="blind" data-lng="quit"></span>
+<span class="blind" data-lng="chgpwpop"></span>
+<span class="blind" data-lng="newpw"></span>
+<span class="blind" data-lng="conpw"></span>
+<span class="blind" data-lng="diffpw"></span>
+<span class="blind" data-lng="oldpw"></span>
+<span class="blind" data-lng="nochgpw"></span>
+<span class="blind" data-lng="sessionerror"></span>
+<span class="blind" data-lng="sessionfail"></span>
+<!-- DEBUG용 - START -->
+<!--<div style="position:absolute;left:0px;top:0px;width:100%;">
+	<button id="btnTEST3" style="font-size:15px;width:inherit;color:white;font-weight:bold;background-color:green;padding:10px;width:48%;">테스트</button>
+	<button id="btnGET" style="font-size:15px;width:inherit;color:white;font-weight:bold;background-color:green;padding:10px;width:48%;">GET AllData</button>
+	<button id="btnGET2" style="font-size:15px;width:inherit;color:white;font-weight:bold;background-color:green;padding:10px;width:48%;">GET userData</button>
+	<button id="btnGET3" style="font-size:15px;width:inherit;color:white;font-weight:bold;background-color:green;padding:10px;width:48%;">DROP TABLE INSP</button>
+</div>-->
+<!-- DEBUG용 - END -->
+</body>
+
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/common/login.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customPWchangePopup.js"></script>
+
+</html>

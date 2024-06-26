@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>고객사하차관리(상세)</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000395"></h2><!--고객사하차관리(상세)-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:20%;">
+										<col style="width:40%;">
+										<col style="width:20%;">
+										<col style="width:20%;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th><span data-lng="LB.0000000400"></span></th><!--배차No-->
+											<td><span id="txtCAR_NO"></span></td>
+											<th><span data-lng="LB.0000000402"></span></th><!--납품서 회수-->
+											<td><p class="FoldselectBox"><select name="selYN" id="selYN"><option value='Y'>Y</option>><option value='N'>N</option></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:20%;">
+										<col style="width:50%;">
+										<col style="width:30%;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th><span data-lng="LB.0000000403"></span></th><!--상차일정-->
+											<td><span id="txtFR_DATE"></span></td>
+											<td><span id="txtFR_ZONE"></span></td>
+										</tr>
+										<tr>
+											<th><span data-lng="LB.0000000404"></span></th><!--하차일정-->
+											<td><span id="txtTO_DATE"></span></td>
+											<td><span id="txtTO_ZONE"></span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+			<section>
+				<div class="container">
+					<article class="tableList">
+						<div class="list_inner list_pd_082 blind" id="list_pd_082_head">
+							<div class="tableHead">
+								<div>
+									<p data-lng="LB.0000000038"></p><!--품번-->
+								</div>
+								<div>
+									<p data-lng="LB.0000000040"></p><!--품명-->
+								</div>
+								<div>
+									<p data-lng="LB.0000000019"></p><!--수량-->
+								</div>
+							</div>
+						</div>
+						<div class="list_inner list_pd_082" id="list_pd_082">
+						</div>
+					</article>
+
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area">
+								<table class="table_area">
+									<colgroup>
+										<col style="width:80%;">
+										<col style="width:20%;">
+									</colgroup>
+									<tbody>
+									<tr>
+										<th><span data-lng="LB.0000000215" style="font-size:3rem;padding:1rem 0;"></span></th><!--합계-->
+										<td><span id="txtTOT_cnt" style="font-size:3rem;padding:1rem 0;">0</span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:20%;">
+										<col style="width:80%;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th><span data-lng="LB.0000000027"></span></th><!--사업장-->
+											<td><p class="FoldselectBox"><select name="selCOP" id="selCOP"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:20%;">
+										<col style="width:40%;">
+										<col style="width:40%;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th><span data-lng="LB.0000000406"></span></th><!--팔레트-->
+											<td><p class="palletplsbtn" id="palletplsbtn">+</p></td>
+											<td><p class="palletminusbtn" id="palletminusbtn">-</p></td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="pallet_pd_082" id="pallet_pd_082">
+
+								</div>
+								<table class="table_area">
+									<colgroup>
+										<col style="width:20%;">
+										<col style="width:80%;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th><span data-lng="LB.0000000405"></span></th><!--미회수 사유-->
+											<td><p class="FoldselectBox"><select name="selRTN" id="selRTN"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="list_inner adjFix" id="">
+						</div>
+
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor btn_sec1"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p><!--초기화-->
+			<p class="classicalBtn adjColor btn_sec2"><button type="button" id="btnSave" data-lng="LB.0000000127"></button></p><!--저장-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="MSG.0000000408">리스트가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000409">사업장을 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000359">팔레트 정보가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000410">팔레트 개수가 0개 이하입니다</span>
+<span class="blind" data-lng="MSG.0000000413">미회수 사유를 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000411">선택되지 않은 팔레트가 존재합니다</span>
+<span class="blind" data-lng="MSG.0000000412">중복된 팔레트가 존재합니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000373">저장에 실패하였습니다</span>
+</body>
+<script type="text/template" id="PalletTemplate" class="none">
+	<table class="table_area" style="border-bottom:none;" data-stack="{{STACK}}">
+		<colgroup>
+			<col style="width:20%;">
+			<col style="width:50%;">
+			<col style="width:30%;">
+		</colgroup>
+		<tbody>
+			<tr>
+				<th></th>
+				<td><p class="FoldselectBox"><select name="selPALLET" class="selPALLET">{{item}}</select></p></td>
+				<td class="unsearched"><span><input style="text-align:center;" type="number" class="PLT_QTY" min="0" max="99999" maxlength="5" onkeypress="if(event.key==='.'){event.preventDefault();} else if(event.key==='Enter'||event.keyCode===13){event.preventDefault();this.blur();}" onchange="page.inputEvent(this);" onkeyup="page.inputEvent(this);" onClick="this.select();" oninput="window.Utils.maxLengthCheck(this);event.target.value = event.target.value.replace(/[^0-9]*/g,'');" value="0"></span></td>
+			</tr>
+		</tbody>
+	</table>
+</script>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont" data-custno="{{CUST_NO}}" data-vendorcd="{{VENDOR_CD}}" data-delicarseq="{{DELI_CAR_SEQ}}" data-moveno="{{MOVE_NO}}" data-zonefrdate="{{ZONE_FR_DATE}}" data-zonefr="{{ZONE_FR}}" data-zonetodate="{{ZONE_TO_DATE}}" data-zoneto="{{ZONE_TO}}" data-partcd="{{PART_CD}}" data-partnm="{{PART_NM}}" data-moveqty="{{MOVE_QTY}}" data-pltcd="{{PLT_CD}}" data-pltinqty="{{PLT_IN_QTY}}">
+		<div>
+			<p class="PART_CD">{{PART_CD}}</p>
+		</div>
+		<div>
+			<p class="PART_NM">{{PART_NM}}</p>
+		</div>
+		<div>
+			<p class="MOVE_QTY">{{MOVE_QTY}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/PD/PD_082.js"></script>
+</html>

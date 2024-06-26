@@ -1,0 +1,69 @@
+/**
+ * wninterface.extends.js
+ *
+ * 네이티브와의 연계 메서드를 아래에 정의한다.
+ * 네이티브 메서드의 실행을 위해서 WN2Common 메서드를 이용해 Native의 메서드 명을 파라미터로 넣는다.
+ * @returns {*}
+ */
+
+/***
+ * 인디데이터 show 함수.
+ */
+function exShowIndicator(msg) {
+	WN2Common("exShowIndicator", msg || "");
+}
+
+
+/**
+ * 인디게이터 hide 함수.
+ **/
+function exHideIndicator() {
+	return WN2Common("exHideIndicator");
+}
+
+/**
+ * GPS
+ */
+function exWNStartGPSInfo(user_id, interval, db_kind){
+	return M.execute('exStartGPSInfo', user_id, interval, db_kind);
+}
+
+/**
+ * GPS
+ */
+function exWNStopGPSInfo(){
+	return M.execute('exStopGPSInfo');
+}
+
+
+/**
+ * GPS
+ */
+function exWNCapture(){
+	return M.execute('exCapture');
+}
+
+
+/**
+ * GPS
+ */
+function exWNVersionInfo(){
+	return M.execute('exVersionCheck');
+}
+
+/**
+ * PrintLabel
+ */
+function exWNPrintLabel(ZPROC, LNG, MATNR, MAKTX, GROES, LGPBE, ZSIGD, copies){
+	return M.execute('exPrintLabel', ZPROC, LNG, MATNR, MAKTX, GROES, LGPBE, ZSIGD, copies);
+}
+
+/**
+ * PrintHtml
+ */
+//function exWNPrintHtml(string_Export){
+//	return M.execute('exPrintHtml',string_Export);
+//}
+function exWNPrintHtml(MOVETYPE, MOVENM, VENDOR_NM, MOVENO, MOVEDESC, CREATE_NM, TOTAL, PART_CD, PART_QTY, PART_NM, BASIC_UNIT, MOVE_DT){
+	return M.execute('exPrintHtml',MOVETYPE, MOVENM, VENDOR_NM, MOVENO, MOVEDESC, CREATE_NM, TOTAL, PART_CD, PART_QTY, PART_NM, BASIC_UNIT, MOVE_DT);
+}

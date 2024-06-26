@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>출고지시(자동창고)</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000087"></h2><!--출고지시(자동창고)-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area adjForm">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selPLANT" id="selPLANT"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+
+			<section>
+				<div class="container">
+					<article class="tableList tapPosible">
+						<div class="list_inner list_ot_100 blind" id="list_ot_100_head">
+							<div class="tableHead">
+								<div class="mergeCell">
+									<p data-lng="LB.0000000038"></p><!--품번-->
+								</div>
+								<div class="mergeCell">
+									<p data-lng="LB.0000000040"></p><!--품명-->
+								</div>
+								<div class="">
+									<p data-lng="LB.0000000208"></p><!--재고수량-->
+								</div>
+							</div>
+						</div>
+						<div class="list_inner list_ot_100 adjFix" id="list_ot_100">
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="MSG.0000000009">조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont {{MLINK}}">
+		<div>
+			<p class="PART_NO">{{PART_NO}}</p>
+		</div>
+		<div>
+			<p class="PART_NM">{{PART_NM}}</p>
+		</div>
+		<div>
+			<p class="BOX_CNT">{{BOX_CNT}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/OT_100.js"></script>
+<script type="text/javascript" src="../../js/common/qrManager.js"></script>
+</html>

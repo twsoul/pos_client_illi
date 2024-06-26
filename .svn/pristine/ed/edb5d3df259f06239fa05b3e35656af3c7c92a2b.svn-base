@@ -1,0 +1,61 @@
+/*******************************************************************************
+ * 로그인 페이지 메인 로직
+ ******************************************************************************/
+
+var summary = (function(window, document, $, M, undefined) {
+	// 화면 초기화
+	var setInitScreen = function() {
+	};
+	// 이벤트 초기화
+	var setInitEvent = function() {
+		$("#soapBtn").click(soapProcess);
+		var pageBtn= $('#pageBtn');
+		
+		pageBtn.click(function() {
+			var pagaId= $("#pageId").val();
+			screenManager.moveToPage('./H_T_UM_' + pagaId + '.html');
+		});				
+	};
+	// 웹서비스 호출
+	var soapProcess = function() {
+		var soap;
+		soap = $("#soapList").val();
+		networkManager.httpSend({
+			path : soap,
+			success : function(receivedData, setting) {
+				$("#eaiResult").html(receivedData.carInfoReturn+'<br>'+receivedData.carInfoMsg);
+			},
+			error : function(errorCode, errorMessage, setting) {
+				M.tool.log("onError", errorCode, errorMessage);
+				alert("onError, " + errorCode + ", " + errorMessage);
+				popupManager.alert(errorMessage, {
+					title : '알림'
+				});
+			}
+		});
+	}
+
+	// Public Method
+	return {
+		setInitScreen : setInitScreen,
+		setInitEvent : setInitEvent
+	};
+
+})(window, document, $, M);
+
+/*******************************************************************************
+ * MCore Common Events
+ ******************************************************************************/
+M.onReady(function() {
+	summary.setInitScreen();
+	summary.setInitEvent();
+
+}).onHide(function() {
+}).onResume(function() {
+}).onPause(function() {
+}).onRestore(function() {
+}).onDestroy(function() {
+}).onBack(function() {
+}).onKey(function() {
+
+});

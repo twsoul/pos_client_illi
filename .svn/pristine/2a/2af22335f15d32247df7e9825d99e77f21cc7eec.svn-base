@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>자재 변경</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png" alt="이전으로 돌아갑니다."></span></div>
+				<h2>자재 변경</h2>
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox">
+						<h5 class="blind">옵션 선택 및 확인</h5>
+						<div class="box_inner">
+							<div class="opt_input">
+								<p class="lineHead">자재 바코드</p><p class="inputBox"><span><input type="text" placeholder="입력하세요" id="inputScan"><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:0.5vmax;">
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>날짜</span></th>
+										<th><span>품명</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span id="txtLAEDA"></span></td>
+										<td><span id="txtMAKTX"></span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>품번</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td class="unsearched"><span id="txtPART_NO"></span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>규격</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span id="txtGROES"></span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>단가</span></th>
+										<th><span>재고 수량</span></th>
+										<th><span>임시</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span id="txtZCOST"></span></td>
+										<td><span id="txtLABST"></span></td>
+										<td><span id="txtZTEMP"></span></td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+									<tr>
+										<th><span>저장 위치</span></th>
+										<th><span>저장 BIN</span></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+										<td><span id="txtLGORT"></span></td>
+										<td><span id="txtLGPBE"></span><span id="txtZSIGD" class="blind"></span></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea blind">
+			<p class="classicalBtn adjColor btn_sec1 "><button type="button" id="btnMove">재고이동</button></p>
+			<p class="classicalBtn adjColor btn_sec2 "><button type="button" id="btnChange">BIN변경</button></p>
+			<p class="classicalBtn adjColor btn_sec3 "><button type="button" id="btnPrint">라벨인쇄</button></p>
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<li><button type="button" data-value="../common/notification.html"></button></li>
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+</body>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/bj/bj_020.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customInSPopup.js"></script>
+<script type="text/javascript" src="../../js/libs/custom/customInputPopup.js"></script>
+</html>

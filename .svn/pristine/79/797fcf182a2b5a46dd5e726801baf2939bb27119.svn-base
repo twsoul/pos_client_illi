@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: ./mcoreLibs/m_addon_media_2.1.5.33.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/mcoreLibs/m_addon_media_2.1.5.33.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

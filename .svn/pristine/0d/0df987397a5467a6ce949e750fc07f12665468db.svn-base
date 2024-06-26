@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>자재 변경</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png" alt="이전으로 돌아갑니다."></span></div>
+				<div class="btn_callNav clearfix">
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+				<h2>자재 변경</h2>
+			</div>
+		</div>
+		<nav>
+			<span class="btn_home"><img src="../../img/ico_home.png" alt="메인으로 이동"></span>
+			<span class="btn_close"><img src="../../img/close_nav.png" alt="내비게이션 닫기"></span>
+			<p><img src="../../img/img_apptit.png" alt="transportation management system"></p>
+			<ul id="navMenu">
+				<li data-id="1"><span>배차관리</span></li>
+				<li data-id="2"><span>운송관리</span></li>
+				<li data-id="3"><span>입고관리</span></li>
+				<li data-id="4"><span>검수관리</span></li>
+				<li data-id="5"><span>재고관리</span></li>
+				<li data-id="6"><span>알림장</span></li>
+				<li data-id="7"><span>설정</span></li>
+				<li data-id="99"><span>로그아웃</span></li>
+			</ul>
+		</nav>
+	</header>
+
+
+	<!-- contents -->
+	<div id="contents" class="swipeScreen adjfixed">
+		<main>
+			<header class="under_header">
+				<h1>홍길동님 M-Seat(Ansan Plant) 보전반</h1>
+			</header>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="list">
+						<div class="list_area" style="box-shadow: 3px 3px 3px;border-radius: 5px;border: 1px solid gray;text-align: center;font-size: 5rem;padding: 1vmax 1vmax;">
+							<table class="list_t_um41">
+								<colgroup>
+									<col width="20%"/>
+									<col width="20%"/>
+									<col width="20%"/>
+									<col width="20%"/>
+									<col width="auto%"/>
+								</colgroup>
+								<tr>
+									<td colspan=2 style="color: lightgray;font-size: 2rem;text-align: start;">03.12(금) 오전 10:28</td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td colspan=2 style="color: cornflowerblue;font-size: 2.5rem;">GT700200702083015</td>
+									<td colspan=3  style="font-size: 2.5rem;">기어웜드레서</td>
+								</tr>
+								<tr>
+									<td style="font-size: 2rem;text-align: end;">규격 : </td>
+									<td colspan=4 style="font-size: 2rem;text-align: end;">CCGW 120404 HPD010/한국교세라정</td>
+								</tr>
+								<tr>
+									<td style="font-size: 2rem;text-align: end;">재고 수량 : </td>
+									<td style="font-size: 2rem;text-align: end;">20</td>
+									<td colspan=3 style="font-size: 2rem;text-align: start;">&nbsp;EA</td>
+								</tr>
+								<tr>
+									<td style="font-size: 2rem;text-align: end;">임시 : </td>
+									<td style="font-size: 2rem;text-align: end;">0</td>
+									<td colspan=3 style="font-size: 2rem;text-align: start;">&nbsp;EA</td>
+								</tr>
+								<tr>
+									<td style="font-size: 2rem;text-align: end;">저장위치 : </td>
+									<td colspan=2 style="font-size: 2rem;text-align: end;">보전저장창고</td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td style="font-size: 2.5rem;text-align: end;">저장BIN : </td>
+									<td colspan=2 style="font-size: 2rem;text-align: end;">S01-02-03</td>
+									<td></td>
+									<td></td>
+								</tr>
+							</table>
+						</div>
+					</article>
+				</div>
+			</section>
+
+			<div class="btn_area fixedArea">
+				<p class="classicalBtn adjColor btn_sec1 "><button type="button" id="btnDetail">이동</button></p>
+				<p class="classicalBtn adjColor btn_sec1 "><button type="button" id="btnDetail2">변경</button></p>
+				<p class="classicalBtn adjColor btn_sec2 "><button type="button" id="btnSearch2">인쇄</button></p>
+			</div>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_btTop">
+			<p><span>top</span><img src="../../img/ico_backTotop.png" alt="테이블 항목 처음으로"></p>
+		</div>
+	</footer>
+</div>
+</body>
+
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/bj/bj_011.js"></script>
+
+<style>
+	tbody, td{border:0!important;}
+	td{padding:3rem 0 3rem 0; font-size:2.5rem!important;}
+	td span{padding:0!important;}
+	.list_area span{display:inline!important;}
+</style>
+</html>

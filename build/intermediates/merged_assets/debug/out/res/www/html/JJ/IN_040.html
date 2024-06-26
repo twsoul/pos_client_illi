@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>KD이동입고</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000077"></h2><!--KD이동입고-->
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="list_area adjForm">
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+											<th><span data-lng="LB.0000000031"></span></th><!--저장위치-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selPLANT" id="selPLANT"></select></p></td>
+											<td class="deepCell"><p class="FoldselectBox"><select name="selLOCTP" id="selLOCTP"></select></p></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--스캔-->
+								<p class="lineHead" data-lng="LB.0000000126"></p><p class="inputBox"><span><input type="text" id="inputScan" value=""><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="opt_input" style="margin-top:2px;"><!--납입문서-->
+								<p class="lineHead" data-lng="LB.0000000121"></p><p id="txtORDR_NO"></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:2px;">
+								<table class="table_area in_020_table">
+									<colgroup>
+										<col style="width:15%;">
+										<col style="width:65%;">
+										<col style="width:20%;">
+									</colgroup>
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000122"></span></th><!--거래처 코드-->
+											<th><span data-lng="LB.0000000123"></span></th><!--거래처 명-->
+											<th><span data-lng="LB.0000000216"></span></th><!--BOX-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtVEND_CD"></span></td>
+											<td><span id="txtVEND_NM"></span></td>
+											<td align="center"><span id="inpBoxQty" class="nRedbox1">0</span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+
+			<section>
+				<div class="container">
+					<article class="tableList">
+						<div class="list_inner list_in_040 blind" id="list_in_040_head">
+							<div class="tableHead">
+								<div class="mergeCell">
+									<p data-lng="LB.0000000038" style="font-size:3.5rem;"></p><!--품번-->
+								</div>
+								<div class="mergeCell">
+									<p data-lng="LB.0000000236" style="font-size:3.5rem;"></p><!--과납수량-->
+								</div>
+								<div class="mergeCell">
+									<p data-lng="LB.0000000149" style="font-size:3.5rem;"></p><!--지시수량-->
+								</div>
+								<div class="mergeCell">
+									<p data-lng="LB.0000000150" style="font-size:3.5rem;"></p><!--스캔수량-->
+								</div>
+							</div>
+						</div>
+						<div class="list_inner list_in_040 adjFix" id="list_in_040">
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea">
+			<p class="classicalBtn adjColor btn_sec1"><button type="button" id="btnInit" data-lng="LB.0000000058"></button></p><!--초기화-->
+			<p class="classicalBtn adjColor btn_sec2"><button type="button" id="btnSave" data-lng="LB.0000000127"></button></p><!--저장-->
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000119">선택</span>
+<span class="blind" data-lng="LB.0000000121">납입문서</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000115">타 공장 바코드입니다, 그래도 진행 하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000297">타 공장 바코드입니다</span>
+<span class="blind" data-lng="MSG.0000000010">플랜트 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000116">납입문서번호를 먼저 스캔하십시오.</span>
+<span class="blind" data-lng="MSG.0000000129">납입카드 번호가 존재하지 않습니다.</span>
+<span class="blind" data-lng="MSG.0000000117">저장위치를 먼저 선택하십시오.</span>
+<span class="blind" data-lng="MSG.0000000118">플랜트를 먼저 선택하십시오.</span>
+<span class="blind" data-lng="MSG.0000000132">납입카드와 부품식별표의 업체코드가 일치하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000134">납입지시내역에 존재하지 않는 PART NO 입니다</span>
+<span class="blind" data-lng="MSG.0000000137">스캔하신 내역이 없습니다</span>
+<span class="blind" data-lng="MSG.0000000464">운송중인 납입문서가 아닙니다</span>
+<span class="blind" data-lng="MSG.0000000495">납품유형이 누락되었습니다</span>
+<span class="blind" data-lng="MSG.0000000142">수량이 일치하지 않습니다, 그래도 저장 하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000143">검수적발 되었습니다. (지시수량 초과)\n납품서 재발행 필요</span>
+<span class="blind" data-lng="MSG.0000000145">이전 작업이 완료되지 않았습니다</span>
+<span class="blind" data-lng="MSG.0000000269">이미 스캔한 부품식별표입니다</span>
+<span class="blind" data-lng="MSG.0000000270">부품식별표가 존재하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000271">납입카드에 해당 부품식별표가 존재 하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000272">저장이 완료되었습니다</span>
+<span class="blind" data-lng="MSG.0000000273">이미 납입된 납입카드 번호입니다</span>
+<span class="blind" data-lng="MSG.0000000274">미납 되었습니다, 그래도 저장 하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000275">과납 되었습니다, 그래도 저장 하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000276">납입카드 지시수량과 스캔수량이 일치하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000284">는 이미 입고된 Box입니다</span>
+<span class="blind" data-lng="MSG.0000000313">해당 부품식별표와 납입카드의 공장이 일치 하지 않습니다</span>
+<span class="blind" data-lng="MSG.0000000314">올바르지않은 납입문서입니다</span>
+<span class="blind" data-lng="MSG.0000000318">납입 저장위치를 먼저 선택하십시오</span>
+<span class="blind" data-lng="MSG.0000000508">발행 취소된 납입카드 입니다</span>
+<span class="blind" data-lng="MSG.0000000499">납품유형 : </span>
+<span class="blind" data-lng="MSG.0000000196">데이터 베이스 생성에 실패하였습니다, 프로그램 종료합니다</span>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont" data-coperatecd="{{COPORATE_CD}}" data-partcd="{{PART_CD}}" data-plantcd="{{PLANT_CD}}" data-delino="{{DELI_NO}}"  data-delitype="{{DELI_TYPE}}" data-delicase="{{DELI_CASE}}" data-delist="{{DELI_ST}}" data-PART_CD="{{PART_CD}}" data-partnm="{{PART_NM}}" data-deliqty="{{DELI_QTY}}" data-boxinqty="{{BOX_IN_QTY}}" data-boxqty="{{BOX_QTY}}" data-vendorcd="{{VENDOR_CD}}" data-vendornm="{{VENDOR_NM}}" data-inspfindyn="{{INSP_FIND_YN}}" data-inspflag="{{INSP_FLAG}}" data-otherplantmoveflag="{{OTHER_PLANT_MOVE_FLAG}}" data-inyn="{{IN_YN}}">
+		<div>
+			<p class="PART_CD">{{PART_CD}}</p>
+		</div>
+		<div>
+			<p class="OVER_QTY {{COLOR}}">{{OVER_QTY}}</p>
+		</div>
+		<div>
+			<p class="DELI_QTY">{{DELI_QTY}}</p>
+		</div>
+		<div>
+			<p class="SCAN_QTY nRedbox1">{{SCAN_QTY}}</p>
+			<p class="SCAN_BOX_CNT blind">{{SCAN_BOX_CNT}}</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/JJ/IN_040.js"></script>
+</html>

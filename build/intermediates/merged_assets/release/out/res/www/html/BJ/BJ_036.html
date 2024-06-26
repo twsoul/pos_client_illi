@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>기간별 자재실사</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="fixed">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png"></span></div>
+				<h2 data-lng="LB.0000000010"></h2><!--기간별 자재실사-->
+			</div>
+		</div>
+	</header>
+
+
+	<!-- contents -->
+	<div id="contents" class="adjfixed">
+		<main>
+			<section class="non_headCont">
+				<div class="container">
+					<article class="optionBox addfunc">
+						<div class="box_inner expand">
+							<div class="opt_input"><!--품번-->
+								<p class="lineHead moreArea2" data-lng="LB.0000000038"></p><p class="inputBox"><span><input type="text" id="inputScan" onClick="this.select();"><label><i class="material-icons" id="btnScan">camera</i></label></span></p>
+							</div>
+							<div class="list_area adjForm" style="margin-top:2px;">
+								<table class="table_area">
+									<thead>
+										<tr><!--실사명-->
+											<th><span data-lng="LB.0000000063"></span></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtTITLE"></span></td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table_area">
+									<thead>
+										<tr>
+											<th><span data-lng="LB.0000000030"></span></th><!--플랜트-->
+											<th><span data-lng="LB.0000000031"></span></th><!--저장위치-->
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span id="txtWERKS"></span></td>
+											<td><span id="txtLGOBE"></span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="moreArea expand"><p><i></i></p></div>
+					</article>
+				</div>
+			</section>
+			<section>
+				<div class="container">
+					<article class="tableList">
+						<div class="list_inner list_bj_031 adjFix" id="list_bj_031">
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="btn_area fixedArea blind">
+			<p class="classicalBtn adjColor"><button type="button" id="btnSave" data-lng="LB.0000000066">중간저장</button></p>
+			<p class="classicalBtn adjColor"><button type="button" id="btnFin" data-lng="LB.0000000059">실사완료</button></p>
+		</div>
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<!--<li><button type="button" data-value="../common/notification.html"></button></li>-->
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+<span class="blind" data-lng="LB.0000000044">임시</span>
+<span class="blind" data-lng="LB.0000000055">재고</span>
+<span class="blind" data-lng="LB.0000000056">실사</span>
+<span class="blind" data-lng="LB.0000000057">차이</span>
+<span class="blind" data-lng="MSG.0000000002">확인</span>
+<span class="blind" data-lng="MSG.0000000003">취소</span>
+<span class="blind" data-lng="MSG.0000000004">알림</span>
+<span class="blind" data-lng="MSG.0000000048">품번을 입력하세요</span>
+<span class="blind" data-lng="MSG.0000000053">품번 조회 데이터가 없습니다</span>
+<span class="blind" data-lng="MSG.0000000067">기간별 실사를 정말 완료하시겠습니까?</span>
+<span class="blind" data-lng="MSG.0000000068">수고하셨습니다</span>
+<span class="blind" data-lng="MSG.0000000069">기간별 실사등록이 잘못 되었습니다</span>
+<span class="blind" data-lng="MSG.0000000196">데이터 베이스 생성에 실패하였습니다,\n프로그램 종료합니다</span>
+</body>
+<script type="text/template" id="ListTemplate" class="none">
+	<div class="tableCont" data-code="{{PART_NO}}" data-meins="{{MEINS}}">
+		<div class="multiple_cate">
+			<p class="MATNR">{{PART_NO}}</p>
+			<p class="MAKTX">{{PART_NM}}</p>
+			<p class="harf_cell">
+				<span>{{LB0000000055}}</span><span class="LABST">{{QTY}}</span>
+				<span>{{LB0000000044}}</span><span class="ZTEMP">{{IMSI}}</span>
+				<span>{{LB0000000057}}</span><span class="DIFF">{{DIFF}}</span>
+				<span>{{LB0000000056}}</span><span class="unsearched"><input type="number" class="MENGE" min="0" max="99999" maxlength="5" onClick="this.select();" onchange="page.inputEvent(this);" onkeyup="page.inputEvent(this);" onkeydown="if(event.keyCode == 13) this.blur();" oninput="window.Utils.maxLengthCheck(this)" value="{{CNT}}" style="font-size:2.5rem;"></span>
+			</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListTemplateEA" class="none">
+	<div class="tableCont" data-code="{{PART_NO}}" data-meins="{{MEINS}}">
+		<div class="multiple_cate">
+			<p class="MATNR">{{PART_NO}}</p>
+			<p class="MAKTX">{{PART_NM}}</p>
+			<p class="harf_cell">
+				<span>{{LB0000000055}}</span><span class="LABST">{{QTY}}</span>
+				<span>{{LB0000000044}}</span><span class="ZTEMP">{{IMSI}}</span>
+				<span>{{LB0000000057}}</span><span class="DIFF">{{DIFF}}</span>
+				<span>{{LB0000000056}}</span><span class="unsearched"><input type="number" class="MENGE" min="0" max="99999" maxlength="5" onClick="this.select();" onchange="page.inputEvent(this);" onkeyup="page.inputEvent(this);" onkeypress="if(event.key==='.'){event.preventDefault();}" onkeydown="if(event.keyCode == 13) this.blur();" oninput="window.Utils.maxLengthCheck(this);event.target.value = event.target.value.replace(/[^0-9]*/g,'');" value="{{CNT}}" style="font-size:2.5rem;"></span>
+			</p>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="ListNoDataTemplate" class="none">
+</script>
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/BJ/BJ_036.js"></script>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>자재 실사</title>
+	<link rel="stylesheet" href="../../css/layout.css">
+	<link rel="stylesheet" href="../../css/font.css">
+</head>
+
+<body>
+<div id="wrapper" class="">
+	<!-- header -->
+	<header id="header">
+		<div class="container">
+			<div class="head_cont">
+				<div class="lt_area"><span class="btn_back" id="btn_back"><img src="../../img/img_backKey.png" alt="이전으로 돌아갑니다."></span></div>
+				<h2>자재 실사</h2>
+			</div>
+		</div>
+	</header>
+
+	<!-- contents -->
+	<div id="contents">
+		<main id="main" class="main">
+			<section>
+				<div class="container">
+					<div class="Item_belt">
+						<ul class="clearfix">
+							<li data-page="bj_031.html" class="M_GCS"><p><img src="../../img/ico_menuItem01.png" alt="일일실사 바로가기"><span class="item_title">일일실사</span><span>일일실사<br>management</span></p></li>
+							<li data-page="bj_035.html" class="M_GCS"><p><img src="../../img/ico_menuItem02.png" alt="기간실사 바로가기"><span class="item_title">기간실사</span><span>기간실사<br>management</span></p></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+		</main>
+	</div>
+
+	<!-- footer -->
+	<footer id="footer">
+		<ul>
+			<li><button type="button" data-value="../common/main.html"></button></li>
+			<li><button type="button" data-value=""></button></li>
+			<li><button type="button" data-value="../common/allmenu.html"></button></li>
+		</ul>
+	</footer>
+</div>
+</body>
+
+<script type="text/javascript" src="../../js/mcore.min.js"></script>
+<script type="text/javascript" src="../../js/ui/bj/bj_030.js"></script>
+
+</html>
